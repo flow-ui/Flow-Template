@@ -1,54 +1,67 @@
 /* 
 文字
  */
-@font-size: 13px;
-@font-size-lg: 16px;
-@font-size-sm: 12px;
-@line-height: 1.6;
-@font-family: Arial, 'Hiragino Sans GB', 'WenQuanYi Micro Hei', '\5fae\8f6f\96c5\9ed1', 'SimSun', sans-serif;
+@font-size: 		13px;
+@font-size-lg: 		16px;
+@font-size-sm: 		12px;
+@line-height: 		1.7;
+@font-family: 		Arial, 'Hiragino Sans GB', 'WenQuanYi Micro Hei', '\5fae\8f6f\96c5\9ed1', 'SimSun', sans-serif;
 
 /* 
 基础色
  */
-@blank: #555;
-@muted: #777;
-@light: #fff;
-@selected: #39f;
-@placeholder: #aaa;
+@black: 			#000;
+@light: 			#fff;
+
+@gray-darker: 		lighten(@black, 13.5%); // #222
+@gray-dark: 		lighten(@black, 20%);   // #333
+@gray: 				lighten(@black, 33.5%); // #555
+@gray-light: 		lighten(@black, 60%);   // #999
+@gray-lighter: 		lighten(@black, 93.5%); // #eee
+
+@text-color: 		@gray;
+@link-color: 		inherit;
+@link-color-hover: 	@primary;
+@selected: 			#39f;
+@placeholder: 		#aaa;
 
 /* 
 情景色
  */
-@primary: #1b97e9;
-@primary-dark: darken(@primary, 10%);
-@info: #4fcbf0;
-@info-dark: darken(@info, 10%);
-@success: #25ae88;
-@success-dark: darken(@success, 10%);
-@warning: #fec14c;
-@warning-dark: darken(@warning, 10%);
-@danger: #fd7b6d;
-@danger-dark: darken(@danger, 10%);
+@primary: 			#1b97e9;
+@primary-dark: 		darken(@primary, 20%);
+@info: 				#4fcbf0;
+@info-dark: 		darken(@info, 20%);
+@success: 			#25ae88;
+@success-dark: 		darken(@success, 20%);
+@warning: 			#fec14c;
+@warning-dark: 		darken(@warning, 20%);
+@danger: 			#fd7b6d;
+@danger-dark: 		darken(@danger, 20%);
 
-@link-color: inherit;
-@link-color-hover: @primary;
+/* 
+间距
+ */
+@space: 			1.6 * @font-size;
+@space-sm: 			1 * @font-size;
+@space-lg: 			2.4 * @font-size;
 
 /* 
 版式
  */
-@view-width:1000px;
-@radius: 2px;
+@view-width: 		1000px;
+@radius: 			2px;
 
 /* 
 栅格
  */
-@gridColumns: 12;
-@gridGutter: 2%;
-@PadScreen: 1024px;
-@MobileScreen: 640px;
+@gridColumns: 		12;
+@gridGutter: 		2%;
+@PadScreen: 		1024px;
+@MobileScreen: 		640px;
 
 /* 
 精灵图标
  */
- @sprite-matrix: 5;
- @sprite-width: 25px;
+ @sprite-matrix: 	5;
+ @sprite-width: 	25px;
