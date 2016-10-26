@@ -21,9 +21,6 @@ define(function(require, exports, module) {
 	//返回顶部
 	$('body').on('click','.gotop',function(){$('html,body').stop(1).animate({scrollTop:'0'},300);return false});
 	//关闭当前页
-	$('body').on('click','.closewin',function(){window.opener=null;window.open("","_self");window.close()});
-	//打印当前页
-	$('body').on('click','.print',function(){window.print()});
 
 	//PJAX预取
 	var ic = require('instantclick');
@@ -62,7 +59,7 @@ define(function(require, exports, module) {
 				var _val=$(this).val(),_max=$(this).attr('max-length');
 				if(_val.length>_max){
 					$(this).val(_val.substr(0,_max));
-				};
+				}
 			});
 			//按需渲染
 			setTimeout(function(){
@@ -80,5 +77,5 @@ define(function(require, exports, module) {
 
 
 		}
-	}	
+	};
 });

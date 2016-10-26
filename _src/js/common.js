@@ -15,16 +15,10 @@ define(function(require, exports, module) {
 	if (typeof console === 'undefined') {
 	    console = { log: function() {}, warn: function() {} }
 	};
-	/*
-	* 常用工具
-	*/
+
 	//返回顶部
 	$('body').on('click','.gotop',function(){$('html,body').stop(1).animate({scrollTop:'0'},300);return false});
-	//关闭当前页
-	$('body').on('click','.closewin',function(){window.opener=null;window.open("","_self");window.close()});
-	//打印当前页
-	$('body').on('click','.print',function(){window.print()});
-	
+
 	//textarea扩展max-length
 	$('textarea[max-length]').on('change blur keyup',function(){
 		var _val=$(this).val(),_max=$(this).attr('max-length');
@@ -32,6 +26,7 @@ define(function(require, exports, module) {
 			$(this).val(_val.substr(0,_max));
 		};
 	});
+
 	//延时显示
 	if(base.browser.ie<9){
 		$('.opc0').css('filter','unset')
@@ -44,6 +39,49 @@ define(function(require, exports, module) {
 	base.scanpush();
 	//响应图片
 	base.resImg();
+	//ajax错误处理
+	window.catchAjaxError = function(code, status) {
+		switch (code) {
+			case 0:
+				$.box.msg('网络错误，请检查网络连接！', {
+					color:'danger'
+				});
+				break;
+			case 1:
+				$.box.msg('请求异常中断！', {
+					color:'danger'
+				});
+				break;
+			case 2:
+				$.box.msg('数据接收错误！', {
+					color:'danger'
+				});
+				break;
+			case 3:
+				$.box.msg('数据解析错误！', {
+					color:'danger'
+				});
+				break;
+			default://4
+				$.box.msg('服务端错误(code:' + status + ')', {
+					color:'danger'
+				});
+				break;
+		}
+	};
+	//ajax统一设置
+	$.ajaxSetup({
+		timeout: 15000,
+		beforeSend: function(o, setting) {
+			if(!setting.dataType){
+				setting.dataType = 'json';
+			}
+		},
+		error: function(o) {
+			catchAjaxError(o.readyState, o.status);
+		}
+	});
+
 	/*
 	* 输出
 	*/
@@ -51,7 +89,7 @@ define(function(require, exports, module) {
 		demo:function(){
 			console.log('Hello '+base.getType());
 		}
-	}
+	};
 
 	/*
 	* 站内公用
@@ -61,4 +99,4 @@ define(function(require, exports, module) {
 	
 	
 	
-})
+});
