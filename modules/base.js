@@ -1,12 +1,98 @@
 /*
  * name: base
- * version: 2.13.6
- * update: getScript ie8无回调bug
- * date: 2016-08-02
+ * version: 2.14.0
+ * update: 添加共用catchAjaxError方法
+ * date: 2016-11-02
  */
 define('base', function(require, exports, module) {
 	'use strict';
 	var $ = require('jquery');
+	//ajax错误处理
+	var catchAjaxError = function(o) {
+		var code = o.readyState, status = o.status;
+		require.async('box',function(){
+			switch (code) {
+				case 0:
+					$.box.msg('网络错误，请检查网络连接！', {
+						color:'danger'
+					});
+					break;
+				case 1:
+					$.box.msg('请求异常中断！', {
+						color:'danger'
+					});
+					break;
+				case 2:
+					$.box.msg('数据接收错误！', {
+						color:'danger'
+					});
+					break;
+				case 3:
+					$.box.msg('数据解析错误！', {
+						color:'danger'
+					});
+					break;
+				default://4
+					$.box.msg('服务端错误(code:' + status + ')', {
+						color:'danger'
+					});
+					break;
+			}
+		});
+	};
+	/*
+	* ajax优化
+	*/
+	$.ajaxSetup({
+		timeout: 15000,
+		beforeSend: function(o, setting) {
+			if(!setting.dataType){
+				setting.dataType = 'json';
+			}
+			if(setting.useCache){
+				var cacheKey;
+				if(setting.type !== 'GET' && $.isPlainObject(setting.data)){
+					var _param = '?';
+					$.each(function(i,e){
+						_param += (i+'='+e+'&');
+					});
+					cacheKey = setting.url + _param.slice(-1);
+				}else{
+					cacheKey = setting.url;
+				}
+				if (window.localStorage) {
+					if(localStorage.getItem(cacheKey)){
+						var res;
+						if(setting.dataType === 'json'){
+							res = $.parseJSON(localStorage.getItem(cacheKey));
+						}else{
+							res = localStorage.getItem(cacheKey);
+						}
+						if(typeof setting.success === 'function'){
+							setting.success(res);
+							return false;
+						}
+					}else{
+						var tempSuccess = setting.success;
+						setting.success = function(res){
+							tempSuccess(res);
+							if($.isPlainObject(res)){
+								if(window.JSON){
+									res = JSON.stringify(res);
+									localStorage.setItem(cacheKey,res);
+								}
+							}else if(res && res.split){
+								localStorage.setItem(cacheKey,res);
+							}
+						};
+					}
+				}
+			}
+		},
+		error: function(o) {
+			catchAjaxError(o);
+		}
+	});
 
 	/*
 	 * cookie
@@ -77,12 +163,12 @@ define('base', function(require, exports, module) {
 							$(e).html(data).addClass('pushed');
 							typeof(_fn) === 'function' && _fn(e);
 						}
-					})
+					});
 				} else {
 					$(e).html(html).addClass('pushed');
 					typeof(_fn) === 'function' && _fn(e);
 				}
-			})
+			});
 		};
 		if (fn == void 0) {
 			if (dom && typeof(dom) !== 'function') {
@@ -105,23 +191,23 @@ define('base', function(require, exports, module) {
 			if (typeCatch == 'Pc') {
 				_push('.PcPush', function(that) {
 					$(that).trigger('PcPush');
-				})
+				});
 			} else {
 				_push('.UnpcPush', function(that) {
 					$(that).trigger('UnpcPush');
-				})
+				});
 			}
 			if (typeCatch == 'Mobile') {
 				_push('.MobilePush', function(that) {
 					$(that).trigger('MobilePush');
-				})
+				});
 			} else {
 				_push('.UnmobilePush', function(that) {
 					$(that).trigger('UnmobilePush');
-				})
+				});
 			}
-		})
-	}
+		});
+	};
 
 	/*
 	 * 设备识别
@@ -640,7 +726,8 @@ define('base', function(require, exports, module) {
 		throttle: _throttle,
 		getUrlParam: _urlParam,
 		getScript: _getScript,
-		ajaxCombo: _ajaxCombo
+		ajaxCombo: _ajaxCombo,
+		catchAjaxError: catchAjaxError
 	}
 
 });

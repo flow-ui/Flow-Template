@@ -10,16 +10,16 @@
         'upload/upload'                     : 'v1.1.0',
         'upload/makethumb'                  : 'v0.0.1',
         'upload/localResizeIMG'             : 'v0.0.1',
-        'validform/validform'               : 'v2.3.1',
+        'validform/validform'               : 'v2.3.2',
         'video/video'                       : 'v0.0.1',
         'webuploader/webuploader'           : 'v1.0.0',
         'album'                             : 'v2.2.10',
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.0.1',
-        'base'                              : 'v2.13.6',
+        'base'                              : 'v2.14.0',
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.10.3',
-        'city-select'                       : 'v0.0.1',
+        'city-select'                       : 'v0.0.3',
         'countdown'                         : 'v1.0.2',
         'counter'                           : 'v0.0.1',
         'datepicker'                        : 'v1.0.0',
@@ -52,9 +52,9 @@
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.2'
     };
-    var manifest = {}
+    var manifest = {};
     for(var key in mod){
-        manifest[seajs.data.base + key + '.js'] = mod[key]
-    };
+        manifest[seajs.data.base + key + '.js'] = mod[key];
+    }
     seajs.data.localcache.manifest = manifest;
 })(seajs);

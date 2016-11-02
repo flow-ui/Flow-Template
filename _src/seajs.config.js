@@ -18,7 +18,7 @@ seajs.config({
 		"copy"		     : "copy/ZeroClipboard",
 		"flv"		     : "flv/flv",
 		"hook"	 	     : "hook/hook",
-		"jquery" 	     : "jquery/1/jquery.js",
+		"jquery" 	     : "jquery/1/jquery",
 		"validform"      : "validform/validform",
 		"My97DatePicker" : "My97DatePicker/WdatePicker",
 		"raty"		     : "raty/raty",

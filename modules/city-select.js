@@ -1,11 +1,12 @@
 /*
  * name: city-selector.js
- * version: v0.0.1
- * update: build
- * date: 2016-10-21
+ * version: v0.0.3
+ * update: 引用共用ajax错误处理
+ * date: 2016-11-02
  */
 define('city-select', function(require, exports, module) {
 	var $ = require('jquery');
+	var base = require('base');
 	require('tip');
 	seajs.importStyle('\
 		.city-selector-warp{display:none; position:absolute;z-index:99;background:#fff;border:1px solid #e5eaee;padding:0 15px;width:600px;}\
@@ -13,12 +14,12 @@ define('city-select', function(require, exports, module) {
 		.city-selector-head-back{display:inline-block;cursor:pointer; visibility:hidden;}\
 		.city-selector-head-close{position:absolute;right:0;top:0;padding:0 .5em;cursor:pointer;font-family:tahoma;font-size:2em;}\
 		.city-selector-head-back:hover,.city-selector-head-close:hover{color:#ff6e0a;}\
-		.city-selector-items{overflow:hidden;min-height:200px;}\
+		.city-selector-items{overflow:hidden;}\
 		.city-selector-item{float:left;width:12.5%;cursor:pointer;margin:1em 0;}\
 		.city-selector-item:hover,.city-selector-items.cur{color:#ff6e0a;}\
 		', module.uri);
 	var def = {
-			data: 'http://rap.taobao.org/mockjsdata/1101/core/citylist/',
+			data: null,
 			template: '<div class="city-selector-warp">\
 					<div class="city-selector-head">\
 						<div class="city-selector-head-back">返回</div>\
@@ -125,43 +126,35 @@ define('city-select', function(require, exports, module) {
 
 			if ($.isArray(opt.data)) {
 				cityData = opt.data;
+			} else if(!opt.data || !opt.data.split || !/^([\w-]+:)?\/\/([^\/]+)/.test(opt.data)){
+				return console.log('data配置错误！');
 			}
 
 			$this.on('click', function(e) {
 				e.preventDefault();
 				citySelectorThis = $this;
 				citySelectCallback = opt.callback;
-				if (!cityData) {
-					if (opt.data.split && /^([\w-]+:)?\/\/([^\/]+)/.test(opt.data)) {
-						if (window.localStorage && localStorage.getItem(opt.data)) {
-							cityData = JSON.parse(localStorage.getItem(opt.data));
-							renderData();
-						} else {
-							var loading = $this.tip('加载中...', {
-								place: 'bottom-right',
-								modal: true,
-								show: true
-							});
-							$.ajax({
-								url: opt.data,
-								async: false,
-								success: function(res) {
-									loading.hide();
-									if (res.status === 'Y') {
-										cityData = res.data;
-										localStorage.setItem(opt.data, JSON.stringify(cityData));
-										renderData();
-									} else {
-										console.log('city-select数据加载失败');
-									}
-								}
-							});
-						}
-					} else {
-						return console.warn('请检查data参数！');
-					}
-				} else {
+				if (cityData) {
 					renderData();
+				} else {
+					var loading = $this.tip('加载中...', {
+						place: 'bottom-right',
+						modal: true,
+						show: true
+					});
+					$.ajax({
+						url: opt.data,
+						useCache: true,
+						success: function(res) {
+							loading.hide();
+							if (res.status === 'Y') {
+								cityData = res.data;
+								renderData();
+							} else {
+								console.log('city-select数据加载失败');
+							}
+						}
+					});
 				}
 			});
 			$this.data('cityselectorinit', true);
