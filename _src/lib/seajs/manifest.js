@@ -18,7 +18,7 @@
         'autocomplete'                      : 'v0.0.1',
         'base'                              : 'v2.14.0',
         'bdshare'                           : 'v3.1.2',
-        'box'                               : 'v3.10.3',
+        'box'                               : 'v3.10.4',
         'city-select'                       : 'v0.0.3',
         'countdown'                         : 'v1.0.2',
         'counter'                           : 'v0.0.1',

@@ -1,8 +1,8 @@
 /*
  * name: box.js
- * version: v3.10.2
- * update: confirm和alert确定按钮默认focus
- * date: 2016-07-11              
+ * version: v3.10.4
+ * update: protect不再自动设置
+ * date: 2016-11-09              
  * base on: zhangxinxu
  */
 define('box', function(require, exports, module) {
@@ -33,7 +33,7 @@ define('box', function(require, exports, module) {
 		.box_wrap_foot .boxconfirm{position:relative;color:#286090}\
 		.box_wrap_foot._confirm .boxconfirm:after{content:"";position:absolute; display:inline-block;width:1px;height:1.8em;right:-5px;background:#ccc}\
 		.box_wrap_msg{position:relative;width:500px;max-width:100%}\
-		.box_wrap_msg_cont{padding:15px 40px 15px 15px;line-height:22px}\
+		.box_wrap_msg_cont{padding:15px 40px 15px 15px;line-height:22px;color:#fff}\
 		.box_wrap_msg_clo{position:absolute; height:52px;line-height:52px;right:0;top:0}\
 		.box_wrap_msg_clo .ion{margin:0;font-size:16px}\
 		.box_wrap_msg_clo:hover{opacity:.8}', module.uri);
@@ -82,16 +82,16 @@ define('box', function(require, exports, module) {
 	});
 	//全局配置
 	if(window.innerWidth<640){
-		def.animate = false
-	};
+		def.animate = false;
+	}
 	if ($.isPlainObject(window.boxGlobal)) {
 		$.extend(def, window.boxGlobal);
-	};
+	}
 
 	$.box = function(elements, options) {
 		if (!elements) {
 			return console.warn('no elements to $.box()');
-		};
+		}
 		var s = $.extend({}, def, options || {}),
 			hook = '',
 			boxID = 'boxID' + parseInt(Math.random() * 1e5),
@@ -100,14 +100,11 @@ define('box', function(require, exports, module) {
 		
 		if (s.hook && /^\w*$/.test(s.hook)) {
 			hook = s.hook;
-		};
+		}
 		typeof(elements) === 'function' && (elements = elements());
 		if (typeof(elements) === 'object' && elements.length) {
 			//现有dom
 			elements.show();
-			if (!s.bridge) {
-				s.protect = true;
-			}
 		} else if ($.parseHTML($.trim(elements + ''))[0].nodeType === 1) {
 			//dom字符串
 			elements = $(elements);
@@ -115,7 +112,7 @@ define('box', function(require, exports, module) {
 			//纯字符串
 			elements = $('<div class="box_wrap_remind">' + elements + '</div>');
 			s.layout || (elements.css('min-width', '0'));
-		};
+		}
 
 		eleOut = (function() {
 			var _;
@@ -162,30 +159,30 @@ define('box', function(require, exports, module) {
 			setTimeout(function() {
 				s.onshow(eleOut);
 			}, 0);
-		};
+		}
 		if (!s.bar) {
 			$.box.barHide($o);
-		};
+		}
 		if (s.setposi) {
 			$.box.setSize($o);
 		}
 		if (s.fix && s.setposi) {
 			$.box.setFixed($o);
-		};
+		}
 		if (s.drag) {
 			$.box.drag($o);
 		} else if(!window.PluginBoxResizeHandel){
 			window.PluginBoxResizeHandel = base.throttle(function(){
-				$.box.setSize($o)
+				$.box.setSize($o);
 			});
 			$(window).on('resize',PluginBoxResizeHandel);
-		};
+		}
 		
 		if (!s.bg) {
 			$.box.bgHide();
 		} else {
 			$.box.bgShow();
-		};
+		}
 		$o.clo.click(function(e) {
 			e.preventDefault();
 			return $.box.hide($o);
@@ -194,8 +191,7 @@ define('box', function(require, exports, module) {
 			setTimeout(function() {
 				$.box.hide($o);
 			}, s.delay);
-		};
-
+		}
 		//返回box元素
 		return $o;
 	};
@@ -212,17 +208,17 @@ define('box', function(require, exports, module) {
 				xw;
 			if($.isPlainObject(config)){
 				if(config.width){
-					xw = config.width
-				};
+					xw = config.width;
+				}
 				if(config.height){
-					xw = config.height
+					xw = config.height;
 				}
 			}else{
 				if($o.s.width=='auto'){
 					xw = Math.min($o.out.width(),w);
 				}else{
 					xw = Math.min($o.s.width,w);
-				};
+				}
 				$o.out.css({
 					"width": xw
 				});
@@ -232,20 +228,20 @@ define('box', function(require, exports, module) {
 							+ $o.out.find('.box_wrap_bar').outerHeight(true);
 					}else{
 						outHeight = $o.out.height();
-					};
+					}
 					xh = Math.min(outHeight,h);
 				}else{
 					xh = Math.min(parseFloat($o.s.height),h);
 					console.log('box高度自定调整为窗口最大高度：'+h);
-				};
-			};
+				}
+			}
 			$o.bg.height(h);
 			$o.out.css({
 				"height": xh
 			});
 			if($o.s.layout){
 				$o.out.find('.box_wrap_body').height(xh-$o.out.find('.box_wrap_bar').outerHeight(true));
-			};
+			}
 			if ($o.s.setposi) {
 				var l = (w - xw) / 2,
 					t;					
@@ -265,14 +261,14 @@ define('box', function(require, exports, module) {
 					setTimeout(function(){
 						$o.out.addClass('show');
 					},0);
-				};
+				}
 			}
 			return $o;
 		},
 		setFixed: function($o) {
 			if (!$o.out || !$o.out.length) {
 				return false;
-			};
+			}
 			return $o.out.css({
 				position: "fixed"
 			});
@@ -280,9 +276,9 @@ define('box', function(require, exports, module) {
 		bgCheck: function() {
 			if (!$('.box_wrap_out[box-ui-bg=true]').length) {
 				setTimeout(function(){
-					$('#boxBlank').removeClass('active')
+					$('#boxBlank').removeClass('active');
 				},0);
-			};
+			}
 		},
 		bgHide: function() {
 			$.box.bgCheck();
@@ -299,51 +295,51 @@ define('box', function(require, exports, module) {
 			if(window.PluginBoxResizeHandel){
 				$(window).unbind('resize',PluginBoxResizeHandel);
 				window.PluginBoxResizeHandel = null;
-			};
+			}
 			if (!$o) {
 				var _allBox = $('.box_wrap_out');
 				if (fromBgClick) {
 					_allBox = _allBox.filter(function() {
 						return $(this).data('bgclose') === true;
 					});
-				};
+				}
 				_allBox.each(function(i, e) {
 					var _this = $(e);
 					if (!_this.data('setposi')) {
 						//actionSheet插件关闭
 						_this.removeClass('action-sheet-up');
-					};
+					}
 					if (_this.data('protect')) {
 						var _ele = _this.find('.box_wrap_body').length ? _this.find('.box_wrap_body').children() : _this.children();
 						_ele.hide().appendTo($("body"));
-					};
+					}
 					_this.remove();
 					$.box.bgCheck();
 				});
-				return _allBox = null;
+				return (_allBox = null);
 			} else if ($o.ele && $o.out.length && $o.out.css("display") !== "none") {
 				var _to = $o.s.animate ? 200 : 0;
 				if ($o.s.setposi && $o.s.animate) {
 					$o.out.removeClass('show');
 				} else {
 					$o.out.removeClass('action-sheet-up');
-				};		
+				}
 				setTimeout(function() {
 					if ($o.s.protect) {
 						$o.ele.hide().appendTo($("body"));
-					};
+					}
 					$o.out.remove();
 					$.box.bgCheck();
 					if ($.isFunction($o.s.onclose)) {
 						$o.s.onclose();
-					};
+					}
 				}, _to);
 			}
 		},
 		drag: function($o) {
 			if (!$o.out.length || !$o.bar.length) {
 				return false;
-			};
+			}
 			require.async('drag', function() {
 				$o.out.drag({
 					dragStart: function($this) {
@@ -363,7 +359,6 @@ define('box', function(require, exports, module) {
 		},
 		confirm: function(message, sureCall, cancelCall, options) {
 			var s = $.extend({}, def, options || {});
-			s.bridge = true;
 			var element = $('<div class="box_wrap_remind">' + message + '</div>' + '<div class="box_wrap_foot _confirm"><button class="btn boxconfirm">' + (s.oktext ? s.oktext : Language[s.lang].confirm) + '</button><button class="btn boxcancel">' + (s.canceltext ? s.canceltext : Language[s.lang].cancel) + '</button></div>');
 			var _o = $.box(element, s);
 			_o.out.find(".boxconfirm").click(function() {
@@ -374,20 +369,19 @@ define('box', function(require, exports, module) {
 			_o.out.find(".boxcancel").click(function() {
 				if (cancelCall && $.isFunction(cancelCall)) {
 					cancelCall.call(this);
-				};
+				}
 				$.box.hide(_o);
 			});
 			return _o;
 		},
 		alert: function(message, callback, options) {
 			var s = $.extend({}, def, options || {});
-			s.bridge = true;
 			var element = $('<div class="box_wrap_remind">' + message + '</div>' + '<div class="box_wrap_foot"><button class="btn boxconfirm">' + (s.oktext ? s.oktext : Language[s.lang].confirm) + '</button></div>');
 			var _o = $.box(element, s);
 			_o.out.find(".boxconfirm").click(function() {
 				if (callback && $.isFunction(callback)) {
 					callback.call(this);
-				};
+				}
 				$.box.hide(_o);
 			}).focus();
 			return _o;
@@ -398,7 +392,6 @@ define('box', function(require, exports, module) {
 			s.top = 0;
 			s.layout = false;
 			s.bg = false;
-			s.bridge = true;
 			if(s.delay){
 				element = '<div class="box_wrap_msg"><div class="box_wrap_msg_cont bg-' + s.color + '">' + message + '</div></div>';
 			}else{
@@ -452,17 +445,17 @@ define('box', function(require, exports, module) {
 			options.onshow = function($box){
 				$box.append('<div class="box_wrap_close box_img_close"><a>x</a></div>')
 				.find('.box_img_close').on('click',function(){
-					$.box.hide(imgBox)
-				})
+					$.box.hide(imgBox);
+				});
 			};
 			require.async('img-ready', function(ready) {
 				ready(src, function(width, height) {
 					options.width = width;
 					options.height = height;
 					$.box.hide(_loading);
-					return imgBox = $.box($img, options);
-				})
-			})
+					return (imgBox = $.box($img, options));
+				});
+			});
 		}
-	})
+	});
 });
