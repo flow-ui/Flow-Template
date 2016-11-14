@@ -1,15 +1,14 @@
 /*
 * name: validform.js
-* version: v2.3.2
-* update: 引入公共ajax错误处理
-* data: 2016-11-02
+* version: v2.4.0
+* update: 增加allable选项
+* data: 2016-11-13
 */
 
 define('validform',function(require, exports, module) {
 	seajs.importStyle('.Validform_right{color:#71b83d}.Validform_wrong{color:red;white-space:nowrap}.Validform_loading{padding-left:20px}.Validform_error{background-color:#ffe7e7}.passwordStrength{display:block;height:18px;line-height:16px;clear:both;overflow:hidden;margin-bottom:5px}.passwordStrength b{font-weight:normal}.passwordStrength b,.passwordStrength span{display:inline-block;vertical-align:middle;line-height:16px;line-height:18px\9;height:16px}.passwordStrength span{width:63px;text-align:center;background-color:#d0d0d0;border-right:1px solid #fff}.passwordStrength .last{border-right:0;width:61px}.passwordStrength .bgStrength{color:#fff;background-color:#71b83d}'
 		,module.uri);
 	var $ = require('jquery');
-	var base = require('base');
 	require('box');
 	var win = window;
 	var undef = void 0;
@@ -666,7 +665,17 @@ define('validform',function(require, exports, module) {
 						}
 					}
 					var _sendData = {},
+						_cloneForm,
+						_formData;
+					if(settings.allable){
+						_cloneForm = curform.clone();
+						_cloneForm.find(':disabled').each(function(i,e){
+							$(e).prop('disabled',false);
+						});
+						_formData = _cloneForm.serializeArray();
+					}else{
 						_formData = curform.serializeArray();
+					}
 					$.each(_formData,function(i,e){
 						_sendData[e.name] = e.value
 					});
@@ -690,8 +699,8 @@ define('validform',function(require, exports, module) {
 							settings.callback && settings.callback(data);
 							curform[0].validform_ajax = null
 						},
-						error: function(o) {
-							base.catchAjaxError(o);
+						error: function(data) {
+							settings.callback && settings.callback(data);
 							curform[0].validform_status = "normal";
 							curform[0].validform_ajax = null
 						}

@@ -10,7 +10,7 @@
         'upload/upload'                     : 'v1.1.0',
         'upload/makethumb'                  : 'v0.0.1',
         'upload/localResizeIMG'             : 'v0.0.1',
-        'validform/validform'               : 'v2.3.2',
+        'validform/validform'               : 'v2.4.0',
         'video/video'                       : 'v0.0.1',
         'webuploader/webuploader'           : 'v1.0.0',
         'album'                             : 'v2.2.10',
