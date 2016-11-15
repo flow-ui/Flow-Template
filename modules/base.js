@@ -1,12 +1,13 @@
 /*
  * name: base
- * version: 2.14.1
- * update: ajax优化引入配置
+ * version: 2.15.0
+ * update: $.ajax优化
  * date: 2016-11-15
  */
 define('base', function(require, exports, module) {
 	'use strict';
 	var $ = require('jquery');
+
 	//ajax错误处理
 	var catchAjaxError = function(o) {
 		var code = o.readyState,
@@ -94,7 +95,6 @@ define('base', function(require, exports, module) {
 			catchAjaxError(o);
 		}
 	});
-
 	/*
 	 * cookie
 	 */
@@ -228,7 +228,7 @@ define('base', function(require, exports, module) {
 	 */
 	var _getOrient = function(callback) {
 		var _Orient;
-		if (window.orientation == 0 || window.orientation == 180) {
+		if (window.orientation === 0 || window.orientation === 180) {
 			_Orient = 'Shu';
 		} else if (window.orientation == 90 || window.orientation == -90) {
 			_Orient = 'Heng';
@@ -320,7 +320,7 @@ define('base', function(require, exports, module) {
 			data: sendParam,
 			dataType: opt.dataType || 'json',
 			success: function(res) {
-				if ($.isPlainObject(res) && res.status === 'Y' || (res && opt.dataType !== 'json')) {
+				if ($.isPlainObject(res) && res.status === 'Y' || (res && opt.dataType != 'json')) {
 					typeof(opt.success) === 'function' && opt.success(res);
 					if ($.isPlainObject(res) && res.data && res.count) {
 						var listLength = res.data.split ? JSON.parse(res.data).length : res.data.length;
@@ -581,59 +581,59 @@ define('base', function(require, exports, module) {
 	 */
 	// 兼容css3位移
 	!$.fn._css && ($.fn._css = function(LeftOrTop, number) {
-		var hasTrans = (LeftOrTop == 'left' || LeftOrTop == 'top') ? true : false,
-			canTrans = _browser.support3d,
-			theTrans = LeftOrTop == 'left' ? 'translateX' : 'translateY',
-			matrixPosi = hasTrans ? (LeftOrTop == 'left' ? 4 : 5) : null;
-		if (number != void(0)) {
-			//赋值
-			if (canTrans && hasTrans) {
-				number = parseFloat(number) + 'px';
-				$(this).css('transform', 'translateZ(0) ' + theTrans + '(' + number + ')');
+			var hasTrans = (LeftOrTop == 'left' || LeftOrTop == 'top') ? true : false,
+				canTrans = _browser.support3d,
+				theTrans = LeftOrTop == 'left' ? 'translateX' : 'translateY',
+				matrixPosi = hasTrans ? (LeftOrTop == 'left' ? 4 : 5) : null;
+			if (number != void(0)) {
+				//赋值
+				if (canTrans && hasTrans) {
+					number = parseFloat(number) + 'px';
+					$(this).css('transform', 'translateZ(0) ' + theTrans + '(' + number + ')');
+				} else {
+					$(this).css(LeftOrTop, number);
+				}
+				return $(this);
 			} else {
-				$(this).css(LeftOrTop, number);
+				//取值
+				if (canTrans && hasTrans && $(this).css('transform') !== 'none') {
+					var transData = $(this).css('transform').match(/\((.*\,?\s?){6}\)$/)[0].substr(1).split(',');
+					return parseFloat(transData[matrixPosi]);
+				} else {
+					return $(this).css(LeftOrTop);
+				}
+			}
+		})
+		// 加载指定属性的图片
+		!$.fn._loadimg && ($.fn._loadimg = function(imgattr) {
+			var $this = $(this),
+				lazyImg;
+			if (!imgattr) {
+				return $this;
+			}
+			if ($this.attr(imgattr)) {
+				lazyImg = $this;
+			} else if ($(this).find('img[' + imgattr + ']').length) {
+				lazyImg = $(this).find('img[' + imgattr + ']');
+			} else {
+				return $this;
+			}
+			if (lazyImg.length) {
+				var _theSrc;
+				lazyImg.each(function(i, e) {
+					_theSrc = $.trim($(e).attr(imgattr));
+					if (_theSrc && _theSrc != 'loaded') {
+						if (e.tagName.toLowerCase() === 'img') {
+							$(e).attr('src', _theSrc).attr(imgattr, 'loaded').addClass('loaded');
+						} else {
+							$(e).css("background-image", "url(" + _theSrc + ")").attr(imgattr, 'loaded').addClass('loaded');
+						}
+					}
+				});
+				_theSrc = null;
 			}
 			return $(this);
-		} else {
-			//取值
-			if (canTrans && hasTrans && $(this).css('transform') !== 'none') {
-				var transData = $(this).css('transform').match(/\((.*\,?\s?){6}\)$/)[0].substr(1).split(',');
-				return parseFloat(transData[matrixPosi]);
-			} else {
-				return $(this).css(LeftOrTop);
-			}
-		}
-	});
-	// 加载指定属性的图片
-	!$.fn._loadimg && ($.fn._loadimg = function(imgattr) {
-		var $this = $(this),
-			lazyImg;
-		if (!imgattr) {
-			return $this;
-		}
-		if ($this.attr(imgattr)) {
-			lazyImg = $this;
-		} else if ($(this).find('img[' + imgattr + ']').length) {
-			lazyImg = $(this).find('img[' + imgattr + ']');
-		} else {
-			return $this;
-		}
-		if (lazyImg.length) {
-			var _theSrc;
-			lazyImg.each(function(i, e) {
-				_theSrc = $.trim($(e).attr(imgattr));
-				if (_theSrc && _theSrc != 'loaded') {
-					if (e.tagName.toLowerCase() === 'img') {
-						$(e).attr('src', _theSrc).attr(imgattr, 'loaded').addClass('loaded');
-					} else {
-						$(e).css("background-image", "url(" + _theSrc + ")").attr(imgattr, 'loaded').addClass('loaded');
-					}
-				}
-			});
-			_theSrc = null;
-		}
-		return $(this);
-	});
+		});
 	//getScript
 	var _getScript = function(road, callback, option) {
 		if (road && road.split || ($.isArray(road) && road.length)) {
@@ -643,6 +643,7 @@ define('base', function(require, exports, module) {
 					rely: false
 				},
 				opt = $.extend({}, def, $.isPlainObject(callback) ? callback : option || {}),
+				cssLoaded = false,
 				loadScript = function(road, hold) {
 					/*
 					@road:请求url
@@ -696,30 +697,38 @@ define('base', function(require, exports, module) {
 							script.src = file;
 							headNode.appendChild(script);
 						};
-					if (opt.css) {
+					if (opt.css && !cssLoaded) {
 						var cssfile = '',
-							_css;
+							appendCss = function(href) {
+								href = seajs.resolve(href).replace(/\.css\.js$/, ".css").replace(/\.js$/, ".css");
+								var _css = document.createElement('link');
+								_css.rel = "stylesheet";
+								_css.onerror = function(e) {
+									headNode.removeChild(_css);
+									_css = null;
+									return null;
+								};
+								_css.href = href;
+								headNode.appendChild(_css);
+							};
 						if (opt.css.split) {
 							cssfile = opt.css;
+							appendCss(cssfile);
+							cssLoaded = true;
+						} else if ($.isArray(opt.css)) {
+							$.each(opt.css, function(i, href) {
+								appendCss(href);
+							});
+							cssLoaded = true;
 						} else {
-							cssfile = file.replace(/\.js$/, ".css");
+							appendCss(file);
 						}
-						_css = document.createElement('link');
-						_css.rel = "stylesheet";
-						_css.onerror = function(e) {
-							headNode.removeChild(_css);
-							cssfile = null;
-							_css = null;
-							return null;
-						};
-						_css.href = cssfile;
-						headNode.appendChild(_css);
 					}
 					load();
 				};
 			if (road.split) {
 				loadScript(road);
-			} else if (road.length) {
+			} else if ($.isArray(road)) {
 				var scriptsLength = road.length,
 					scriptsCount = 0;
 				if (opt.rely) {
@@ -729,7 +738,7 @@ define('base', function(require, exports, module) {
 						if (!isLast) {
 							hold = function() {
 								scriptsCount++;
-								getNext(scriptsLength > scriptsCount);
+								getNext(scriptsCount >= (scriptsLength - 1));
 							};
 						}
 						loadScript(road[scriptsCount], hold);
@@ -879,8 +888,6 @@ define('base', function(require, exports, module) {
 		throttle: _throttle,
 		getUrlParam: _urlParam,
 		getScript: _getScript,
-		ajaxCombo: _ajaxCombo,
-		catchAjaxError: catchAjaxError
+		ajaxCombo: _ajaxCombo
 	};
-
 });
