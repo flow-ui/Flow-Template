@@ -1,88 +1,89 @@
 /*
  * name: base
- * version: 2.14.0
- * update: 添加共用catchAjaxError方法
- * date: 2016-11-02
+ * version: 2.14.1
+ * update: ajax优化引入配置
+ * date: 2016-11-15
  */
 define('base', function(require, exports, module) {
 	'use strict';
 	var $ = require('jquery');
 	//ajax错误处理
 	var catchAjaxError = function(o) {
-		var code = o.readyState, status = o.status;
-		require.async('box',function(){
+		var code = o.readyState,
+			status = o.status;
+		require.async('box', function() {
 			switch (code) {
 				case 0:
 					$.box.msg('网络错误，请检查网络连接！', {
-						color:'danger'
+						color: 'danger'
 					});
 					break;
 				case 1:
 					$.box.msg('请求异常中断！', {
-						color:'danger'
+						color: 'danger'
 					});
 					break;
 				case 2:
 					$.box.msg('数据接收错误！', {
-						color:'danger'
+						color: 'danger'
 					});
 					break;
 				case 3:
 					$.box.msg('数据解析错误！', {
-						color:'danger'
+						color: 'danger'
 					});
 					break;
-				default://4
+				default: //4
 					$.box.msg('服务端错误(code:' + status + ')', {
-						color:'danger'
+						color: 'danger'
 					});
 					break;
 			}
 		});
 	};
 	/*
-	* ajax优化
-	*/
+	 * ajax优化
+	 */
 	$.ajaxSetup({
-		timeout: 15000,
+		timeout: seajs.set.util.timeout || 1.5e4,
 		beforeSend: function(o, setting) {
-			if(!setting.dataType){
+			if (!setting.dataType) {
 				setting.dataType = 'json';
 			}
-			if(setting.useCache){
+			if (setting.useCache) {
 				var cacheKey;
-				if(setting.type !== 'GET' && $.isPlainObject(setting.data)){
+				if (setting.type !== 'GET' && $.isPlainObject(setting.data)) {
 					var _param = '?';
-					$.each(function(i,e){
-						_param += (i+'='+e+'&');
+					$.each(function(i, e) {
+						_param += (i + '=' + e + '&');
 					});
 					cacheKey = setting.url + _param.slice(-1);
-				}else{
+				} else {
 					cacheKey = setting.url;
 				}
 				if (window.localStorage) {
-					if(localStorage.getItem(cacheKey)){
+					if (localStorage.getItem(cacheKey)) {
 						var res;
-						if(setting.dataType === 'json'){
+						if (setting.dataType === 'json') {
 							res = $.parseJSON(localStorage.getItem(cacheKey));
-						}else{
+						} else {
 							res = localStorage.getItem(cacheKey);
 						}
-						if(typeof setting.success === 'function'){
+						if (typeof setting.success === 'function') {
 							setting.success(res);
 							return false;
 						}
-					}else{
+					} else {
 						var tempSuccess = setting.success;
-						setting.success = function(res){
+						setting.success = function(res) {
 							tempSuccess(res);
-							if($.isPlainObject(res)){
-								if(window.JSON){
+							if ($.isPlainObject(res)) {
+								if (window.JSON) {
 									res = JSON.stringify(res);
-									localStorage.setItem(cacheKey,res);
+									localStorage.setItem(cacheKey, res);
 								}
-							}else if(res && res.split){
-								localStorage.setItem(cacheKey,res);
+							} else if (res && res.split) {
+								localStorage.setItem(cacheKey, res);
 							}
 						};
 					}
@@ -122,9 +123,9 @@ define('base', function(require, exports, module) {
 			document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
 		} else { // only name given, get cookie
 			var cookieValue = null;
-			if (document.cookie && document.cookie != '') {
+			if (document.cookie && document.cookie !== '') {
 				var cookies = document.cookie.split(';');
-				for (var i = 0,n=cookies.length; i < n; i++) {
+				for (var i = 0, n = cookies.length; i < n; i++) {
 					var cookie = $.trim(cookies[i]);
 					// Does this cookie string begin with the name we want?
 					if (cookie.substring(0, name.length + 1) == (name + '=')) {
@@ -146,15 +147,15 @@ define('base', function(require, exports, module) {
 			if (!$(dom).length) return;
 			$(_dom).each(function(i, e) {
 				var template, html;
-				if($(e).children('textarea').length){
+				if ($(e).children('textarea').length) {
 					template = $(e).children('textarea');
 					html = template.val();
-				}else if($(e).children('script[type="text/template"]').length){
+				} else if ($(e).children('script[type="text/template"]').length) {
 					template = $(e).children('script[type="text/template"]');
 					html = template.html();
 				}
-				
-				if($(e).hasClass('pushed') || !template) return;
+
+				if ($(e).hasClass('pushed') || !template) return;
 
 				if (template.data('url')) {
 					$.ajax({
@@ -186,7 +187,7 @@ define('base', function(require, exports, module) {
 	 * 按需渲染
 	 */
 	var _scanpush = function() {
-		$(function(){
+		$(function() {
 			var typeCatch = _getType();
 			if (typeCatch == 'Pc') {
 				_push('.PcPush', function(that) {
@@ -217,7 +218,7 @@ define('base', function(require, exports, module) {
 		if (window.getComputedStyle) {
 			var bodyMark = window.getComputedStyle(document.body, ":after").getPropertyValue("content");
 			_Type = /Mobile/.test(bodyMark) ? 'Mobile' : (/Pad/.test(bodyMark) ? 'Pad' : 'Pc');
-		};
+		}
 		if (!callback) return _Type;
 		callback(_Type);
 	};
@@ -228,14 +229,14 @@ define('base', function(require, exports, module) {
 	var _getOrient = function(callback) {
 		var _Orient;
 		if (window.orientation == 0 || window.orientation == 180) {
-			_Orient = 'Shu'
+			_Orient = 'Shu';
 		} else if (window.orientation == 90 || window.orientation == -90) {
-			_Orient = 'Heng'
-		};
+			_Orient = 'Heng';
+		}
 		if (_Orient === void(0)) {
 			_Orient = $(window).width() > $(window).height() ? 'Heng' : 'Shu';
 		}
-		if(typeof(callback)==='function'){
+		if (typeof(callback) === 'function') {
 			callback(_Orient);
 			$(window).bind("orientationchange", function(event) {
 				callback(_getOrient());
@@ -258,10 +259,10 @@ define('base', function(require, exports, module) {
 						function(width, height) {
 							$(e).removeAttr(bigSrc);
 						}
-					)
-				})
+					);
+				});
 			}
-		})
+		});
 	};
 
 
@@ -271,37 +272,37 @@ define('base', function(require, exports, module) {
 	 */
 	var _toload = function(option) {
 		var def = {
-				url: null, 
-				size: 6, 
-				data: {}, 
+				url: null,
+				size: 6,
+				data: {},
 				reload: false,
 				success: null,
 				nomore: null,
 				error: null
 			},
-			opt = $.extend({},def,option),
-			sendParam = $.extend(true,{},opt.data),
+			opt = $.extend({}, def, option),
+			sendParam = $.extend(true, {}, opt.data),
 			process = _toload.prototype.process,
 			trueUrl,
 			getPage,
-			i=0,
-			n=process.length;
-		if(!opt.url){
+			i = 0,
+			n = process.length;
+		if (!opt.url) {
 			return console.warn('toload()参数缺少url');
-		};
-		trueUrl = opt.url+'?'+$.param(opt.data);
-		for(;i<n;++i){
-			if(process[i].url==trueUrl){
-				if(opt.reload){
+		}
+		trueUrl = opt.url + '?' + $.param(opt.data);
+		for (; i < n; ++i) {
+			if (process[i].url == trueUrl) {
+				if (opt.reload) {
 					getPage = null;
-					process.splice(i,1);
-				}else{
+					process.splice(i, 1);
+				} else {
 					getPage = process[i].getPage;
 				}
 				break;
 			}
 		}
-		if(!getPage) {
+		if (!getPage) {
 			var newProcess = {};
 			getPage = _toload.prototype.newGetPage();
 			newProcess.url = trueUrl;
@@ -319,29 +320,29 @@ define('base', function(require, exports, module) {
 			data: sendParam,
 			dataType: opt.dataType || 'json',
 			success: function(res) {
-				if($.isPlainObject(res) && res.status==='Y' || (res && opt['dataType']!='json')){
-					typeof(opt.success)==='function' && opt.success(res);
-					if($.isPlainObject(res) && res['data'] && res['count']){
+				if ($.isPlainObject(res) && res.status === 'Y' || (res && opt.dataType !== 'json')) {
+					typeof(opt.success) === 'function' && opt.success(res);
+					if ($.isPlainObject(res) && res.data && res.count) {
 						var listLength = res.data.split ? JSON.parse(res.data).length : res.data.length;
-						if(listLength+sendParam.page_size*(sendParam.page_index-1)>=parseInt(res.count)){
-							typeof(opt.nomore)==='function' && opt.nomore();
+						if (listLength + sendParam.page_size * (sendParam.page_index - 1) >= parseInt(res.count)) {
+							typeof(opt.nomore) === 'function' && opt.nomore();
 						}
 					}
-				}else{
-					console.log('数据异常页码回退')
+				} else {
+					console.log('数据异常页码回退');
 					getPage(true);
-					typeof(opt.success)==='function' && opt.success(res);
+					typeof(opt.success) === 'function' && opt.success(res);
 				}
 			}
-		})
+		});
 	};
-	_toload.prototype.newGetPage = function(){
+	_toload.prototype.newGetPage = function() {
 		var loadPage = 0,
-			func = function(pullback){
-				if(pullback){
-					return --loadPage
-				};
-				return ++loadPage
+			func = function(pullback) {
+				if (pullback) {
+					return --loadPage;
+				}
+				return ++loadPage;
 			};
 		return func;
 	};
@@ -359,7 +360,7 @@ define('base', function(require, exports, module) {
 		return function() {
 			var context = this,
 				args = arguments,
-				current = new Date();;
+				current = new Date();
 			clearTimeout(timer);
 			if (current - begin >= duration) {
 				method.apply(context, args);
@@ -369,7 +370,7 @@ define('base', function(require, exports, module) {
 					method.apply(context, args);
 				}, delay);
 			}
-		}
+		};
 	};
 
 	/*
@@ -380,18 +381,18 @@ define('base', function(require, exports, module) {
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 		var s = url ? (url.split('?')[1] ? url.split('?')[1] : '') : window.location.search.substr(1);
 		var r = s.match(reg);
-		if (r != null) {
+		if (r !== null) {
 			return decodeURI(r[2]);
 		}
 		return null;
-	}
+	};
 
 	/*
 	 * 浏览器
 	 */
 	var userAgent = navigator.userAgent.toLowerCase(),
 		_browser = {};
-	_browser.isMobile = !!userAgent.match(/(iphone|ipod|ipad|android|blackberry|bb10|windows phone|tizen|bada)/) && _getType()!=="Pc";
+	_browser.isMobile = !!userAgent.match(/(iphone|ipod|ipad|android|blackberry|bb10|windows phone|tizen|bada)/) && _getType() !== "Pc";
 	_browser.ie = /msie\s*(\d+)\./.exec(userAgent) ? /msie\s*(\d+)\./.exec(userAgent)[1] : Infinity;
 	_browser.platform = navigator.platform;
 	_browser.agent = userAgent;
@@ -421,7 +422,159 @@ define('base', function(require, exports, module) {
 	 * jquery.placeholder
 	 * http://mths.be/placeholder v2.1.1 by @mathias 
 	 */
-	(function(){var isOperaMini=Object.prototype.toString.call(window.operamini)=='[object OperaMini]';var isInputSupported='placeholder'in document.createElement('input')&&!isOperaMini;var isTextareaSupported='placeholder'in document.createElement('textarea')&&!isOperaMini;var valHooks=$.valHooks;var propHooks=$.propHooks;var hooks;var placeholder;if(isInputSupported&&isTextareaSupported){placeholder=$.fn.placeholder=function(){return this};placeholder.input=placeholder.textarea=true}else{var settings={};placeholder=$.fn.placeholder=function(options){var defaults={customClass:'placeholder'};settings=$.extend({},defaults,options);var $this=this;$this.filter((isInputSupported?'textarea':':input')+'[placeholder]').not('.'+settings.customClass).bind({'focus.placeholder':clearPlaceholder,'blur.placeholder':setPlaceholder}).data('placeholder-enabled',true).trigger('blur.placeholder');return $this};placeholder.input=isInputSupported;placeholder.textarea=isTextareaSupported;hooks={'get':function(element){var $element=$(element);var $passwordInput=$element.data('placeholder-password');if($passwordInput){return $passwordInput[0].value}return $element.data('placeholder-enabled')&&$element.hasClass(settings.customClass)?'':element.value},'set':function(element,value){var $element=$(element);var $passwordInput=$element.data('placeholder-password');if($passwordInput){return $passwordInput[0].value=value}if(!$element.data('placeholder-enabled')){return element.value=value}if(value===''){element.value=value;if(element!=safeActiveElement()){setPlaceholder.call(element)}}else if($element.hasClass(settings.customClass)){clearPlaceholder.call(element,true,value)||(element.value=value)}else{element.value=value}return $element}};if(!isInputSupported){valHooks.input=hooks;propHooks.value=hooks}if(!isTextareaSupported){valHooks.textarea=hooks;propHooks.value=hooks}$(function(){$(document).delegate('form','submit.placeholder',function(){var $inputs=$('.'+settings.customClass,this).each(clearPlaceholder);setTimeout(function(){$inputs.each(setPlaceholder)},10)})});$(window).bind('beforeunload.placeholder',function(){$('.'+settings.customClass).each(function(){this.value=''})})}function args(elem){var newAttrs={};var rinlinejQuery=/^jQuery\d+$/;$.each(elem.attributes,function(i,attr){if(attr.specified&&!rinlinejQuery.test(attr.name)){newAttrs[attr.name]=attr.value}});return newAttrs}function clearPlaceholder(event,value){var input=this;var $input=$(input);if(input.value==$input.attr('placeholder')&&$input.hasClass(settings.customClass)){if($input.data('placeholder-password')){$input=$input.hide().nextAll('input[type="password"]:first').show().attr('id',$input.removeAttr('id').data('placeholder-id'));if(event===true){return $input[0].value=value}$input.focus()}else{input.value='';$input.removeClass(settings.customClass);input==safeActiveElement()&&input.select()}}}function setPlaceholder(){var $replacement;var input=this;var $input=$(input);var id=this.id;if(input.value===''){if(input.type==='password'){if(!$input.data('placeholder-textinput')){try{$replacement=$input.clone().attr({'type':'text'})}catch(e){$replacement=$('<input>').attr($.extend(args(this),{'type':'text'}))}$replacement.removeAttr('name').data({'placeholder-password':$input,'placeholder-id':id}).bind('focus.placeholder',clearPlaceholder);$input.data({'placeholder-textinput':$replacement,'placeholder-id':id}).before($replacement)}$input=$input.removeAttr('id').hide().prevAll('input[type="text"]:first').attr('id',id).show()}$input.addClass(settings.customClass);$input[0].value=$input.attr('placeholder')}else{$input.removeClass(settings.customClass)}}function safeActiveElement(){try{return document.activeElement}catch(exception){}}})();
+	(function() {
+		var isOperaMini = Object.prototype.toString.call(window.operamini) == '[object OperaMini]';
+		var isInputSupported = 'placeholder' in document.createElement('input') && !isOperaMini;
+		var isTextareaSupported = 'placeholder' in document.createElement('textarea') && !isOperaMini;
+		var valHooks = $.valHooks;
+		var propHooks = $.propHooks;
+		var hooks;
+		var placeholder;
+		if (isInputSupported && isTextareaSupported) {
+			placeholder = $.fn.placeholder = function() {
+				return this
+			};
+			placeholder.input = placeholder.textarea = true
+		} else {
+			var settings = {};
+			placeholder = $.fn.placeholder = function(options) {
+				var defaults = {
+					customClass: 'placeholder'
+				};
+				settings = $.extend({}, defaults, options);
+				var $this = this;
+				$this.filter((isInputSupported ? 'textarea' : ':input') + '[placeholder]').not('.' + settings.customClass).bind({
+					'focus.placeholder': clearPlaceholder,
+					'blur.placeholder': setPlaceholder
+				}).data('placeholder-enabled', true).trigger('blur.placeholder');
+				return $this
+			};
+			placeholder.input = isInputSupported;
+			placeholder.textarea = isTextareaSupported;
+			hooks = {
+				'get': function(element) {
+					var $element = $(element);
+					var $passwordInput = $element.data('placeholder-password');
+					if ($passwordInput) {
+						return $passwordInput[0].value
+					}
+					return $element.data('placeholder-enabled') && $element.hasClass(settings.customClass) ? '' : element.value
+				},
+				'set': function(element, value) {
+					var $element = $(element);
+					var $passwordInput = $element.data('placeholder-password');
+					if ($passwordInput) {
+						return $passwordInput[0].value = value
+					}
+					if (!$element.data('placeholder-enabled')) {
+						return element.value = value
+					}
+					if (value === '') {
+						element.value = value;
+						if (element != safeActiveElement()) {
+							setPlaceholder.call(element)
+						}
+					} else if ($element.hasClass(settings.customClass)) {
+						clearPlaceholder.call(element, true, value) || (element.value = value)
+					} else {
+						element.value = value
+					}
+					return $element
+				}
+			};
+			if (!isInputSupported) {
+				valHooks.input = hooks;
+				propHooks.value = hooks
+			}
+			if (!isTextareaSupported) {
+				valHooks.textarea = hooks;
+				propHooks.value = hooks
+			}
+			$(function() {
+				$(document).delegate('form', 'submit.placeholder', function() {
+					var $inputs = $('.' + settings.customClass, this).each(clearPlaceholder);
+					setTimeout(function() {
+						$inputs.each(setPlaceholder)
+					}, 10)
+				})
+			});
+			$(window).bind('beforeunload.placeholder', function() {
+				$('.' + settings.customClass).each(function() {
+					this.value = ''
+				})
+			})
+		}
+
+		function args(elem) {
+			var newAttrs = {};
+			var rinlinejQuery = /^jQuery\d+$/;
+			$.each(elem.attributes, function(i, attr) {
+				if (attr.specified && !rinlinejQuery.test(attr.name)) {
+					newAttrs[attr.name] = attr.value
+				}
+			});
+			return newAttrs
+		}
+
+		function clearPlaceholder(event, value) {
+			var input = this;
+			var $input = $(input);
+			if (input.value == $input.attr('placeholder') && $input.hasClass(settings.customClass)) {
+				if ($input.data('placeholder-password')) {
+					$input = $input.hide().nextAll('input[type="password"]:first').show().attr('id', $input.removeAttr('id').data('placeholder-id'));
+					if (event === true) {
+						return $input[0].value = value
+					}
+					$input.focus()
+				} else {
+					input.value = '';
+					$input.removeClass(settings.customClass);
+					input == safeActiveElement() && input.select()
+				}
+			}
+		}
+
+		function setPlaceholder() {
+			var $replacement;
+			var input = this;
+			var $input = $(input);
+			var id = this.id;
+			if (input.value === '') {
+				if (input.type === 'password') {
+					if (!$input.data('placeholder-textinput')) {
+						try {
+							$replacement = $input.clone().attr({
+								'type': 'text'
+							})
+						} catch (e) {
+							$replacement = $('<input>').attr($.extend(args(this), {
+								'type': 'text'
+							}))
+						}
+						$replacement.removeAttr('name').data({
+							'placeholder-password': $input,
+							'placeholder-id': id
+						}).bind('focus.placeholder', clearPlaceholder);
+						$input.data({
+							'placeholder-textinput': $replacement,
+							'placeholder-id': id
+						}).before($replacement)
+					}
+					$input = $input.removeAttr('id').hide().prevAll('input[type="text"]:first').attr('id', id).show()
+				}
+				$input.addClass(settings.customClass);
+				$input[0].value = $input.attr('placeholder')
+			} else {
+				$input.removeClass(settings.customClass)
+			}
+		}
+
+		function safeActiveElement() {
+			try {
+				return document.activeElement
+			} catch (exception) {}
+		}
+	})();
 
 	/*
 	 * 内部方法
@@ -440,14 +593,14 @@ define('base', function(require, exports, module) {
 			} else {
 				$(this).css(LeftOrTop, number);
 			}
-			return $(this)
+			return $(this);
 		} else {
 			//取值
 			if (canTrans && hasTrans && $(this).css('transform') !== 'none') {
 				var transData = $(this).css('transform').match(/\((.*\,?\s?){6}\)$/)[0].substr(1).split(',');
 				return parseFloat(transData[matrixPosi]);
 			} else {
-				return $(this).css(LeftOrTop)
+				return $(this).css(LeftOrTop);
 			}
 		}
 	});
@@ -457,14 +610,14 @@ define('base', function(require, exports, module) {
 			lazyImg;
 		if (!imgattr) {
 			return $this;
-		};
+		}
 		if ($this.attr(imgattr)) {
 			lazyImg = $this;
 		} else if ($(this).find('img[' + imgattr + ']').length) {
 			lazyImg = $(this).find('img[' + imgattr + ']');
 		} else {
 			return $this;
-		};
+		}
 		if (lazyImg.length) {
 			var _theSrc;
 			lazyImg.each(function(i, e) {
@@ -478,7 +631,7 @@ define('base', function(require, exports, module) {
 				}
 			});
 			_theSrc = null;
-		};
+		}
 		return $(this);
 	});
 	//getScript
@@ -490,7 +643,7 @@ define('base', function(require, exports, module) {
 					rely: false
 				},
 				opt = $.extend({}, def, $.isPlainObject(callback) ? callback : option || {}),
-				loadScript = function(road, hold){
+				loadScript = function(road, hold) {
 					/*
 					@road:请求url
 					@hold:是否阻断默认回调，为function将阻断默认回调并执行自身
@@ -498,62 +651,62 @@ define('base', function(require, exports, module) {
 					var file = seajs.resolve(road),
 						headNode = document.getElementsByTagName('head')[0],
 						script = document.createElement("script"),
-						scriptError = function(xhr, settings, exception){
+						scriptError = function(xhr, settings, exception) {
 							headNode.removeChild(script);
 							script = document.createElement("script");
-							console.warn('getScript:加载失败，正在重试~')
-							load(function(){
+							console.warn('getScript:加载失败，正在重试~');
+							load(function() {
 								console.warn('getScript:加载失败了!');
 							});
 						},
 						scriptOnload = function(data, status) {
-							if(!data){
-								data = status = null
+							if (!data) {
+								data = status = null;
 							}
-							if(hold && typeof(hold)==='function'){
+							if (hold && typeof(hold) === 'function') {
 								hold();
-							}else if(typeof(callback) === 'function'){
-								if(data){
+							} else if (typeof(callback) === 'function') {
+								if (data) {
 									callback(data, status);
-								}else{
+								} else {
 									callback();
 								}
 							}
 						},
-						load = function(errorCallback){
-							var errorCallback = errorCallback || scriptError;
+						load = function(errorCallback) {
+							errorCallback = errorCallback || scriptError;
 							if (opt.jquery) {
 								window.$ = $;
 								window.jQuery = $;
-							};
+							}
 							script.type = "text/javascript";
-		                    if (script.addEventListener) {
-						        script.addEventListener("load", scriptOnload, false);
-						    } else if (script.readyState) {
-						        script.onreadystatechange = function(){
-						        	if (script.readyState == "loaded" || script.readyState == "complete") {
-						        		script.onreadystatechange = null;
-						        		scriptOnload();
-						        	}
-						        };
-						    }else{
-						    	script.onload = scriptOnload;
-						    };
-						    script.onerror = errorCallback;
-		                    script.src = file;
-		                    headNode.appendChild(script);
+							if (script.addEventListener) {
+								script.addEventListener("load", scriptOnload, false);
+							} else if (script.readyState) {
+								script.onreadystatechange = function() {
+									if (script.readyState == "loaded" || script.readyState == "complete") {
+										script.onreadystatechange = null;
+										scriptOnload();
+									}
+								};
+							} else {
+								script.onload = scriptOnload;
+							}
+							script.onerror = errorCallback;
+							script.src = file;
+							headNode.appendChild(script);
 						};
-					if(opt.css){
-						var cssfile = '', 
+					if (opt.css) {
+						var cssfile = '',
 							_css;
-						if(opt.css.split){
+						if (opt.css.split) {
 							cssfile = opt.css;
-						}else{
-							cssfile = file.replace(/\.js$/,".css");
-						};
+						} else {
+							cssfile = file.replace(/\.js$/, ".css");
+						}
 						_css = document.createElement('link');
 						_css.rel = "stylesheet";
-						_css.onerror = function(e){
+						_css.onerror = function(e) {
 							headNode.removeChild(_css);
 							cssfile = null;
 							_css = null;
@@ -561,34 +714,34 @@ define('base', function(require, exports, module) {
 						};
 						_css.href = cssfile;
 						headNode.appendChild(_css);
-					};
+					}
 					load();
 				};
-			if(road.split){
+			if (road.split) {
 				loadScript(road);
-			}else if(road.length){
+			} else if (road.length) {
 				var scriptsLength = road.length,
 					scriptsCount = 0;
-				if(opt.rely){
+				if (opt.rely) {
 					//线性依赖
-					var getNext = function(isLast){
-							var hold;
-							if(!isLast){
-								hold = function(){
-									scriptsCount++;
-									getNext(scriptsLength>scriptsCount);
-								}
-							}
-							loadScript(road[scriptsCount], hold);
+					var getNext = function(isLast) {
+						var hold;
+						if (!isLast) {
+							hold = function() {
+								scriptsCount++;
+								getNext(scriptsLength > scriptsCount);
+							};
 						}
+						loadScript(road[scriptsCount], hold);
+					};
 					getNext();
-				}else{
+				} else {
 					//同时发起
 					var scriptRoad;
-					while(scriptsCount<scriptsLength){
+					while (scriptsCount < scriptsLength) {
 						scriptRoad = road[scriptsCount];
 						scriptsCount++;
-						loadScript(scriptRoad, scriptsLength>scriptsCount);
+						loadScript(scriptRoad, scriptsLength > scriptsCount);
 					}
 				}
 			}
@@ -614,7 +767,7 @@ define('base', function(require, exports, module) {
 		$(document).bind("ajaxSend", function(event, request, settings) {
 			var opt = _ajaxCombo.prototype.option,
 				newAjax;
-			if(!settings.combo){
+			if (!settings.combo) {
 				return null;
 			}
 			request.abort();
@@ -629,13 +782,13 @@ define('base', function(require, exports, module) {
 				success: settings.success
 			};
 			//归零
-			if(ajaxComboTimer) {
+			if (ajaxComboTimer) {
 				clearTimeout(ajaxComboTimer);
-			}else{
+			} else {
 				ajaxComboIndex = 0;
 				ajaxComboObject = {};
 			}
-			(function(){
+			(function() {
 				//get请求特殊处理
 				if (settings.type === 'GET') {
 					newAjax.data = newAjax.url.split('?')[1];
@@ -660,8 +813,8 @@ define('base', function(require, exports, module) {
 					localCatch = $.extend(true, {}, ajaxComboObject);
 				ajaxComboData[opt.comboDataKey] = $.extend(true, {}, localCatch);
 				$.each(localCatch, function(key, val) {
-					if (localCatch[key]["success"]) {
-						delete ajaxComboData[opt.comboDataKey][key]["success"]
+					if (localCatch[key].success) {
+						delete ajaxComboData[opt.comboDataKey][key].success;
 					}
 				});
 				ajaxComboTimer = null;
@@ -676,11 +829,11 @@ define('base', function(require, exports, module) {
 						if (data && typeof(data) === 'object') {
 							//分发回调
 							$.each(localCatch, function(key, val) {
-								if (localCatch[key]["success"]) {
-									if (data[key] && data[key]["data"]) {
-										localCatch[key]["success"](data[key]["data"]);
+								if (localCatch[key].success) {
+									if (data[key] && data[key].data) {
+										localCatch[key].success(data[key].data);
 									} else {
-										console.log("ajaxCombo:" + localCatch[key]["url"] + "数据有误");
+										console.log("ajaxCombo:" + localCatch[key].url + "数据有误");
 									}
 								}
 							});
@@ -689,7 +842,7 @@ define('base', function(require, exports, module) {
 							console.log('ajaxCombo:数据错误');
 						}
 					},
-					error: function(xhr){
+					error: function(xhr) {
 						//分发原请求
 						$.each(localCatch, function(key, val) {
 							$.ajax(localCatch[key]);
@@ -700,23 +853,23 @@ define('base', function(require, exports, module) {
 			}, opt.duration);
 			return null;
 		});
-	}
-
+	};
+	var _getStyle = function(elem, attr) {
+		if (elem.currentStyle) {
+			return elem.currentStyle[attr];
+		} else if (document.defaultView && document.defaultView.getComputedStyle) {
+			attr = attr.replace(/([A-Z])/g, '-$1').toLowerCase();
+			return document.defaultView.getComputedStyle(elem, null).getPropertyValue(attr);
+		} else {
+			return null;
+		}
+	};
 	/*
 	 * 输出
 	 */
 	module.exports = {
 		browser: _browser,
-		getStyle: function(elem, attr) {
-			if (elem.currentStyle) {
-				return elem.currentStyle[attr];
-			} else if (document.defaultView && document.defaultView.getComputedStyle) {
-				attr = attr.replace(/([A-Z])/g, '-$1').toLowerCase();
-				return document.defaultView.getComputedStyle(elem, null).getPropertyValue(attr);
-			} else {
-				return null;
-			}
-		},
+		getStyle: _getStyle,
 		getType: _getType,
 		resImg: _resImg,
 		getOrient: _getOrient,
@@ -728,6 +881,6 @@ define('base', function(require, exports, module) {
 		getScript: _getScript,
 		ajaxCombo: _ajaxCombo,
 		catchAjaxError: catchAjaxError
-	}
+	};
 
 });

@@ -6,6 +6,12 @@ seajs.root = seajs.develop ? '' : '';
 seajs.api = {
 	test: seajs.develop ? '/d' : '/p'
 };
+// 插件设置
+seajs.set = {
+	util: {
+		timeout: 1.5e4
+	}
+};
 
 seajs.config({
 	base: seajs.root + "/modules",
