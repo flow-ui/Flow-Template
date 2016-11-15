@@ -10,8 +10,8 @@ seajs.api = {
 seajs.config({
 	base: seajs.root + "/modules",
 	paths: {
-		"js" : seajs.root + "__folder/js",
-		"lib": seajs.root + "__folder/lib"
+		"js" : seajs.root + "/__folder/js",
+		"lib": seajs.root + "/__folder/lib"
 	},
 	alias: {
 		"audio"		     : "audio/audio",

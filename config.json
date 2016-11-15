@@ -3,5 +3,6 @@
 	"distDir": 				"dist",
 	"port": 				3000,
 	"homePage": 			"index.html",
+	"projectHolder":		"__dev",
 	"distHolder":			"__folder"
 }
