@@ -1,7 +1,7 @@
 /*
  * name: base
- * version: 2.15.1
- * update: $.ajax useCache=false将清除缓存
+ * version: 2.15.2
+ * update: $.ajax localCache
  * date: 2016-11-16
  */
 define('base', function(require, exports, module) {
@@ -51,47 +51,76 @@ define('base', function(require, exports, module) {
 			if (!setting.dataType) {
 				setting.dataType = 'json';
 			}
-			if(setting.useCache!==void(0)){
-				var cacheKey;
-				if (setting.type !== 'GET' && $.isPlainObject(setting.data)) {
+			if (window.localStorage && setting.localCache !== void(0)) {
+				var cacheKey,
+					cacheNameSep = ['|','^','@','+','$'],
+					cacheNamePrefix = '_ajaxcache',
+					cacheName,
+					cacheDeadline,
+					cacheVal;
+				if (setting.type.toUpperCase() === 'POST' && $.isPlainObject(setting.data)) {
 					var _param = '?';
 					$.each(function(i, e) {
 						_param += (i + '=' + e + '&');
 					});
 					cacheKey = setting.url + _param.slice(-1);
+					_param = null;
 				} else {
 					cacheKey = setting.url;
 				}
-				if (setting.useCache===true) {
-					if (window.localStorage) {
-						if (localStorage.getItem(cacheKey)) {
-							var res;
-							if (setting.dataType === 'json') {
-								res = $.parseJSON(localStorage.getItem(cacheKey));
-							} else {
-								res = localStorage.getItem(cacheKey);
-							}
-							if (typeof setting.success === 'function') {
-								setting.success(res);
-								return false;
-							}
-						} else {
-							var tempSuccess = setting.success;
-							setting.success = function(res) {
-								tempSuccess(res);
-								if ($.isPlainObject(res)) {
-									if (window.JSON) {
-										res = JSON.stringify(res);
-										localStorage.setItem(cacheKey, res);
-									}
-								} else if (res && res.split) {
-									localStorage.setItem(cacheKey, res);
-								}
-							};
-						}
+				$.each(cacheNameSep,function(i,sep){
+					if(cacheKey.indexOf(sep)===-1){
+						cacheNameSep = sep;
+						return false;
 					}
-				}else if(setting.useCache===false){
-					localStorage.removeItem(cacheKey);
+				});
+				if(!cacheNameSep.split){
+					return console.log('url('+cacheKey+')包含异常字符无法缓存');
+				}
+				$.each(localStorage, function(key, val) {
+					if (key.indexOf([cacheNamePrefix, cacheKey].join(cacheNameSep)) === 0) {
+						cacheName = key;
+						cacheDeadline = key.split(cacheNameSep)[2];
+						cacheVal = val;
+						return false;
+					}
+				});
+				if (setting.localCache && !isNaN(setting.localCache)) {
+					var nowDate = new Date().getTime();
+					if (cacheDeadline && cacheDeadline > nowDate) {
+						//console.log('使用缓存 '+cacheDeadline+'>'+nowDate);
+						if (setting.dataType === 'json') {
+							cacheVal = $.parseJSON(cacheVal);
+						}
+						if (typeof setting.success === 'function') {
+							setting.success(cacheVal);
+							return false;
+						}
+					} else {
+						if (cacheDeadline && cacheDeadline <= nowDate) {
+							//console.log('缓存过期');
+							localStorage.removeItem(cacheName);
+						}
+						//console.log('建立缓存');
+						var tempSuccess = setting.success;
+						setting.success = function(res) {
+							tempSuccess(res);
+							var newDeadline = new Date().getTime() + setting.localCache,
+								newCacheName = [cacheNamePrefix, cacheKey, newDeadline].join(cacheNameSep);
+							if ($.isPlainObject(res)) {
+								if (window.JSON) {
+									res = JSON.stringify(res);
+								}
+							}
+							localStorage.setItem(newCacheName, res);
+							newDeadline = null;
+							newCacheName = null;
+						};
+					}
+					nowDate = null;
+				} else if(cacheName){
+					console.log('清除缓存');
+					localStorage.removeItem(cacheName);
 				}
 			}
 		},
