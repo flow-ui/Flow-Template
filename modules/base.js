@@ -1,8 +1,8 @@
 /*
  * name: base
- * version: 2.15.0
- * update: $.ajax优化
- * date: 2016-11-15
+ * version: 2.15.1
+ * update: $.ajax useCache=false将清除缓存
+ * date: 2016-11-16
  */
 define('base', function(require, exports, module) {
 	'use strict';
@@ -51,7 +51,7 @@ define('base', function(require, exports, module) {
 			if (!setting.dataType) {
 				setting.dataType = 'json';
 			}
-			if (setting.useCache) {
+			if(setting.useCache!==void(0)){
 				var cacheKey;
 				if (setting.type !== 'GET' && $.isPlainObject(setting.data)) {
 					var _param = '?';
@@ -62,32 +62,36 @@ define('base', function(require, exports, module) {
 				} else {
 					cacheKey = setting.url;
 				}
-				if (window.localStorage) {
-					if (localStorage.getItem(cacheKey)) {
-						var res;
-						if (setting.dataType === 'json') {
-							res = $.parseJSON(localStorage.getItem(cacheKey));
+				if (setting.useCache===true) {
+					if (window.localStorage) {
+						if (localStorage.getItem(cacheKey)) {
+							var res;
+							if (setting.dataType === 'json') {
+								res = $.parseJSON(localStorage.getItem(cacheKey));
+							} else {
+								res = localStorage.getItem(cacheKey);
+							}
+							if (typeof setting.success === 'function') {
+								setting.success(res);
+								return false;
+							}
 						} else {
-							res = localStorage.getItem(cacheKey);
-						}
-						if (typeof setting.success === 'function') {
-							setting.success(res);
-							return false;
-						}
-					} else {
-						var tempSuccess = setting.success;
-						setting.success = function(res) {
-							tempSuccess(res);
-							if ($.isPlainObject(res)) {
-								if (window.JSON) {
-									res = JSON.stringify(res);
+							var tempSuccess = setting.success;
+							setting.success = function(res) {
+								tempSuccess(res);
+								if ($.isPlainObject(res)) {
+									if (window.JSON) {
+										res = JSON.stringify(res);
+										localStorage.setItem(cacheKey, res);
+									}
+								} else if (res && res.split) {
 									localStorage.setItem(cacheKey, res);
 								}
-							} else if (res && res.split) {
-								localStorage.setItem(cacheKey, res);
-							}
-						};
+							};
+						}
 					}
+				}else if(setting.useCache===false){
+					localStorage.removeItem(cacheKey);
 				}
 			}
 		},
