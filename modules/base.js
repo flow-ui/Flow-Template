@@ -46,10 +46,12 @@ define('base', function(require, exports, module) {
 	 * ajax优化
 	 */
 	$.ajaxSetup({
-		timeout: seajs.set.util.timeout || 1.5e4,
 		beforeSend: function(o, setting) {
 			if (!setting.dataType) {
 				setting.dataType = 'json';
+			}
+			if (!setting.timeout) {
+				setting.timeout = seajs.set.util.timeout || 1.5e4;
 			}
 			if (window.localStorage && setting.localCache !== void(0)) {
 				var cacheKey,
