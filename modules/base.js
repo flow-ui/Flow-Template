@@ -53,17 +53,20 @@ define('base', function(require, exports, module) {
 				setting.dataType = 'json';
 			}
 			//默认回调处理
-			if(setting.dataType === 'json'){
+			if (setting.dataType === 'json') {
 				setting.success = function(res) {
-					if(res.msg){
+					if (res.msg) {
 						require.async('box', function() {
 							$.box.msg(res.msg, {
-								color: res.status==='Y' ? 'success' : 'danger',
-								delay:2000
+								color: res.status === 'Y' ? 'success' : 'danger',
+								delay: 2000,
+								onclose: function() {
+									tempSuccess(res, res.status !== 'Y')
+								}
 							});
 						});
-					}else{
-						typeof tempSuccess === 'function' && tempSuccess(res, res.status!=='Y');
+					} else {
+						typeof tempSuccess === 'function' && tempSuccess(res, res.status !== 'Y');
 					}
 				};
 			}
