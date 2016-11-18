@@ -145,7 +145,7 @@ define('base', function(require, exports, module) {
 								typeof cb === 'function' && cb(res);
 							});
 							//缓存数据
-							if ($.isPlainObject(res)) {
+							if ($.isPlainObject(res) || $.isArray(res)) {
 								if (window.JSON) {
 									res = JSON.stringify(res);
 								}
