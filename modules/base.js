@@ -1,8 +1,8 @@
 /*
  * name: base
- * version: 2.15.2
- * update: $.ajax localCache
- * date: 2016-11-16
+ * version: 2.15.3
+ * update: $.ajax localCache队列优化 && $.ajax默认回调处理
+ * date: 2016-11-18
  */
 define('base', function(require, exports, module) {
 	'use strict';
@@ -47,19 +47,40 @@ define('base', function(require, exports, module) {
 	 */
 	$.ajaxSetup({
 		beforeSend: function(o, setting) {
+			var tempSuccess = setting.success;
+			//默认数据类型
 			if (!setting.dataType) {
 				setting.dataType = 'json';
 			}
+			//默认回调处理
+			if(setting.dataType === 'json'){
+				setting.success = function(res) {
+					if(res.msg){
+						require.async('box', function() {
+							$.box.msg(res.msg, {
+								color: res.status==='Y' ? 'success' : 'danger',
+								delay:2000
+							});
+						});
+					}else{
+						typeof tempSuccess === 'function' && tempSuccess(res, res.status!=='Y');
+					}
+				};
+			}
+			//默认超时时间
 			if (!setting.timeout) {
 				setting.timeout = seajs.set.util.timeout || 1.5e4;
 			}
+			//数据缓存
 			if (window.localStorage && setting.localCache !== void(0)) {
-				var cacheKey,
+				var runingQueue = $.ajax.catchQueue || {},
+					cacheKey,
 					cacheNameSep = ['|','^','@','+','$'],
 					cacheNamePrefix = '_ajaxcache',
 					cacheName,
 					cacheDeadline,
 					cacheVal;
+				//获取url
 				if (setting.type.toUpperCase() === 'POST' && $.isPlainObject(setting.data)) {
 					var _param = '?';
 					$.each(function(i, e) {
@@ -70,6 +91,14 @@ define('base', function(require, exports, module) {
 				} else {
 					cacheKey = setting.url;
 				}
+				//请求队列
+				if(runingQueue[cacheKey]){
+					runingQueue[cacheKey].push(setting.success);
+					return $.ajax.catchQueue = runingQueue;
+				}
+				runingQueue[cacheKey] = [setting.success];
+				$.ajax.catchQueue = runingQueue;
+				//间隔符容错
 				$.each(cacheNameSep,function(i,sep){
 					if(cacheKey.indexOf(sep)===-1){
 						cacheNameSep = sep;
@@ -79,6 +108,7 @@ define('base', function(require, exports, module) {
 				if(!cacheNameSep.split){
 					return console.log('url('+cacheKey+')包含异常字符无法缓存');
 				}
+				//查找缓存
 				$.each(localStorage, function(key, val) {
 					if (key.indexOf([cacheNamePrefix, cacheKey].join(cacheNameSep)) === 0) {
 						cacheName = key;
@@ -104,11 +134,14 @@ define('base', function(require, exports, module) {
 							localStorage.removeItem(cacheName);
 						}
 						//console.log('建立缓存');
-						var tempSuccess = setting.success;
 						setting.success = function(res) {
-							tempSuccess(res);
 							var newDeadline = new Date().getTime() + setting.localCache,
 								newCacheName = [cacheNamePrefix, cacheKey, newDeadline].join(cacheNameSep);
+							runingQueue = $.ajax.catchQueue;
+							$.each(runingQueue[cacheKey],function(i,cb){
+								typeof cb === 'function' && cb(res);
+							});
+							//缓存数据
 							if ($.isPlainObject(res)) {
 								if (window.JSON) {
 									res = JSON.stringify(res);
