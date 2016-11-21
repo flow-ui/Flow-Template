@@ -1,7 +1,6 @@
-
 /* btn */
-.btn { font-size: inherit; font-weight: normal; line-height: 24px; display: inline-block; 
-    margin-bottom: 0; padding: 6px 12px; cursor: pointer; -webkit-user-select: none; 
+.btn { font-size: @font-size; font-weight: normal; line-height: 32px; display: inline-block; 
+    margin-bottom: 0; padding: 0 @space; cursor: pointer; -webkit-user-select: none; 
     -moz-user-select: none; -ms-user-select: none; user-select: none; text-align: center; 
     vertical-align: middle; white-space: nowrap; border: 1px solid transparent; 
     -ms-touch-action: manipulation; touch-action: manipulation;min-width: 3em;border-radius: @radius; }
@@ -36,8 +35,8 @@
 .btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active { border-color: transparent;}
 .btn-link:hover, .btn-link:focus { text-decoration: underline; color: #23527c; background-color: transparent;}
 .btn-link[disabled]:hover, fieldset[disabled] .btn-link:hover, .btn-link[disabled]:focus, fieldset[disabled] .btn-link:focus { text-decoration: none; color: #777;}
-.btn-lg { font-size: 16px; height: 50px;line-height: 50px; padding: 0 16px;}
-.btn-sm { font-size: 13px; height:30px;line-height: 30px; padding: 0 12px; min-width:1em;}
+.btn-lg { font-size: @font-size-lg; height: 50px;line-height: 50px; padding: 0 @space-lg;}
+.btn-sm { font-size: @font-size-sm; height:28px;line-height: 28px; padding: 0 @space-sm; min-width:1em;}
 .btn-block { display: block; width: 100%; padding-right: 0; padding-left: 0;}
 .btn-block +.btn-block { margin-top: 5px;}
 .btn .jon, .form-mark .jon { line-height: 1.2; margin: 0; vertical-align: baseline;}
