@@ -1,7 +1,7 @@
 /*
  * name: base
- * version: 2.15.3
- * update: $.ajax localCache队列优化 && $.ajax默认回调处理
+ * version: 2.15.4
+ * update: $.ajax localCache队列bug
  * date: 2016-11-18
  */
 define('base', function(require, exports, module) {
@@ -45,8 +45,9 @@ define('base', function(require, exports, module) {
 	/*
 	 * ajax优化
 	 */
+	var ajaxLocalCacheQueue = {};
 	$.ajaxSetup({
-		beforeSend: function(o, setting) {
+		beforeSend: function(xhr, setting) {
 			var tempSuccess = setting.success;
 			//默认数据类型
 			if (!setting.dataType) {
@@ -76,8 +77,7 @@ define('base', function(require, exports, module) {
 			}
 			//数据缓存
 			if (window.localStorage && setting.localCache !== void(0)) {
-				var runingQueue = $.ajax.catchQueue || {},
-					cacheKey,
+				var cacheKey,
 					cacheNameSep = ['|','^','@','+','$'],
 					cacheNamePrefix = '_ajaxcache',
 					cacheName,
@@ -95,12 +95,10 @@ define('base', function(require, exports, module) {
 					cacheKey = setting.url;
 				}
 				//请求队列
-				if(runingQueue[cacheKey]){
-					runingQueue[cacheKey].push(setting.success);
-					return $.ajax.catchQueue = runingQueue;
+				if(ajaxLocalCacheQueue[cacheKey]){
+					ajaxLocalCacheQueue[cacheKey].push(setting.success);
+					return xhr.abort();
 				}
-				runingQueue[cacheKey] = [setting.success];
-				$.ajax.catchQueue = runingQueue;
 				//间隔符容错
 				$.each(cacheNameSep,function(i,sep){
 					if(cacheKey.indexOf(sep)===-1){
@@ -137,13 +135,14 @@ define('base', function(require, exports, module) {
 							localStorage.removeItem(cacheName);
 						}
 						//console.log('建立缓存');
+						ajaxLocalCacheQueue[cacheKey] = [setting.success];
 						setting.success = function(res) {
 							var newDeadline = new Date().getTime() + setting.localCache,
 								newCacheName = [cacheNamePrefix, cacheKey, newDeadline].join(cacheNameSep);
-							runingQueue = $.ajax.catchQueue;
-							$.each(runingQueue[cacheKey],function(i,cb){
+							$.each(ajaxLocalCacheQueue[cacheKey],function(i,cb){
 								typeof cb === 'function' && cb(res);
 							});
+							delete ajaxLocalCacheQueue[cacheKey];
 							//缓存数据
 							if ($.isPlainObject(res) || $.isArray(res)) {
 								if (window.JSON) {
