@@ -1,7 +1,7 @@
 /*
  * name: base
- * version: 2.15.4
- * update: $.ajax localCache队列bug
+ * version: 2.15.5
+ * update: $.ajax ie8\9开启跨域
  * date: 2016-11-18
  */
 define('base', function(require, exports, module) {
@@ -51,6 +51,12 @@ define('base', function(require, exports, module) {
 			var tempSuccess = setting.success;
 			//默认数据类型
 			if (!setting.dataType) {
+				if(_browser.ie && _browser.ie<=9){
+					//ie8\9开启跨域
+					if(setting.url.indexOf(window.location.host)<0){
+						$.support.cors = true;
+					}
+				}
 				setting.dataType = 'json';
 			}
 			//默认回调处理
