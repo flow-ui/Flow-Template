@@ -1,7 +1,7 @@
 //开发模式
 seajs.develop = false;
 // 模块根路径
-seajs.root = '/__serverRoot'; 
+seajs.root = '__serverRoot' ? '/' + '__serverRoot' : ''; 
 // api管理
 seajs.api = {
 	test: seajs.develop ? '/develop' : '/product'
