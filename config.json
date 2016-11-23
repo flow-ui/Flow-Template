@@ -4,6 +4,7 @@
 	"port": 				3000,
 	"homePage": 			"index.html",
 	"serverRoot":			"",
+	"reloadDelay":			0,
 	"rootHolder":			"__serverRoot",
 	"projectHolder":		"__dev",
 	"distHolder":			"__folder",
