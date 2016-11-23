@@ -1,10 +1,10 @@
 //开发模式
-seajs.develop = true;
+seajs.develop = false;
 // 模块根路径
-seajs.root = seajs.develop ? '' : ''; 
+seajs.root = '__serverRoot' ? '/' + '__serverRoot' : ''; 
 // api管理
 seajs.api = {
-	test: seajs.develop ? '/d' : '/p'
+	test: seajs.develop ? '/develop' : '/product'
 };
 // 插件设置
 seajs.set = {
@@ -16,8 +16,8 @@ seajs.set = {
 seajs.config({
 	base: seajs.root + "/modules",
 	paths: {
-		"js" : seajs.root + "/__folder/js",
-		"lib": seajs.root + "/__folder/lib"
+		"js" : "/__folder/js",
+		"lib": "/__folder/lib"
 	},
 	alias: {
 		"audio"		     : "audio/audio",
