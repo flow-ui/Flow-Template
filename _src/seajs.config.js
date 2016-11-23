@@ -1,7 +1,7 @@
 //开发模式
-seajs.develop = true;
+seajs.develop = false;
 // 模块根路径
-seajs.root = seajs.develop ? '' : ''; 
+seajs.root = seajs.develop ? '' : '/front-flow-template'; 
 // api管理
 seajs.api = {
 	test: seajs.develop ? '/d' : '/p'
