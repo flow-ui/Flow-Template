@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+    <title>首页</title>
+    <meta content="" name="Keywords">
+    <meta content="" name="Description">
+    <meta name="format-detection" content="telephone=no">
+    <link href="/dist/favicon.ico" rel="icon">
+<link href="/dist/css/style.css" rel="stylesheet">
+<!--[if lt IE 9]><script src="/dist/lib/H5shiv.js"></script><![endif]-->
+</head>
+<body>
+    <header class="head">
+	<div class="wrap fix">
+        <h1>front-flow-template!</h1>
+    </div>
+</header>
+    <div class="wrap">
+        hello front-flow
+    </div>
+    
+    <script src="/dist/lib/sea.js" id="seajsnode" ></script>
+    <script>
+    seajs.use('js/index');
+    </script>
+</body>
+</html>
+<script>
+define("footer-script-inline",function(require) {
+	console.log('footer run!');
+});
+seajs.use("footer-script-inline");
+</script>
