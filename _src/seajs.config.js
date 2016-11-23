@@ -1,10 +1,10 @@
 //开发模式
 seajs.develop = false;
 // 模块根路径
-seajs.root = seajs.develop ? '' : '/front-flow-template'; 
+seajs.root = '/__serverRoot'; 
 // api管理
 seajs.api = {
-	test: seajs.develop ? '/d' : '/p'
+	test: seajs.develop ? '/develop' : '/product'
 };
 // 插件设置
 seajs.set = {
@@ -38,3 +38,5 @@ seajs.config({
         timeout: 2e4
     }
 });
+
+module.exports = seajs;
