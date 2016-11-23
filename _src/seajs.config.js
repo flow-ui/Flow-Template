@@ -16,8 +16,8 @@ seajs.set = {
 seajs.config({
 	base: seajs.root + "/modules",
 	paths: {
-		"js" : seajs.root + "/__folder/js",
-		"lib": seajs.root + "/__folder/lib"
+		"js" : "/__folder/js",
+		"lib": "/__folder/lib"
 	},
 	alias: {
 		"audio"		     : "audio/audio",
@@ -38,5 +38,3 @@ seajs.config({
         timeout: 2e4
     }
 });
-
-module.exports = seajs;
