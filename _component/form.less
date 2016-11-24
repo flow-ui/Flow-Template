@@ -11,10 +11,11 @@
 .form-control.blank:focus{box-shadow: none;border-radius: 0;}
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control { opacity: 1; background-color: #eee;}
 .form-control[disabled], fieldset[disabled] .form-control { cursor: not-allowed;}
-textarea.form-control { height: auto;}
 select.form-control{padding:0 @line-height / 3 * @font-size;}
 input[type='search'] { -webkit-appearance: none;}
-
+textarea.form-control { height: @line-height * 5 * @font-size;line-height: @line-height;}
+textarea.input-lg{height: @line-height * 8 * @font-size-lg;font-size:@font-size-lg;}
+textarea.input-sm{height: @line-height * 3 * @font-size-sm;font-size:@font-size-sm;}
 .form-group { margin-bottom: @space-sm;}
 .radio, .checkbox { position: relative; display: block; line-height: normal;padding-left: 20px;}
 .radio label, .checkbox label { font-weight: normal; min-height: 20px; margin-bottom: 0; padding-left: 20px; cursor: pointer;}
@@ -29,13 +30,11 @@ input[type='radio'][disabled], input[type='checkbox'][disabled], input[type='rad
 .form-control-static { height: @font-size * 3;line-height: @font-size * 3;}
 .form-control-static.input-lg, .form-control-static.input-sm { padding-right: 0; padding-left: 0;}
 .input-sm { font-size: @font-size-sm; height: @font-size-sm * 2.5; line-height: @font-size-sm * 2.5; }
-select.input-sm { padding:0 .5em;}
-textarea.input-sm, select[multiple].input-sm { height: auto;}
+
 .form-group-sm .form-control { font-size: @font-size-sm; line-height: 1.5; height: @font-size-sm * 2.5; padding: 5px 10px;}
 .form-group-sm .form-control-static { font-size: @font-size-sm; line-height: 1.5; height: @font-size-sm * 2.5; min-height: @font-size-sm * 2.5; padding: 5px 10px;}
 .input-lg { font-size: @font-size-lg; line-height:  @font-size-lg * 3; height:  @font-size-lg * 3; }
-select.input-lg { line-height:  @font-size-lg * 3; height:  @font-size-lg * 3;}
-textarea.input-lg, select[multiple].input-lg { height: auto;}
+
 .form-group-lg .form-control { font-size: @font-size-lg; height: @font-size-lg * 3; padding: 10px; }
 .form-group-lg .form-control-static { font-size: @font-size-lg; line-height: 1.3333333; height:  @font-size-lg * 3; min-height: @font-size * 3; padding: 10px 16px;}
 .has-feedback { position: relative;}
