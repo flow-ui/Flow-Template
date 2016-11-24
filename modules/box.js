@@ -1,8 +1,8 @@
 /*
  * name: box.js
- * version: v3.10.4
- * update: protect不再自动设置
- * date: 2016-11-09              
+ * version: v3.10.5
+ * update: protect自动设置bug
+ * date: 2016-11-24             
  * base on: zhangxinxu
  */
 define('box', function(require, exports, module) {
@@ -105,6 +105,9 @@ define('box', function(require, exports, module) {
 		if (typeof(elements) === 'object' && elements.length) {
 			//现有dom
 			elements.show();
+			if(elements.context){
+				s.protect = true;
+			}
 		} else if ($.parseHTML($.trim(elements + ''))[0].nodeType === 1) {
 			//dom字符串
 			elements = $(elements);
