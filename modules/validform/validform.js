@@ -1,8 +1,8 @@
 /*
 * name: validform.js
-* version: v2.4.0
-* update: 增加allable选项
-* data: 2016-11-13
+* version: v2.4.1
+* update: 错误处理提示
+* data: 2016-11-25
 */
 
 define('validform',function(require, exports, module) {
@@ -699,8 +699,8 @@ define('validform',function(require, exports, module) {
 							settings.callback && settings.callback(data);
 							curform[0].validform_ajax = null
 						},
-						error: function(data) {
-							settings.callback && settings.callback(data);
+						error: function(err) {
+							console.warn('validform提交失败！');
 							curform[0].validform_status = "normal";
 							curform[0].validform_ajax = null
 						}
