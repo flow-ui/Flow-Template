@@ -58,18 +58,18 @@ input[type='radio'][disabled], input[type='checkbox'][disabled], input[type='rad
 .has-error .input-group-addon { color: @danger; border-color: @danger; background-color: @danger-dark;}
 .has-error .form-control-feedback { color: @danger;}
 .help-block { display: block; margin-top: @line-height / 3 * @font-size; margin-bottom: @line-height / 2 * @font-size; color: @gray-light;}
-.form-inline .form-group { display: inline-block; margin-bottom: 0; vertical-align: middle;}
+.form-inline .form-group .help-block { display: inline-block; margin: 0 1em; vertical-align: middle;}
 .form-inline .form-control { display: inline-block; width: auto; vertical-align: middle;}
 .form-inline .form-control-static { display: inline-block;margin:0 1em;}
 .form-inline .input-group { display: inline-table; vertical-align: middle;}
 .form-inline .input-group .input-group-addon, .form-inline .input-group .input-group-btn, .form-inline .input-group .form-control { width: auto;}
 .form-inline .input-group >.form-control { width: 100%;}
-.form-inline .control-label { margin-bottom: 0; vertical-align: middle;}
+.form-inline .control-label {display: inline-block; margin-bottom: 0; vertical-align: middle;min-width: 5em;}
 .form-inline .radio, .form-inline .checkbox { display: inline-block; vertical-align: middle;padding-top: @line-height / 3 * @font-size;}
 .form-inline .radio label, .form-inline .checkbox label { padding-left: 0;}
 .form-inline .has-feedback .form-control-feedback { top: 0;}
 .form-horizontal .radio, .form-horizontal .checkbox, .form-horizontal .radio-inline, .form-horizontal .checkbox-inline {
-padding-top: @line-height / 3 * @font-size;}
+padding-top: @line-height / 2.5 * @font-size;}
 .form-horizontal .radio, .form-horizontal .checkbox { min-height: 27px;}
 .form-horizontal .control-label { margin-bottom: 0; height: @font-size * 3;line-height: @font-size * 3;overflow: hidden; text-align: right;}
 .form-horizontal .has-feedback .form-control-feedback { right: 2%;}
