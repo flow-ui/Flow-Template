@@ -1,7 +1,7 @@
 /*
 * name: validform.js
-* version: v2.4.1
-* update: 错误处理提示
+* version: v2.4.2
+* update: 添加tel和phone验证
 * data: 2016-11-25
 */
 
@@ -24,6 +24,8 @@ define('validform',function(require, exports, module) {
 				"s4-16": "请填写4到16位字符！",
 				"p": "请填写邮政编码！",
 				"m": "请填写手机号码！",
+				"tel": "请填写电话号码！",
+				"phone": "请填写手机/座机号码！",
 				"e": "邮箱地址格式不对！",
 				"url": "请填写网址！"
 			},
@@ -76,7 +78,7 @@ define('validform',function(require, exports, module) {
 				.on('submit',function(){
 					var subflag = Validform.util.submitForm.call($this, curform.settings);
 					subflag === undef && (subflag = true);
-					return subflag
+					return subflag;
 				})
 				.on("keypress", function(event) {
 					if (event.keyCode == 13) {
@@ -88,14 +90,14 @@ define('validform',function(require, exports, module) {
 			curform.settings.btnSubmit && $this.find(curform.settings.btnSubmit)
 				.bind("click", function() {
 					$this.trigger("submit");
-					return false
+					return false;
 				});
 			$this.find("[type='reset']").add($this.find(curform.settings.btnReset))
 				.bind("click", function() {
-					Validform.util.resetForm.call($this)
+					Validform.util.resetForm.call($this);
 				});
-		})
-	}
+		});
+	};
 	
 	Validform.util = {
 		dataType: {
@@ -107,6 +109,8 @@ define('validform',function(require, exports, module) {
 			"s4-16": /^[\u4E00-\u9FA5\uf900-\ufa2d\w\.\s]{4,16}$/,
 			"p": /^[0-9]{6}$/,
 			"m": /^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$/,
+			"tel": /^(\d{3,4}-)?\d{7,8}$/,
+			"phone": /(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9})/,
 			"e": /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
 			"url": /^(\w+:\/\/)?\w+(\.\w+)+.*$/
 		},
