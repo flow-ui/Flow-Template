@@ -1,176 +1,178 @@
 /*
  * name: base
- * version: 2.15.5
- * update: $.ajax ie8\9开启跨域
- * date: 2016-11-18
+ * version: 2.15.6
+ * update: 暴露ajaxSetup方法
+ * date: 2016-11-25
  */
 define('base', function(require, exports, module) {
 	'use strict';
 	var $ = require('jquery');
 
-	//ajax错误处理
-	var catchAjaxError = function(o) {
-		var code = o.readyState,
-			status = o.status;
-		require.async('box', function() {
-			switch (code) {
-				case 0:
-					$.box.msg('网络错误，请检查网络连接！', {
-						color: 'danger'
-					});
-					break;
-				case 1:
-					$.box.msg('请求异常中断！', {
-						color: 'danger'
-					});
-					break;
-				case 2:
-					$.box.msg('数据接收错误！', {
-						color: 'danger'
-					});
-					break;
-				case 3:
-					$.box.msg('数据解析错误！', {
-						color: 'danger'
-					});
-					break;
-				default: //4
-					$.box.msg('服务端错误(code:' + status + ')', {
-						color: 'danger'
-					});
-					break;
-			}
-		});
-	};
 	/*
 	 * ajax优化
 	 */
 	var ajaxLocalCacheQueue = {};
-	$.ajaxSetup({
-		beforeSend: function(xhr, setting) {
-			var tempSuccess = setting.success;
-			//默认数据类型
-			if (!setting.dataType) {
-				if(_browser.ie && _browser.ie<=9){
-					//ie8\9开启跨域
-					if(setting.url.indexOf(window.location.host)<0){
-						$.support.cors = true;
-					}
-				}
-				setting.dataType = 'json';
-			}
-			//默认回调处理
-			if (setting.dataType === 'json') {
-				setting.success = function(res) {
-					if (res.msg) {
-						require.async('box', function() {
-							$.box.msg(res.msg, {
-								color: res.status === 'Y' ? 'success' : 'danger',
-								delay: 2000,
-								onclose: function() {
-									tempSuccess(res, res.status !== 'Y')
-								}
-							});
+	var _ajaxSetup = function(jQuery){
+		var catchAjaxError = function(o) {
+			var code = o.readyState,
+				status = o.status;
+			require.async('box', function() {
+				switch (code) {
+					case 0:
+						$.box.msg('网络错误，请检查网络连接！', {
+							color: 'danger'
 						});
-					} else {
-						typeof tempSuccess === 'function' && tempSuccess(res, res.status !== 'Y');
-					}
-				};
-			}
-			//默认超时时间
-			if (!setting.timeout) {
-				setting.timeout = seajs.set.util.timeout || 1.5e4;
-			}
-			//数据缓存
-			if (window.localStorage && setting.localCache !== void(0)) {
-				var cacheKey,
-					cacheNameSep = ['|','^','@','+','$'],
-					cacheNamePrefix = '_ajaxcache',
-					cacheName,
-					cacheDeadline,
-					cacheVal;
-				//获取url
-				if (setting.type.toUpperCase() === 'POST' && $.isPlainObject(setting.data)) {
-					var _param = '?';
-					$.each(function(i, e) {
-						_param += (i + '=' + e + '&');
-					});
-					cacheKey = setting.url + _param.slice(-1);
-					_param = null;
-				} else {
-					cacheKey = setting.url;
+						break;
+					case 1:
+						$.box.msg('请求异常中断！', {
+							color: 'danger'
+						});
+						break;
+					case 2:
+						$.box.msg('数据接收错误！', {
+							color: 'danger'
+						});
+						break;
+					case 3:
+						$.box.msg('数据解析错误！', {
+							color: 'danger'
+						});
+						break;
+					default: //4
+						$.box.msg('服务端错误(code:' + status + ')', {
+							color: 'danger'
+						});
+						break;
 				}
-				//请求队列
-				if(ajaxLocalCacheQueue[cacheKey]){
-					ajaxLocalCacheQueue[cacheKey].push(setting.success);
-					return xhr.abort();
-				}
-				//间隔符容错
-				$.each(cacheNameSep,function(i,sep){
-					if(cacheKey.indexOf(sep)===-1){
-						cacheNameSep = sep;
-						return false;
-					}
-				});
-				if(!cacheNameSep.split){
-					return console.log('url('+cacheKey+')包含异常字符无法缓存');
-				}
-				//查找缓存
-				$.each(localStorage, function(key, val) {
-					if (key.indexOf([cacheNamePrefix, cacheKey].join(cacheNameSep)) === 0) {
-						cacheName = key;
-						cacheDeadline = key.split(cacheNameSep)[2];
-						cacheVal = val;
-						return false;
-					}
-				});
-				if (setting.localCache && !isNaN(setting.localCache)) {
-					var nowDate = new Date().getTime();
-					if (cacheDeadline && cacheDeadline > nowDate) {
-						//console.log('使用缓存 '+cacheDeadline+'>'+nowDate);
-						if (setting.dataType === 'json') {
-							cacheVal = $.parseJSON(cacheVal);
+			});
+		};
+		jQuery.ajaxSetup({
+			beforeSend: function(xhr, setting) {
+				var tempSuccess = setting.success;
+				//默认数据类型
+				if (!setting.dataType) {
+					if(_browser.ie && _browser.ie<=9){
+						//ie8\9开启跨域
+						if(setting.url.indexOf(window.location.host)<0){
+							$.support.cors = true;
 						}
-						if (typeof setting.success === 'function') {
-							setting.success(cacheVal);
+					}
+					setting.dataType = 'json';
+				}
+				//默认回调处理
+				if (setting.dataType === 'json') {
+					setting.success = function(res) {
+						if (res.msg) {
+							require.async('box', function() {
+								$.box.msg(res.msg, {
+									color: res.status === 'Y' ? 'success' : 'danger',
+									delay: 2000,
+									onclose: function() {
+										tempSuccess(res, res.status !== 'Y');
+									}
+								});
+							});
+						} else {
+							typeof tempSuccess === 'function' && tempSuccess(res, res.status !== 'Y');
+						}
+					};
+				}
+				//默认超时时间
+				if (!setting.timeout) {
+					setting.timeout = seajs.set.util.timeout || 1.5e4;
+				}
+				//数据缓存
+				if (window.localStorage && setting.localCache !== void(0)) {
+					var cacheKey,
+						cacheNameSep = ['|','^','@','+','$'],
+						cacheNamePrefix = '_ajaxcache',
+						cacheName,
+						cacheDeadline,
+						cacheVal;
+					//获取url
+					if (setting.type.toUpperCase() === 'POST' && $.isPlainObject(setting.data)) {
+						var _param = '?';
+						$.each(function(i, e) {
+							_param += (i + '=' + e + '&');
+						});
+						cacheKey = setting.url + _param.slice(-1);
+						_param = null;
+					} else {
+						cacheKey = setting.url;
+					}
+					//请求队列
+					if(ajaxLocalCacheQueue[cacheKey]){
+						ajaxLocalCacheQueue[cacheKey].push(setting.success);
+						return xhr.abort();
+					}
+					//间隔符容错
+					$.each(cacheNameSep,function(i,sep){
+						if(cacheKey.indexOf(sep)===-1){
+							cacheNameSep = sep;
 							return false;
 						}
-					} else {
-						if (cacheDeadline && cacheDeadline <= nowDate) {
-							//console.log('缓存过期');
-							localStorage.removeItem(cacheName);
-						}
-						//console.log('建立缓存');
-						ajaxLocalCacheQueue[cacheKey] = [setting.success];
-						setting.success = function(res) {
-							var newDeadline = new Date().getTime() + setting.localCache,
-								newCacheName = [cacheNamePrefix, cacheKey, newDeadline].join(cacheNameSep);
-							$.each(ajaxLocalCacheQueue[cacheKey],function(i,cb){
-								typeof cb === 'function' && cb(res);
-							});
-							delete ajaxLocalCacheQueue[cacheKey];
-							//缓存数据
-							if ($.isPlainObject(res) || $.isArray(res)) {
-								if (window.JSON) {
-									res = JSON.stringify(res);
-								}
-							}
-							localStorage.setItem(newCacheName, res);
-							newDeadline = null;
-							newCacheName = null;
-						};
+					});
+					if(!cacheNameSep.split){
+						return console.log('url('+cacheKey+')包含异常字符无法缓存');
 					}
-					nowDate = null;
-				} else if(cacheName){
-					console.log('清除缓存');
-					localStorage.removeItem(cacheName);
+					//查找缓存
+					$.each(localStorage, function(key, val) {
+						if (key.indexOf([cacheNamePrefix, cacheKey].join(cacheNameSep)) === 0) {
+							cacheName = key;
+							cacheDeadline = key.split(cacheNameSep)[2];
+							cacheVal = val;
+							return false;
+						}
+					});
+					if (setting.localCache && !isNaN(setting.localCache)) {
+						var nowDate = new Date().getTime();
+						if (cacheDeadline && cacheDeadline > nowDate) {
+							//console.log('使用缓存 '+cacheDeadline+'>'+nowDate);
+							if (setting.dataType === 'json') {
+								cacheVal = $.parseJSON(cacheVal);
+							}
+							if (typeof setting.success === 'function') {
+								setting.success(cacheVal);
+								return false;
+							}
+						} else {
+							if (cacheDeadline && cacheDeadline <= nowDate) {
+								//console.log('缓存过期');
+								localStorage.removeItem(cacheName);
+							}
+							//console.log('建立缓存');
+							ajaxLocalCacheQueue[cacheKey] = [setting.success];
+							setting.success = function(res) {
+								var newDeadline = new Date().getTime() + setting.localCache,
+									newCacheName = [cacheNamePrefix, cacheKey, newDeadline].join(cacheNameSep);
+								$.each(ajaxLocalCacheQueue[cacheKey],function(i,cb){
+									typeof cb === 'function' && cb(res);
+								});
+								delete ajaxLocalCacheQueue[cacheKey];
+								//缓存数据
+								if ($.isPlainObject(res) || $.isArray(res)) {
+									if (window.JSON) {
+										res = JSON.stringify(res);
+									}
+								}
+								localStorage.setItem(newCacheName, res);
+								newDeadline = null;
+								newCacheName = null;
+							};
+						}
+						nowDate = null;
+					} else if(cacheName){
+						console.log('清除缓存');
+						localStorage.removeItem(cacheName);
+					}
 				}
+			},
+			error: function(o) {
+				catchAjaxError(o);
 			}
-		},
-		error: function(o) {
-			catchAjaxError(o);
-		}
-	});
+		});
+	};
+	_ajaxSetup($);
 	/*
 	 * cookie
 	 */
@@ -340,9 +342,6 @@ define('base', function(require, exports, module) {
 			}
 		});
 	};
-
-
-
 	/*
 	 * 分页加载
 	 */
@@ -498,218 +497,66 @@ define('base', function(require, exports, module) {
 	 * jquery.placeholder
 	 * http://mths.be/placeholder v2.1.1 by @mathias 
 	 */
-	(function() {
-		var isOperaMini = Object.prototype.toString.call(window.operamini) == '[object OperaMini]';
-		var isInputSupported = 'placeholder' in document.createElement('input') && !isOperaMini;
-		var isTextareaSupported = 'placeholder' in document.createElement('textarea') && !isOperaMini;
-		var valHooks = $.valHooks;
-		var propHooks = $.propHooks;
-		var hooks;
-		var placeholder;
-		if (isInputSupported && isTextareaSupported) {
-			placeholder = $.fn.placeholder = function() {
-				return this
-			};
-			placeholder.input = placeholder.textarea = true
-		} else {
-			var settings = {};
-			placeholder = $.fn.placeholder = function(options) {
-				var defaults = {
-					customClass: 'placeholder'
-				};
-				settings = $.extend({}, defaults, options);
-				var $this = this;
-				$this.filter((isInputSupported ? 'textarea' : ':input') + '[placeholder]').not('.' + settings.customClass).bind({
-					'focus.placeholder': clearPlaceholder,
-					'blur.placeholder': setPlaceholder
-				}).data('placeholder-enabled', true).trigger('blur.placeholder');
-				return $this
-			};
-			placeholder.input = isInputSupported;
-			placeholder.textarea = isTextareaSupported;
-			hooks = {
-				'get': function(element) {
-					var $element = $(element);
-					var $passwordInput = $element.data('placeholder-password');
-					if ($passwordInput) {
-						return $passwordInput[0].value
-					}
-					return $element.data('placeholder-enabled') && $element.hasClass(settings.customClass) ? '' : element.value
-				},
-				'set': function(element, value) {
-					var $element = $(element);
-					var $passwordInput = $element.data('placeholder-password');
-					if ($passwordInput) {
-						return $passwordInput[0].value = value
-					}
-					if (!$element.data('placeholder-enabled')) {
-						return element.value = value
-					}
-					if (value === '') {
-						element.value = value;
-						if (element != safeActiveElement()) {
-							setPlaceholder.call(element)
-						}
-					} else if ($element.hasClass(settings.customClass)) {
-						clearPlaceholder.call(element, true, value) || (element.value = value)
-					} else {
-						element.value = value
-					}
-					return $element
-				}
-			};
-			if (!isInputSupported) {
-				valHooks.input = hooks;
-				propHooks.value = hooks
-			}
-			if (!isTextareaSupported) {
-				valHooks.textarea = hooks;
-				propHooks.value = hooks
-			}
-			$(function() {
-				$(document).delegate('form', 'submit.placeholder', function() {
-					var $inputs = $('.' + settings.customClass, this).each(clearPlaceholder);
-					setTimeout(function() {
-						$inputs.each(setPlaceholder)
-					}, 10)
-				})
-			});
-			$(window).bind('beforeunload.placeholder', function() {
-				$('.' + settings.customClass).each(function() {
-					this.value = ''
-				})
-			})
-		}
-
-		function args(elem) {
-			var newAttrs = {};
-			var rinlinejQuery = /^jQuery\d+$/;
-			$.each(elem.attributes, function(i, attr) {
-				if (attr.specified && !rinlinejQuery.test(attr.name)) {
-					newAttrs[attr.name] = attr.value
-				}
-			});
-			return newAttrs
-		}
-
-		function clearPlaceholder(event, value) {
-			var input = this;
-			var $input = $(input);
-			if (input.value == $input.attr('placeholder') && $input.hasClass(settings.customClass)) {
-				if ($input.data('placeholder-password')) {
-					$input = $input.hide().nextAll('input[type="password"]:first').show().attr('id', $input.removeAttr('id').data('placeholder-id'));
-					if (event === true) {
-						return $input[0].value = value
-					}
-					$input.focus()
-				} else {
-					input.value = '';
-					$input.removeClass(settings.customClass);
-					input == safeActiveElement() && input.select()
-				}
-			}
-		}
-
-		function setPlaceholder() {
-			var $replacement;
-			var input = this;
-			var $input = $(input);
-			var id = this.id;
-			if (input.value === '') {
-				if (input.type === 'password') {
-					if (!$input.data('placeholder-textinput')) {
-						try {
-							$replacement = $input.clone().attr({
-								'type': 'text'
-							})
-						} catch (e) {
-							$replacement = $('<input>').attr($.extend(args(this), {
-								'type': 'text'
-							}))
-						}
-						$replacement.removeAttr('name').data({
-							'placeholder-password': $input,
-							'placeholder-id': id
-						}).bind('focus.placeholder', clearPlaceholder);
-						$input.data({
-							'placeholder-textinput': $replacement,
-							'placeholder-id': id
-						}).before($replacement)
-					}
-					$input = $input.removeAttr('id').hide().prevAll('input[type="text"]:first').attr('id', id).show()
-				}
-				$input.addClass(settings.customClass);
-				$input[0].value = $input.attr('placeholder')
-			} else {
-				$input.removeClass(settings.customClass)
-			}
-		}
-
-		function safeActiveElement() {
-			try {
-				return document.activeElement
-			} catch (exception) {}
-		}
-	})();
+	(function(){var isOperaMini=Object.prototype.toString.call(window.operamini)=='[object OperaMini]';var isInputSupported='placeholder'in document.createElement('input')&&!isOperaMini;var isTextareaSupported='placeholder'in document.createElement('textarea')&&!isOperaMini;var valHooks=$.valHooks;var propHooks=$.propHooks;var hooks;var placeholder;if(isInputSupported&&isTextareaSupported){placeholder=$.fn.placeholder=function(){return this};placeholder.input=placeholder.textarea=true}else{var settings={};placeholder=$.fn.placeholder=function(options){var defaults={customClass:'placeholder'};settings=$.extend({},defaults,options);var $this=this;$this.filter((isInputSupported?'textarea':':input')+'[placeholder]').not('.'+settings.customClass).bind({'focus.placeholder':clearPlaceholder,'blur.placeholder':setPlaceholder}).data('placeholder-enabled',true).trigger('blur.placeholder');return $this};placeholder.input=isInputSupported;placeholder.textarea=isTextareaSupported;hooks={'get':function(element){var $element=$(element);var $passwordInput=$element.data('placeholder-password');if($passwordInput){return $passwordInput[0].value}return $element.data('placeholder-enabled')&&$element.hasClass(settings.customClass)?'':element.value},'set':function(element,value){var $element=$(element);var $passwordInput=$element.data('placeholder-password');if($passwordInput){return $passwordInput[0].value=value}if(!$element.data('placeholder-enabled')){return element.value=value}if(value===''){element.value=value;if(element!=safeActiveElement()){setPlaceholder.call(element)}}else if($element.hasClass(settings.customClass)){clearPlaceholder.call(element,true,value)||(element.value=value)}else{element.value=value}return $element}};if(!isInputSupported){valHooks.input=hooks;propHooks.value=hooks}if(!isTextareaSupported){valHooks.textarea=hooks;propHooks.value=hooks}$(function(){$(document).delegate('form','submit.placeholder',function(){var $inputs=$('.'+settings.customClass,this).each(clearPlaceholder);setTimeout(function(){$inputs.each(setPlaceholder)},10)})});$(window).bind('beforeunload.placeholder',function(){$('.'+settings.customClass).each(function(){this.value=''})})}function args(elem){var newAttrs={};var rinlinejQuery=/^jQuery\d+$/;$.each(elem.attributes,function(i,attr){if(attr.specified&&!rinlinejQuery.test(attr.name)){newAttrs[attr.name]=attr.value}});return newAttrs}function clearPlaceholder(event,value){var input=this;var $input=$(input);if(input.value==$input.attr('placeholder')&&$input.hasClass(settings.customClass)){if($input.data('placeholder-password')){$input=$input.hide().nextAll('input[type="password"]:first').show().attr('id',$input.removeAttr('id').data('placeholder-id'));if(event===true){return $input[0].value=value}$input.focus()}else{input.value='';$input.removeClass(settings.customClass);input==safeActiveElement()&&input.select()}}}function setPlaceholder(){var $replacement;var input=this;var $input=$(input);var id=this.id;if(input.value===''){if(input.type==='password'){if(!$input.data('placeholder-textinput')){try{$replacement=$input.clone().attr({'type':'text'})}catch(e){$replacement=$('<input>').attr($.extend(args(this),{'type':'text'}))}$replacement.removeAttr('name').data({'placeholder-password':$input,'placeholder-id':id}).bind('focus.placeholder',clearPlaceholder);$input.data({'placeholder-textinput':$replacement,'placeholder-id':id}).before($replacement)}$input=$input.removeAttr('id').hide().prevAll('input[type="text"]:first').attr('id',id).show()}$input.addClass(settings.customClass);$input[0].value=$input.attr('placeholder')}else{$input.removeClass(settings.customClass)}}function safeActiveElement(){try{return document.activeElement}catch(exception){}}})();
 
 	/*
 	 * 内部方法
 	 */
 	// 兼容css3位移
 	!$.fn._css && ($.fn._css = function(LeftOrTop, number) {
-			var hasTrans = (LeftOrTop == 'left' || LeftOrTop == 'top') ? true : false,
-				canTrans = _browser.support3d,
-				theTrans = LeftOrTop == 'left' ? 'translateX' : 'translateY',
-				matrixPosi = hasTrans ? (LeftOrTop == 'left' ? 4 : 5) : null;
-			if (number != void(0)) {
-				//赋值
-				if (canTrans && hasTrans) {
-					number = parseFloat(number) + 'px';
-					$(this).css('transform', 'translateZ(0) ' + theTrans + '(' + number + ')');
-				} else {
-					$(this).css(LeftOrTop, number);
-				}
-				return $(this);
+		var hasTrans = (LeftOrTop == 'left' || LeftOrTop == 'top') ? true : false,
+			canTrans = _browser.support3d,
+			theTrans = LeftOrTop == 'left' ? 'translateX' : 'translateY',
+			matrixPosi = hasTrans ? (LeftOrTop == 'left' ? 4 : 5) : null;
+		if (number != void(0)) {
+			//赋值
+			if (canTrans && hasTrans) {
+				number = parseFloat(number) + 'px';
+				$(this).css('transform', 'translateZ(0) ' + theTrans + '(' + number + ')');
 			} else {
-				//取值
-				if (canTrans && hasTrans && $(this).css('transform') !== 'none') {
-					var transData = $(this).css('transform').match(/\((.*\,?\s?){6}\)$/)[0].substr(1).split(',');
-					return parseFloat(transData[matrixPosi]);
-				} else {
-					return $(this).css(LeftOrTop);
-				}
-			}
-		})
-		// 加载指定属性的图片
-		!$.fn._loadimg && ($.fn._loadimg = function(imgattr) {
-			var $this = $(this),
-				lazyImg;
-			if (!imgattr) {
-				return $this;
-			}
-			if ($this.attr(imgattr)) {
-				lazyImg = $this;
-			} else if ($(this).find('img[' + imgattr + ']').length) {
-				lazyImg = $(this).find('img[' + imgattr + ']');
-			} else {
-				return $this;
-			}
-			if (lazyImg.length) {
-				var _theSrc;
-				lazyImg.each(function(i, e) {
-					_theSrc = $.trim($(e).attr(imgattr));
-					if (_theSrc && _theSrc != 'loaded') {
-						if (e.tagName.toLowerCase() === 'img') {
-							$(e).attr('src', _theSrc).attr(imgattr, 'loaded').addClass('loaded');
-						} else {
-							$(e).css("background-image", "url(" + _theSrc + ")").attr(imgattr, 'loaded').addClass('loaded');
-						}
-					}
-				});
-				_theSrc = null;
+				$(this).css(LeftOrTop, number);
 			}
 			return $(this);
-		});
+		} else {
+			//取值
+			if (canTrans && hasTrans && $(this).css('transform') !== 'none') {
+				var transData = $(this).css('transform').match(/\((.*\,?\s?){6}\)$/)[0].substr(1).split(',');
+				return parseFloat(transData[matrixPosi]);
+			} else {
+				return $(this).css(LeftOrTop);
+			}
+		}
+	})
+	// 加载指定属性的图片
+	!$.fn._loadimg && ($.fn._loadimg = function(imgattr) {
+		var $this = $(this),
+			lazyImg;
+		if (!imgattr) {
+			return $this;
+		}
+		if ($this.attr(imgattr)) {
+			lazyImg = $this;
+		} else if ($(this).find('img[' + imgattr + ']').length) {
+			lazyImg = $(this).find('img[' + imgattr + ']');
+		} else {
+			return $this;
+		}
+		if (lazyImg.length) {
+			var _theSrc;
+			lazyImg.each(function(i, e) {
+				_theSrc = $.trim($(e).attr(imgattr));
+				if (_theSrc && _theSrc != 'loaded') {
+					if (e.tagName.toLowerCase() === 'img') {
+						$(e).attr('src', _theSrc).attr(imgattr, 'loaded').addClass('loaded');
+					} else {
+						$(e).css("background-image", "url(" + _theSrc + ")").attr(imgattr, 'loaded').addClass('loaded');
+					}
+				}
+			});
+			_theSrc = null;
+		}
+		return $(this);
+	})
 	//getScript
 	var _getScript = function(road, callback, option) {
 		if (road && road.split || ($.isArray(road) && road.length)) {
@@ -964,6 +811,7 @@ define('base', function(require, exports, module) {
 		throttle: _throttle,
 		getUrlParam: _urlParam,
 		getScript: _getScript,
-		ajaxCombo: _ajaxCombo
+		ajaxCombo: _ajaxCombo,
+		ajaxSetup: _ajaxSetup
 	};
 });

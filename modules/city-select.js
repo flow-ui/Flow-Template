@@ -1,12 +1,13 @@
 /*
  * name: city-selector.js
- * version: v0.0.3
- * update: 引用共用ajax错误处理
- * date: 2016-11-02
+ * version: v0.0.4
+ * update: 使用新版base.ajaxSetup方法
+ * date: 2016-11-25
  */
 define('city-select', function(require, exports, module) {
 	var $ = require('jquery');
 	var base = require('base');
+	base.ajaxSetup($);
 	require('tip');
 	seajs.importStyle('\
 		.city-selector-warp{display:none; position:absolute;z-index:99;background:#fff;border:1px solid #e5eaee;padding:0 15px;width:600px;}\
@@ -117,7 +118,7 @@ define('city-select', function(require, exports, module) {
 		checkStatus($this);
 		renderData($this.data('index'));
 	});
-
+	
 	$.fn.citySelect = function(config) {
 		return $(this).each(function(i, e) {
 			var $this = $(e),
@@ -144,7 +145,7 @@ define('city-select', function(require, exports, module) {
 					});
 					$.ajax({
 						url: opt.data,
-						useCache: true,
+						localCache: 1e6,
 						success: function(res) {
 							loading.hide();
 							if (res.status === 'Y') {
