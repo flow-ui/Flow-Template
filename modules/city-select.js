@@ -1,7 +1,7 @@
 /*
  * name: city-selector.js
- * version: v0.0.4
- * update: 使用新版base.ajaxSetup方法
+ * version: v0.0.5
+ * update: loading居中
  * date: 2016-11-25
  */
 define('city-select', function(require, exports, module) {
@@ -139,7 +139,7 @@ define('city-select', function(require, exports, module) {
 					renderData();
 				} else {
 					var loading = $this.tip('加载中...', {
-						place: 'bottom-right',
+						place: 'bottom-center',
 						modal: true,
 						show: true
 					});
