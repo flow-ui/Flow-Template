@@ -6,6 +6,8 @@
 */
 
 define('validform',function(require, exports, module) {
+	"use strict";
+	
 	seajs.importStyle('.Validform_right{color:#71b83d}.Validform_wrong{color:red;white-space:nowrap}.Validform_loading{padding-left:20px}.Validform_error{background-color:#ffe7e7}.passwordStrength{display:block;height:18px;line-height:16px;clear:both;overflow:hidden;margin-bottom:5px}.passwordStrength b{font-weight:normal}.passwordStrength b,.passwordStrength span{display:inline-block;vertical-align:middle;line-height:16px;line-height:18px\9;height:16px}.passwordStrength span{width:63px;text-align:center;background-color:#d0d0d0;border-right:1px solid #fff}.passwordStrength .last{border-right:0;width:61px}.passwordStrength .bgStrength{color:#fff;background-color:#71b83d}'
 		,module.uri);
 	var $ = require('jquery');
@@ -47,7 +49,7 @@ define('validform',function(require, exports, module) {
 		};
 	//$.Tipmsg = tipmsg;
 	var Validform = function(forms, settings, inited) {
-		var settings = $.extend({}, defaults, settings);
+		settings = $.extend({}, defaults, settings);
 		settings.datatype && $.extend(Validform.util.dataType, settings.datatype);
 		var brothers = this;
 		brothers.tipmsg = {
@@ -56,11 +58,11 @@ define('validform',function(require, exports, module) {
 		brothers.forms = forms;
 		brothers.objects = [];
 		if (inited === true) {
-			return false
+			return false;
 		}
-		forms.each(function() {
+		return forms.each(function() {
 			if (this.validform_inited == "inited") {
-				return true
+				return true;
 			}
 			this.validform_inited = "inited";
 			var curform = this;
@@ -72,8 +74,8 @@ define('validform',function(require, exports, module) {
 					var subpost = arguments[1];
 					var that = this;
 					setTimeout(function(){
-						Validform.util.check.call(that, $this, subpost)
-					},100)
+						Validform.util.check.call(that, $this, subpost);
+					},100);
 				})
 				.on('submit',function(){
 					var subflag = Validform.util.submitForm.call($this, curform.settings);
@@ -87,11 +89,12 @@ define('validform',function(require, exports, module) {
 					}
 				});
 			Validform.util.enhance.call($this, curform.settings.tiptype, curform.settings.usePlugin, curform.settings.tipSweep);
-			curform.settings.btnSubmit && $this.find(curform.settings.btnSubmit)
-				.bind("click", function() {
+			if(curform.settings.btnSubmit){
+				$this.find(curform.settings.btnSubmit).bind("click", function() {
 					$this.trigger("submit");
 					return false;
 				});
+			}
 			$this.find("[type='reset']").add($this.find(curform.settings.btnReset))
 				.bind("click", function() {
 					Validform.util.resetForm.call($this);
@@ -116,7 +119,7 @@ define('validform',function(require, exports, module) {
 		},
 		toString: Object.prototype.toString,
 		isEmpty: function(val) {
-			return val === "" || val === $.trim(this.attr("tip"))
+			return val === "" || val === $.trim(this.attr("tip"));
 		},
 		getValue: function(obj) {
 			var inputval, curform = this;
@@ -125,13 +128,13 @@ define('validform',function(require, exports, module) {
 			} else if (obj.is(":checkbox")) {
 				inputval = "";
 				curform.find(":checkbox[name='" + obj.attr("name") + "']:checked").each(function() {
-					inputval += $(this).val() + ','
+					inputval += $(this).val() + ',';
 				});
 			} else {
-				inputval = obj.val()
+				inputval = obj.val();
 			}
 			inputval = inputval === undef ? "" : $.trim(inputval);
-			return Validform.util.isEmpty.call(obj, inputval) ? "" : inputval
+			return Validform.util.isEmpty.call(obj, inputval) ? "" : inputval;
 		},
 		enhance: function(tiptype, usePlugin, tipSweep, addRule) {
 			var curform = this;
@@ -141,7 +144,7 @@ define('validform',function(require, exports, module) {
 				}
 				if($(e).is('checkbox') || $(e).is('radio')){
 					if (this.validform_inited == "inited") {
-						return true
+						return true;
 					}
 					this.validform_inited = "inited";
 					var name = $(e).attr("name");
@@ -149,18 +152,18 @@ define('validform',function(require, exports, module) {
 						.bind("click", function() {
 							setTimeout(function() {
 								$(e).trigger("blur");
-							}, 0)
-						})
+							}, 0);
+						});
 				}
 				if($(e).is('select[multiple]')){
 					setTimeout(function() {
 						$(e).trigger("blur");
-					}, 0)
+					}, 0);
 				}
 			})
 			.end().find("input[recheck]").each(function() {
 				if (this.validform_inited == "inited") {
-					return true
+					return true;
 				}
 				this.validform_inited = "inited";
 				var _this = $(this);
@@ -179,14 +182,14 @@ define('validform',function(require, exports, module) {
 						}
 						_this.trigger("blur");
 					}
-				})
+				});
 			});
 
-			Validform.util.usePlugin.call(curform, usePlugin, tiptype, tipSweep, addRule)
+			Validform.util.usePlugin.call(curform, usePlugin, tiptype, tipSweep, addRule);
 		},
 		usePlugin: function(plugin, tiptype, tipSweep, addRule) {
-			var curform = this,
-				plugin = plugin || {};
+			var curform = this;
+			plugin = plugin || {};
 			//密码强度验证
 			if (curform.find("input[plugin='passwordStrength']").length) {
 				require.async('./passwordStrength', function() {
@@ -196,16 +199,16 @@ define('validform',function(require, exports, module) {
 							obj: obj,
 							type: type,
 							sweep: tipSweep
-						})
+						});
 					};
 					curform.find("input[plugin='passwordStrength']").each(function() {
 						if (this.validform_inited == "inited") {
-							return true
+							return true;
 						}
 						this.validform_inited = "inited";
 						$(this).passwordStrength(plugin.passwordstrength);
-					})
-				})
+					});
+				});
 			}
 		},
 		getNullmsg: function(curform) {
@@ -218,19 +221,19 @@ define('validform',function(require, exports, module) {
 			label = label ? label.join("") : [""];
 			reg = /\{(.+)\|(.+)\}/;
 			nullmsg = curform.data("tipmsg").s || tipmsg.s;
-			if (label != "") {
+			if (label !== "") {
 				nullmsg = nullmsg.replace(/\{0\|(.+)\}/, label);
 				if (obj.attr("recheck")) {
 					nullmsg = nullmsg.replace(/\{(.+)\}/, "");
 					obj.attr("nullmsg", nullmsg);
-					return nullmsg
+					return nullmsg;
 				}
 			} else {
-				nullmsg = obj.is(":checkbox,:radio,select") ? nullmsg.replace(/\{0\|(.+)\}/, "") : nullmsg.replace(/\{0\|(.+)\}/, "$1")
+				nullmsg = obj.is(":checkbox,:radio,select") ? nullmsg.replace(/\{0\|(.+)\}/, "") : nullmsg.replace(/\{0\|(.+)\}/, "$1");
 			}
 			nullmsg = obj.is(":checkbox,:radio,select") ? nullmsg.replace(reg, "$2") : nullmsg.replace(reg, "$1");
 			obj.attr("nullmsg", nullmsg);
-			return nullmsg
+			return nullmsg;
 		},
 		getErrormsg: function(curform, datatype, recheck) {
 			var regxp = /^(.+?)((\d+)-(\d+))?$/,
@@ -240,24 +243,23 @@ define('validform',function(require, exports, module) {
 				temp, str;
 			if (recheck == "recheck") {
 				str = curform.data("tipmsg").reck || tipmsg.reck;
-				return str
+				return str;
 			}
 			var tipmsg_w_ex = $.extend({}, tipmsg.w, curform.data("tipmsg").w);
 			if (mac[0] in tipmsg_w_ex) {
-				return curform.data("tipmsg").w[mac[0]] || tipmsg.w[mac[0]]
+				return curform.data("tipmsg").w[mac[0]] || tipmsg.w[mac[0]];
 			}
 			for (var name in tipmsg_w_ex) {
 				if (name.indexOf(mac[1]) != -1 && regxp2.test(name)) {
 					str = (curform.data("tipmsg").w[name] || tipmsg.w[name]).replace(regxp3, "$1" + mac[3] + "$2" + mac[4] + "$3");
 					curform.data("tipmsg").w[mac[0]] = str;
-					return str
+					return str;
 				}
 			}
-			return curform.data("tipmsg").def || tipmsg.def
+			return curform.data("tipmsg").def || tipmsg.def;
 		},
 		_regcheck: function(datatype, gets, obj, curform) {
-			var curform = curform,
-				info = null,
+			var info = null,
 				passed = false,
 				reg = /\/.+\//g,
 				regex = /^(.+?)(\d+)-(\d+)$/,
@@ -266,14 +268,14 @@ define('validform',function(require, exports, module) {
 				var regstr = datatype.match(reg)[0].slice(1, -1);
 				var param = datatype.replace(reg, "");
 				var rexp = RegExp(regstr, param);
-				passed = rexp.test(gets)
+				passed = rexp.test(gets);
 			} else if (Validform.util.toString.call(Validform.util.dataType[datatype]) == "[object Function]") {
 				passed = Validform.util.dataType[datatype](gets, obj, curform, Validform.util.dataType);
 				if (passed === true || passed === undef) {
-					passed = true
+					passed = true;
 				} else {
 					info = passed;
-					passed = false
+					passed = false;
 				}
 			} else {
 				if (!(datatype in Validform.util.dataType)) {
@@ -281,12 +283,12 @@ define('validform',function(require, exports, module) {
 						temp;
 					if (!mac) {
 						passed = false;
-						info = curform.data("tipmsg").undef || tipmsg.undef
+						info = curform.data("tipmsg").undef || tipmsg.undef;
 					} else {
 						for (var name in Validform.util.dataType) {
 							temp = name.match(regex);
 							if (!temp) {
-								continue
+								continue;
 							}
 							if (mac[1] === temp[1]) {
 								var str = Validform.util.dataType[name].toString(),
@@ -294,13 +296,13 @@ define('validform',function(require, exports, module) {
 									regxp = new RegExp("\\{" + temp[2] + "," + temp[3] + "\\}", "g");
 								str = str.replace(/\/[mgi]*/g, "\/").replace(regxp, "{" + mac[2] + "," + mac[3] + "}").replace(/^\//, "").replace(/\/$/, "");
 								Validform.util.dataType[datatype] = new RegExp(str, param);
-								break
+								break;
 							}
 						}
 					}
 				}
 				if (Validform.util.toString.call(Validform.util.dataType[datatype]) == "[object RegExp]") {
-					passed = Validform.util.dataType[datatype].test(gets)
+					passed = Validform.util.dataType[datatype].test(gets);
 				}
 			}
 			if (passed) {
@@ -311,20 +313,20 @@ define('validform',function(require, exports, module) {
 					if (gets != theother.val()) {
 						passed = false;
 						type = 3;
-						info = obj.attr("errormsg") || Validform.util.getErrormsg.call(obj, curform, datatype, "recheck")
+						info = obj.attr("errormsg") || Validform.util.getErrormsg.call(obj, curform, datatype, "recheck");
 					}
 				}
 			} else {
 				info = info || obj.attr("errormsg") || Validform.util.getErrormsg.call(obj, curform, datatype);
 				if (Validform.util.isEmpty.call(obj, gets)) {
-					info = obj.attr("nullmsg") || Validform.util.getNullmsg.call(obj, curform)
+					info = obj.attr("nullmsg") || Validform.util.getNullmsg.call(obj, curform);
 				}
 			}
 			return {
 				passed: passed,
 				type: type,
 				info: info
-			}
+			};
 		},
 		regcheck: function(datatype, gets, obj) {
 			var curform = this,
@@ -333,13 +335,13 @@ define('validform',function(require, exports, module) {
 				type = 3;
 			if (obj.attr("ignore") === "ignore" && Validform.util.isEmpty.call(obj, gets)) {
 				if (obj.data("cked")) {
-					info = ""
+					info = "";
 				}
 				return {
 					passed: true,
 					type: 4,
 					info: info
-				}
+				};
 			}
 			obj.data("cked", "cked");
 			var dtype = Validform.util.parseDatatype(datatype);
@@ -348,14 +350,14 @@ define('validform',function(require, exports, module) {
 				for (var dtp = 0; dtp < dtype[eithor].length; dtp++) {
 					res = Validform.util._regcheck(dtype[eithor][dtp], gets, obj, curform);
 					if (!res.passed) {
-						break
+						break;
 					}
 				}
 				if (res.passed) {
-					break
+					break;
 				}
 			}
-			return res
+			return res;
 		},
 		parseDatatype: function(datatype) {
 			var reg = /\/.+?\/[mgi]*(?=(,|$|\||\s))|[\w\*-]+/g,
@@ -368,11 +370,11 @@ define('validform',function(require, exports, module) {
 			for (var n = 0; n < sepor.length; n++) {
 				if (sepor[n] == "|") {
 					m++;
-					arr[m] = []
+					arr[m] = [];
 				}
-				arr[m].push(dtype[n + 1])
+				arr[m].push(dtype[n + 1]);
 			}
-			return arr
+			return arr;
 		},
 		showmsg: function(msg, type, o) {
 			msg = $.trim(msg);	
@@ -380,13 +382,13 @@ define('validform',function(require, exports, module) {
 				if(type!=1){
 					o.obj.siblings(".Validform_checktip").removeClass('Validform_wrong').addClass('Validform_right').empty();
 				}
-				return;
+				return null;
 			}
-			if (msg == undef || msg == '') {
-				return
+			if (msg === undef || msg === '') {
+				return null;
 			}
 			if(type == 1 && (msg==tipmsg.r || msg==tipmsg.c || msg==tipmsg.p)){
-				return;
+				return null;
 			}
 			$.extend(o, {
 				curform: this
@@ -399,10 +401,10 @@ define('validform',function(require, exports, module) {
 				$.box.msg(msg, {
 					delay: 2e3,
 					color: 'warning'
-				})
+				});
 			} else {
 				o.obj.siblings(".Validform_checktip").html(msg);
-				Validform.util.cssctl(o.obj.siblings(".Validform_checktip"))
+				Validform.util.cssctl(o.obj.siblings(".Validform_checktip"));
 			}
 		},
 		cssctl: function(obj) {
@@ -410,17 +412,17 @@ define('validform',function(require, exports, module) {
 		},
 		check: function(curform, subpost, bool) {
 			var settings = curform[0].settings;
-			var subpost = subpost || "";
+			subpost = subpost || "";
 			var inputval = Validform.util.getValue.call(curform, $(this));
 			if (settings.ignoreHidden && $(this).is(":hidden") || $(this).data("dataIgnore") === "dataIgnore") {
-				return true
+				return true;
 			}
 			if (settings.dragonfly && !$(this).data("cked") && Validform.util.isEmpty.call($(this), inputval) && $(this).attr("ignore") != "ignore") {
-				return false
+				return false;
 			}
 			var flag = Validform.util.regcheck.call(curform, $(this).attr("datatype"), inputval, $(this));
-			if (inputval == this.validform_lastval && !$(this).attr("recheck") && subpost == "") {
-				return flag.passed ? true : false
+			if (inputval === this.validform_lastval && !$(this).attr("recheck") && subpost === "") {
+				return flag.passed ? true : false;
 			}
 			this.validform_lastval = inputval;
 			var _this;
@@ -436,18 +438,18 @@ define('validform',function(require, exports, module) {
 					}, "bycheck");
 					
 				}
-				return false
+				return false;
 			}
 			var ajaxurl = $(this).attr("ajaxurl");
 			if (ajaxurl && !Validform.util.isEmpty.call($(this), inputval) && !bool) {
 				var inputobj = $(this);
 				if (subpost == "postform") {
-					inputobj[0].validform_subpost = "postform"
+					inputobj[0].validform_subpost = "postform";
 				} else {
-					inputobj[0].validform_subpost = ""
+					inputobj[0].validform_subpost = "";
 				}
 				if (inputobj[0].validform_valid === "posting" && inputval == inputobj[0].validform_ckvalue) {
-					return "ajax"
+					return "ajax";
 				}
 				inputobj[0].validform_valid = "posting";
 				inputobj[0].validform_ckvalue = inputval;
@@ -475,7 +477,7 @@ define('validform',function(require, exports, module) {
 							
 							errorobj = null;
 							if (inputobj[0].validform_subpost == "postform") {
-								curform.trigger("submit")
+								curform.trigger("submit");
 							}
 						} else {
 							inputobj[0].validform_valid = data.info;
@@ -485,21 +487,21 @@ define('validform',function(require, exports, module) {
 							});
 							
 						}
-						_this[0].validform_ajax = null
+						_this[0].validform_ajax = null;
 					},
 					error: function(data) {
 						if (data.status == "200") {
 							if (data.responseText == "y") {
 								ajaxsetup.success({
 									"status": "y"
-								})
+								});
 							} else {
 								ajaxsetup.success({
 									"status": "n",
 									"info": data.responseText
-								})
+								});
 							}
-							return false
+							return false;
 						}
 						if (data.statusText !== "abort") {
 							var msg = "status: " + data.status + "; statusText: " + data.statusText;
@@ -508,32 +510,32 @@ define('validform',function(require, exports, module) {
 								type: 3,
 								sweep: settings.tipSweep
 							});
-							_this.addClass("Validform_error")
+							_this.addClass("Validform_error");
 						}
 						inputobj[0].validform_valid = data.statusText;
 						_this[0].validform_ajax = null;
-						return true
+						return true;
 					}
-				}
+				};
 				if (ajaxsetup.success) {
 					var temp_suc = ajaxsetup.success;
 					ajaxsetup.success = function(data) {
 						localconfig.success(data);
-						temp_suc(data, inputobj)
-					}
+						temp_suc(data, inputobj);
+					};
 				}
 				if (ajaxsetup.error) {
 					var temp_err = ajaxsetup.error;
 					ajaxsetup.error = function(data) {
-						localconfig.error(data) && temp_err(data, inputobj)
-					}
+						localconfig.error(data) && temp_err(data, inputobj);
+					};
 				}
 				ajaxsetup = $.extend({}, localconfig, ajaxsetup);
 				_this[0].validform_ajax = $.ajax(ajaxsetup);
-				return "ajax"
+				return "ajax";
 			} else if (ajaxurl && Validform.util.isEmpty.call($(this), inputval)) {
 				Validform.util.abort.call(_this[0]);
-				_this[0].validform_valid = "true"
+				_this[0].validform_valid = "true";
 			}
 			if (!bool) {
 				_this.removeClass("Validform_error");
@@ -545,32 +547,33 @@ define('validform',function(require, exports, module) {
 				
 			}
 			errorobj = null;
-			return true
+			return true;
 		},
 		submitForm: function(settings, flg, url, ajaxPost, sync) {
-			var curform = this;
+			var curform = this,
+				beforeCheck;
 			if (curform[0].validform_status === "posting") {
 				return Validform.util.showmsg.call(curform, tipmsg.p, settings.tiptype);
 			}
 			if (settings.postonce && curform[0].validform_status === "posted") {
-				return false
+				return false;
 			}
 			try{
-				var beforeCheck = !settings.beforeCheck || ($.isFunction(settings.beforeCheck) && settings.beforeCheck(curform));
+				beforeCheck = !settings.beforeCheck || ($.isFunction(settings.beforeCheck) && settings.beforeCheck(curform));
 			}catch(e){
-				alert(e.message)
+				alert(e.message);
 			}
 			if (beforeCheck === false) {
-				return false
+				return false;
 			}
 			var flag = true,
 				inflag;
 			curform.find("[datatype]").each(function() {
 				if (flg) {
-					return false
+					return false;
 				}
 				if (settings.ignoreHidden && $(this).is(":hidden") || $(this).data("dataIgnore") === "dataIgnore") {
-					return true
+					return true;
 				}
 				var inputval = Validform.util.getValue.call(curform, $(this)),
 					_this;
@@ -586,10 +589,10 @@ define('validform',function(require, exports, module) {
 					if (!settings.showAllError) {
 						_this.focus();
 						flag = false;
-						return false
+						return false;
 					}
 					flag && (flag = false);
-					return true
+					return true;
 				}
 				if ($(this).attr("ajaxurl") && !Validform.util.isEmpty.call($(this), inputval)) {
 					if (this.validform_valid !== "true") {
@@ -603,14 +606,14 @@ define('validform',function(require, exports, module) {
 						thisobj.trigger("blur", ["postform"]);
 						if (!settings.showAllError) {
 							flag = false;
-							return false
+							return false;
 						}
 						flag && (flag = false);
-						return true
+						return true;
 					}
 				} else if ($(this).attr("ajaxurl") && Validform.util.isEmpty.call($(this), inputval)) {
 					Validform.util.abort.call(this);
-					this.validform_valid = "true"
+					this.validform_valid = "true";
 				}
 				Validform.util.showmsg.call(curform, inflag.info, settings.tiptype, {
 					obj: $(this),
@@ -618,19 +621,20 @@ define('validform',function(require, exports, module) {
 					sweep: settings.tipSweep
 				});
 				_this.removeClass("Validform_error");
-				errorobj = null
+				errorobj = null;
 			});
 			if (settings.showAllError) {
-				curform.find(".Validform_error:first").focus()
+				curform.find(".Validform_error:first").focus();
 			}
 			if (flag) {
+				var beforeSubmit;
 				try{
-					var beforeSubmit = !settings.beforeSubmit || ($.isFunction(settings.beforeSubmit) && settings.beforeSubmit(curform));
+					beforeSubmit = !settings.beforeSubmit || ($.isFunction(settings.beforeSubmit) && settings.beforeSubmit(curform));
 				}catch(e){
 					alert(e.message);
-				};
-				if (beforeSubmit === false) {
-					return false
+				}
+				if (!beforeSubmit) {
+					return false;
 				}
 				curform[0].validform_status = "posting";
 				if (settings.ajaxPost || ajaxPost === "ajaxPost") {
@@ -642,9 +646,9 @@ define('validform',function(require, exports, module) {
 						sweep: settings.tipSweep
 					}, "byajax");
 					if (sync) {
-						ajaxsetup.async = false
+						ajaxsetup.async = false;
 					} else if (sync === false) {
-						ajaxsetup.async = true
+						ajaxsetup.async = true;
 					}
 					if (ajaxsetup.success) {
 						var temp_suc = ajaxsetup.success;
@@ -652,12 +656,12 @@ define('validform',function(require, exports, module) {
 							settings.callback && settings.callback(data);
 							curform[0].validform_ajax = null;
 							if ($.trim(data.status) === "y") {
-								curform[0].validform_status = "posted"
+								curform[0].validform_status = "posted";
 							} else {
-								curform[0].validform_status = "normal"
+								curform[0].validform_status = "normal";
 							}
-							temp_suc(data, curform)
-						}
+							temp_suc(data, curform);
+						};
 					}
 					if (ajaxsetup.error) {
 						var temp_err = ajaxsetup.error;
@@ -665,8 +669,8 @@ define('validform',function(require, exports, module) {
 							settings.callback && settings.callback(data);
 							curform[0].validform_status = "normal";
 							curform[0].validform_ajax = null;
-							temp_err(data, curform)
-						}
+							temp_err(data, curform);
+						};
 					}
 					var _sendData = {},
 						_cloneForm,
@@ -681,7 +685,7 @@ define('validform',function(require, exports, module) {
 						_formData = curform.serializeArray();
 					}
 					$.each(_formData,function(i,e){
-						_sendData[e.name] = e.value
+						_sendData[e.name] = e.value;
 					});
 
 					var localconfig = {
@@ -701,34 +705,34 @@ define('validform',function(require, exports, module) {
 								sweep: settings.tipSweep
 							}, "byajax");
 							settings.callback && settings.callback(data);
-							curform[0].validform_ajax = null
+							curform[0].validform_ajax = null;
 						},
 						error: function(err) {
 							console.warn('validform提交失败！');
 							curform[0].validform_status = "normal";
-							curform[0].validform_ajax = null
+							curform[0].validform_ajax = null;
 						}
-					}
+					};
 					ajaxsetup = $.extend({}, localconfig, ajaxsetup);
-					curform[0].validform_ajax = $.ajax(ajaxsetup)
+					curform[0].validform_ajax = $.ajax(ajaxsetup);
 				} else {
 					if (!settings.postonce) {
-						curform[0].validform_status = "normal"
+						curform[0].validform_status = "normal";
 					}
-					var url = url || settings.url;
+					url = url || settings.url;
 					if (url) {
-						curform.attr("action", url)
+						curform.attr("action", url);
 					}
-					return settings.callback && settings.callback(curform)
+					return settings.callback && settings.callback(curform);
 				}
 			}
-			return false
+			return false;
 		},
 		resetForm: function() {
 			var brothers = this;
 			brothers.each(function() {
 				this.reset && this.reset();
-				this.validform_status = "normal"
+				this.validform_status = "normal";
 			});
 			brothers.find(".Validform_right").text("");
 			brothers.find(".passwordStrength").children().removeClass("bgStrength");
@@ -736,85 +740,85 @@ define('validform',function(require, exports, module) {
 			.text("");
 			brothers.find(".Validform_error").removeClass("Validform_error");
 			brothers.find("[datatype]").removeData("cked").removeData("dataIgnore").each(function() {
-				this.validform_lastval = null
+				this.validform_lastval = null;
 			});
-			brothers.eq(0).find("input:first").focus()
+			brothers.eq(0).find("input:first").focus();
 		},
 		abort: function() {
 			if (this.validform_ajax) {
-				this.validform_ajax.abort()
+				this.validform_ajax.abort();
 			}
 		}
-	}
+	};
 	//$.Datatype = Validform.util.dataType;
 	Validform.prototype = {
 		dataType: Validform.util.dataType,
 		eq: function(n) {
 			var obj = this;
 			if (n >= obj.forms.length) {
-				return null
+				return null;
 			}
 			if (!(n in obj.objects)) {
-				obj.objects[n] = new Validform($(obj.forms[n]).get(), {}, true)
+				obj.objects[n] = new Validform($(obj.forms[n]).get(), {}, true);
 			}
-			return obj.objects[n]
+			return obj.objects[n];
 		},
 		resetStatus: function() {
 			var obj = this;
 			$(obj.forms).each(function() {
-				this.validform_status = "normal"
+				this.validform_status = "normal";
 			});
-			return this
+			return this;
 		},
 		setStatus: function(status) {
 			var obj = this;
 			$(obj.forms).each(function() {
-				this.validform_status = status || "posting"
+				this.validform_status = status || "posting";
 			});
-			return this
+			return this;
 		},
 		getStatus: function() {
 			var obj = this;
 			var status = $(obj.forms)[0].validform_status;
-			return status
+			return status;
 		},
 		ignore: function(selector) {
 			var obj = this;
-			var selector = selector || "[datatype]"
+			selector = selector || "[datatype]";
 			$(obj.forms).find(selector).each(function() {
-				$(this).data("dataIgnore", "dataIgnore").removeClass("Validform_error")
+				$(this).data("dataIgnore", "dataIgnore").removeClass("Validform_error");
 			});
-			return this
+			return this;
 		},
 		unignore: function(selector) {
 			var obj = this;
-			var selector = selector || "[datatype]"
+			selector = selector || "[datatype]";
 			$(obj.forms).find(selector).each(function() {
-				$(this).removeData("dataIgnore")
+				$(this).removeData("dataIgnore");
 			});
-			return this
+			return this;
 		},
 		addRule: function(rule) {
 			var obj = this;
-			var rule = rule || [];
+			rule = rule || [];
 			for (var index = 0; index < rule.length; index++) {
 				var o = $(obj.forms).find(rule[index].ele);
 				for (var attr in rule[index]) {
-					attr !== "ele" && o.attr(attr, rule[index][attr])
+					attr !== "ele" && o.attr(attr, rule[index][attr]);
 				}
 			}
 			$(obj.forms).each(function() {
 				var $this = $(this);
-				Validform.util.enhance.call($this, this.settings.tiptype, this.settings.usePlugin, this.settings.tipSweep, "addRule")
+				Validform.util.enhance.call($this, this.settings.tiptype, this.settings.usePlugin, this.settings.tipSweep, "addRule");
 			});
-			return this
+			return this;
 		},
 		ajaxPost: function(flag, sync, url) {
 			var obj = this;
 			$(obj.forms).each(function() {
-				Validform.util.submitForm.call($(obj.forms[0]), this.settings, flag, url, "ajaxPost", sync)
+				Validform.util.submitForm.call($(obj.forms[0]), this.settings, flag, url, "ajaxPost", sync);
 			});
-			return this
+			return this;
 		},
 		submitForm: function(flag, url) {
 			var obj = this;
@@ -822,32 +826,32 @@ define('validform',function(require, exports, module) {
 				var subflag = Validform.util.submitForm.call($(this), this.settings, flag, url);
 				subflag === undef && (subflag = true);
 				if (subflag === true) {
-					this.submit()
+					this.submit();
 				}
 			});
-			return this
+			return this;
 		},
 		resetForm: function() {
 			var obj = this;
 			Validform.util.resetForm.call($(obj.forms));
-			return this
+			return this;
 		},
 		abort: function() {
 			var obj = this;
 			$(obj.forms).each(function() {
-				Validform.util.abort.call(this)
+				Validform.util.abort.call(this);
 			});
-			return this
+			return this;
 		},
 		check: function(bool, selector) {
-			var selector = selector || "[datatype]",
-				obj = this,
+			var obj = this,
 				curform = $(obj.forms),
 				flag = true;
+			selector = selector || "[datatype]";
 			curform.find(selector).each(function() {
-				Validform.util.check.call(this, curform, "", bool) || (flag = false)
+				Validform.util.check.call(this, curform, "", bool) || (flag = false);
 			});
-			return flag
+			return flag;
 		},
 		config: function(setup) {
 			var obj = this;
@@ -855,12 +859,12 @@ define('validform',function(require, exports, module) {
 			$(obj.forms).each(function() {
 				var $this = $(this);
 				this.settings = $.extend(true, this.settings, setup);
-				Validform.util.enhance.call($this, this.settings.tiptype, this.settings.usePlugin, this.settings.tipSweep)
+				Validform.util.enhance.call($this, this.settings.tiptype, this.settings.usePlugin, this.settings.tipSweep);
 			});
-			return this
+			return this;
 		}
-	}
+	};
 	$.fn.Validform = function(settings) {
-		return new Validform(this, settings)
-	}
-})
+		return new Validform(this, settings);
+	};
+});
