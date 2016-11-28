@@ -9,5 +9,6 @@
 	"projectHolder":		"__dev",
 	"distHolder":			"__folder",
 	"UUIDHolder":			"__uuid",
-	"checkUpdate":			true
+	"checkUpdate":			true,
+	"compress":				true
 }
