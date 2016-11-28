@@ -1,8 +1,8 @@
 /*
  * name: base
- * version: 2.15.6
- * update: 暴露ajaxSetup方法
- * date: 2016-11-25
+ * version: 2.15.7
+ * update: 某些环境下会出现dataTypes未更新导致数据不能正确解析
+ * date: 2016-11-28
  */
 define('base', function(require, exports, module) {
 	'use strict';
@@ -13,11 +13,9 @@ define('base', function(require, exports, module) {
 	 */
 	var ajaxLocalCacheQueue = {};
 	var _ajaxSetup = function(jQuery){
-		var catchAjaxError = function(o) {
-			var code = o.readyState,
-				status = o.status;
+		var catchAjaxError = function(event, request, settings) {
 			require.async('box', function() {
-				switch (code) {
+				switch (request.readyState) {
 					case 0:
 						$.box.msg('网络错误，请检查网络连接！', {
 							color: 'danger'
@@ -39,7 +37,7 @@ define('base', function(require, exports, module) {
 						});
 						break;
 					default: //4
-						$.box.msg('服务端错误(code:' + status + ')', {
+						$.box.msg('服务端错误(code:' + request.status + ')', {
 							color: 'danger'
 						});
 						break;
@@ -61,7 +59,12 @@ define('base', function(require, exports, module) {
 				}
 				//默认回调处理
 				if (setting.dataType === 'json') {
+					//某些环境下会出现dataTypes未更新导致数据不能正确解析
+					if(setting.dataTypes[setting.dataTypes.length-1]!=='json'){
+						setting.dataTypes.push('json');
+					}
 					setting.success = function(res) {
+						xhr.abort();
 						if (res.msg) {
 							require.async('box', function() {
 								$.box.msg(res.msg, {
@@ -168,11 +171,12 @@ define('base', function(require, exports, module) {
 				}
 			},
 			error: function(o) {
-				catchAjaxError(o);
+				
 			}
 		});
+		$( document ).ajaxError(catchAjaxError);
 	};
-	_ajaxSetup($);
+	//_ajaxSetup($);
 	/*
 	 * cookie
 	 */
