@@ -1,8 +1,8 @@
 /*
  * name: box.js
- * version: v3.10.5
- * update: protect自动设置bug
- * date: 2016-11-24             
+ * version: v3.10.6
+ * update: 遮罩层样式内嵌
+ * date: 2016-11-29          
  * base on: zhangxinxu
  */
 define('box', function(require, exports, module) {
@@ -10,9 +10,6 @@ define('box', function(require, exports, module) {
 	seajs.importStyle('.box_wrap_close a,.box_wrap_close a:hover{text-decoration:none}\
 		.box_wrap_close a:hover{color:#fd7b6d}\
 		.box_wrap_close a,.box_wrap_msg_clo{text-align:center;cursor:pointer}\
-		#boxBlank{display:none !important; position:fixed;z-index:99;left:0;top:0;width:100%;height:100%;background:#000;filter:alpha(opacity=50);\
-		background:rgba(0,0,0,.5)}\
-		#boxBlank.active{display:block !important}\
 		.box_wrap_in{min-width:9em}\
 		.box_wrap_out{z-index:100;}\
 		.box_wrap_out_posi{position:absolute;border-radius:4px;overflow:hidden;max-width:100%;}\
@@ -76,12 +73,12 @@ define('box', function(require, exports, module) {
 			animate: true
 		},
 		eleBlank = $("#boxBlank").length ? $('#boxBlank') :
-		$('<div id="boxBlank" ontouchmove="return false" onselectstart="return false" />').appendTo('body');
+		$('<div id="boxBlank" style="display:none; position:fixed;z-index:99;left:0;top:0;width:100%;height:100%;background:#000;filter:alpha(opacity=50);background:rgba(0,0,0,.5)" ontouchmove="return false" onselectstart="return false" />').appendTo('body');
 	eleBlank.click(function() {
 		$.box.hide(false, true);
 	});
 	//全局配置
-	if(window.innerWidth<640){
+	if (window.innerWidth < 640) {
 		def.animate = false;
 	}
 	if ($.isPlainObject(window.boxGlobal)) {
@@ -97,7 +94,7 @@ define('box', function(require, exports, module) {
 			boxID = 'boxID' + parseInt(Math.random() * 1e5),
 			$o,
 			eleOut;
-		
+
 		if (s.hook && /^\w*$/.test(s.hook)) {
 			hook = s.hook;
 		}
@@ -105,7 +102,7 @@ define('box', function(require, exports, module) {
 		if (typeof(elements) === 'object' && elements.length) {
 			//现有dom
 			elements.show();
-			if(elements.context){
+			if (elements.context) {
 				s.protect = true;
 			}
 		} else if ($.parseHTML($.trim(elements + ''))[0].nodeType === 1) {
@@ -124,7 +121,7 @@ define('box', function(require, exports, module) {
 					'<div class="box_wrap_in">' +
 					'<div class="box_wrap_bar bg-primary" onselectstart="return false;">' +
 					'<h4 class="box_wrap_title"></h4>' +
-					(s.shut ? '<div class="box_wrap_close"><a href="#" title="' + Language[s.lang].close + '"></a></div>' : '')+
+					(s.shut ? '<div class="box_wrap_close"><a href="#" title="' + Language[s.lang].close + '"></a></div>' : '') +
 					'</div>' +
 					'<div class="box_wrap_body"></div>' +
 					'</div>' +
@@ -174,13 +171,13 @@ define('box', function(require, exports, module) {
 		}
 		if (s.drag) {
 			$.box.drag($o);
-		} else if(!window.PluginBoxResizeHandel){
-			window.PluginBoxResizeHandel = base.throttle(function(){
+		} else if (!window.PluginBoxResizeHandel) {
+			window.PluginBoxResizeHandel = base.throttle(function() {
 				$.box.setSize($o);
 			});
-			$(window).on('resize',PluginBoxResizeHandel);
+			$(window).on('resize', PluginBoxResizeHandel);
 		}
-		
+
 		if (!s.bg) {
 			$.box.bgHide();
 		} else {
@@ -199,7 +196,7 @@ define('box', function(require, exports, module) {
 		return $o;
 	};
 	$.extend($.box, {
-		setSize: function($o,config) {
+		setSize: function($o, config) {
 			if (!$o.bg.length || !$o.ele.length || !$o.out.length) {
 				return;
 			}
@@ -209,61 +206,60 @@ define('box', function(require, exports, module) {
 				outHeight,
 				xh,
 				xw;
-			if($.isPlainObject(config)){
-				if(config.width){
+			if ($.isPlainObject(config)) {
+				if (config.width) {
 					xw = config.width;
 				}
-				if(config.height){
+				if (config.height) {
 					xw = config.height;
 				}
-			}else{
-				if($o.s.width=='auto'){
-					xw = Math.min($o.out.width(),w);
-				}else{
-					xw = Math.min($o.s.width,w);
+			} else {
+				if ($o.s.width == 'auto') {
+					xw = Math.min($o.out.width(), w);
+				} else {
+					xw = Math.min($o.s.width, w);
 				}
 				$o.out.css({
 					"width": xw
 				});
-				if($o.s.height==='auto'){
-					if($o.s.layout){
-						outHeight = $o.out.find('.box_wrap_body').removeAttr('style').outerHeight(true) 
-							+ $o.out.find('.box_wrap_bar').outerHeight(true);
-					}else{
+				if ($o.s.height === 'auto') {
+					if ($o.s.layout) {
+						outHeight = $o.out.find('.box_wrap_body').removeAttr('style').outerHeight(true) + $o.out.find('.box_wrap_bar').outerHeight(true);
+					} else {
 						outHeight = $o.out.height();
 					}
-					xh = Math.min(outHeight,h);
-				}else{
-					xh = Math.min(parseFloat($o.s.height),h);
-					console.log('box高度自定调整为窗口最大高度：'+h);
+					xh = Math.min(outHeight, h);
+				} else {
+					xh = Math.min(parseFloat($o.s.height), h);
+					console.log('box高度自定调整为窗口最大高度：' + h);
 				}
 			}
 			$o.bg.height(h);
 			$o.out.css({
 				"height": xh
 			});
-			if($o.s.layout){
-				$o.out.find('.box_wrap_body').height(xh-$o.out.find('.box_wrap_bar').outerHeight(true));
+			if ($o.s.layout) {
+				$o.out.find('.box_wrap_body').height(xh - $o.out.find('.box_wrap_bar').outerHeight(true));
 			}
 			if ($o.s.setposi) {
 				var l = (w - xw) / 2,
-					t;					
+					t;
 				if ($o.s.top !== void(0)) {
 					t = $o.s.top;
-				}else if($o.s.fix){
+				} else if ($o.s.fix) {
 					t = (h - xh) / 2;
-				}else{
+				} else {
 					t = st + (h - xh) / 2;
 				}
 				$o.out.css({
 					top: t,
 					left: l
 				});
-				if($o.s.animate){
+				if ($o.s.animate) {
 					$o.out.addClass('init');
-					setTimeout(function(){
+					setTimeout(function() {
 						$o.out.addClass('show');
-					},0);
+					}, 0);
 				}
 			}
 			return $o;
@@ -278,16 +274,16 @@ define('box', function(require, exports, module) {
 		},
 		bgCheck: function() {
 			if (!$('.box_wrap_out[box-ui-bg=true]').length) {
-				setTimeout(function(){
-					$('#boxBlank').removeClass('active');
-				},0);
+				setTimeout(function() {
+					eleBlank.hide();
+				}, 0);
 			}
 		},
 		bgHide: function() {
 			$.box.bgCheck();
 		},
 		bgShow: function() {
-			$('#boxBlank').addClass('show active');
+			eleBlank.show();
 		},
 		barHide: function($o) {
 			if ($o.bar && $o.bar.length) {
@@ -295,8 +291,8 @@ define('box', function(require, exports, module) {
 			}
 		},
 		hide: function($o, fromBgClick) {
-			if(window.PluginBoxResizeHandel){
-				$(window).unbind('resize',PluginBoxResizeHandel);
+			if (window.PluginBoxResizeHandel) {
+				$(window).unbind('resize', PluginBoxResizeHandel);
 				window.PluginBoxResizeHandel = null;
 			}
 			if (!$o) {
@@ -395,9 +391,9 @@ define('box', function(require, exports, module) {
 			s.top = 0;
 			s.layout = false;
 			s.bg = false;
-			if(s.delay){
+			if (s.delay) {
 				element = '<div class="box_wrap_msg"><div class="box_wrap_msg_cont bg-' + s.color + '">' + message + '</div></div>';
-			}else{
+			} else {
 				element = '<div class="box_wrap_msg"><div class="box_wrap_msg_cont bg-' + s.color + '">' + message + '</div><div class="box_wrap_msg_clo"><a href="#" title="' + Language[s.lang].close + '">×</a></div></div>';
 			}
 			var _o = $.box(element, s);
@@ -445,11 +441,11 @@ define('box', function(require, exports, module) {
 			options = options || {};
 			options.bg = true;
 			options.layout = false;
-			options.onshow = function($box){
+			options.onshow = function($box) {
 				$box.append('<div class="box_wrap_close box_img_close"><a>x</a></div>')
-				.find('.box_img_close').on('click',function(){
-					$.box.hide(imgBox);
-				});
+					.find('.box_img_close').on('click', function() {
+						$.box.hide(imgBox);
+					});
 			};
 			require.async('img-ready', function(ready) {
 				ready(src, function(width, height) {
