@@ -1,47 +1,46 @@
 /*
  * name: base
- * version: 2.15.7
- * update: 某些环境下会出现dataTypes未更新导致数据不能正确解析
- * date: 2016-11-28
+ * version: 2.15.8
+ * update: ajax默认错误捕捉增加控制台调试信息
+ * date: 2016-11-29
  */
 define('base', function(require, exports, module) {
 	'use strict';
 	var $ = require('jquery');
-
 	/*
 	 * ajax优化
 	 */
 	var ajaxLocalCacheQueue = {};
 	var _ajaxSetup = function(jQuery){
 		var catchAjaxError = function(event, request, settings) {
+			if(request.statusText === "canceled"){
+				return null;
+			}
 			require.async('box', function() {
+				var errmsg = '';
 				switch (request.readyState) {
 					case 0:
-						$.box.msg('网络错误，请检查网络连接！', {
-							color: 'danger'
-						});
-						break;
+						errmsg = '网络错误，请检查网络连接！';
+					break;
 					case 1:
-						$.box.msg('请求异常中断！', {
-							color: 'danger'
-						});
-						break;
+						errmsg = '请求异常中断！';
+					break;
 					case 2:
-						$.box.msg('数据接收错误！', {
-							color: 'danger'
-						});
-						break;
+						errmsg = '数据接收错误！';
+					break;
 					case 3:
-						$.box.msg('数据解析错误！', {
-							color: 'danger'
-						});
-						break;
-					default: //4
-						$.box.msg('服务端错误(code:' + request.status + ')', {
-							color: 'danger'
-						});
-						break;
+						errmsg = '数据解析错误！';
+					break;
+					case 4:
+						errmsg = '服务端错误！';
+					break;
+					default:
+						errmsg = '未知错误！';
 				}
+				$.box.msg(errmsg, {
+					color: 'danger'
+				});
+				console.warn(errmsg + 'url: ' + settings.url + '; status: '+ request.status);
 			});
 		};
 		jQuery.ajaxSetup({
@@ -59,12 +58,11 @@ define('base', function(require, exports, module) {
 				}
 				//默认回调处理
 				if (setting.dataType === 'json') {
-					//某些环境下会出现dataTypes未更新导致数据不能正确解析
-					if(setting.dataTypes[setting.dataTypes.length-1]!=='json'){
-						setting.dataTypes.push('json');
-					}
 					setting.success = function(res) {
-						xhr.abort();
+						//某些环境json数据不能正确解析
+						if(res.split){
+							res = $.parseJSON(res);
+						}
 						if (res.msg) {
 							require.async('box', function() {
 								$.box.msg(res.msg, {
@@ -106,6 +104,7 @@ define('base', function(require, exports, module) {
 					//请求队列
 					if(ajaxLocalCacheQueue[cacheKey]){
 						ajaxLocalCacheQueue[cacheKey].push(setting.success);
+						xhr.ignoreError = true;
 						return xhr.abort();
 					}
 					//间隔符容错
