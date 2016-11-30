@@ -1,3 +1,8 @@
 <link href="/__folder/favicon.ico" rel="icon">
 <link href="/__folder/css/style.css" rel="stylesheet">
+<script type="text/javascript">
+	if(window.location.href.indexOf('https')===0){
+		document.write('<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />');
+	}
+</script>
 <!--[if lt IE 9]><script src="/__folder/lib/H5shiv.js"></script><![endif]-->
