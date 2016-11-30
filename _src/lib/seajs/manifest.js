@@ -16,9 +16,9 @@
         'album'                             : 'v2.2.10',
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.0.1',
-        'base'                              : 'v2.15.8',
+        'base'                              : 'v2.15.7',
         'bdshare'                           : 'v3.1.2',
-        'box'                               : 'v3.10.6',
+        'box'                               : 'v3.10.5',
         'city-select'                       : 'v0.0.5',
         'countdown'                         : 'v1.0.2',
         'counter'                           : 'v0.0.1',
@@ -48,7 +48,7 @@
         'select'                            : 'v3.1.9',
         'slide'                             : 'v4.1.8',
         'tab'                               : 'v2.1.2',
-        'tip'                               : 'v1.2.5',
+        'tip'                               : 'v1.2.4',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.2'
     };
@@ -56,5 +56,12 @@
     for(var key in mod){
         manifest[seajs.data.base + key + '.js'] = mod[key];
     }
-    seajs.data.localcache.manifest = manifest;
+    if(seajs.data.localcache){
+        seajs.data.localcache.manifest = manifest;
+    }else{
+        seajs.data.localcache = {
+            timeout: 2e4,
+            manifest: manifest
+        };
+    }
 })(seajs);
