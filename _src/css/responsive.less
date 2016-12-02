@@ -1,0 +1,38 @@
+//hide template textarea
+.UnpcPush textarea, .PcPush textarea, .MobilePush textarea, .UnmobilePush textarea{display: none;}
+//PcMode
+body:after {
+  display: block;
+  height: 0;
+  line-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  content: 'Pc';
+}
+.PcMode:after { content: 'Pc' !important;}
+.UnpcPush, .MobilePush { display: none;}
+img[data-src] { opacity: 0 ; filter: alpha(opacity=0);}
+//PadMode
+@media only screen and (max-device-width: @Pc) {
+  body:after {
+    content: 'Pad';
+  }
+  body{ user-select: none;-webkit-user-select: none;min-width: 0;}
+  body,input,textarea,button,select { font-size:14px;}
+  .wrap{padding-left:2%;padding-right:2%;width: auto;min-width: 0;}
+  .PcPush{display: none;}
+  .UnpcPush{display: block;}
+  @import url(./resp-midd.less);
+}
+//MobileMode
+@media only screen and (max-device-width: @Pad) {
+  body:after {
+    content: 'Mobile';
+  }
+  body,input,textarea,button,select {font-size:16px;}
+  .wrap{padding-left:4%;padding-right:4%; }
+  .UnmobilePush{display: none;}
+  .MobilePush{display:block;}
+  img[data-src]{opacity: 1;}
+  @import url(./resp-smal.less);
+}
