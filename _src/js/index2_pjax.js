@@ -11,10 +11,10 @@ define(function(require) {
 		require('box');
 		$.box.msg('hello p2!',{
 			color:'info'
-		})
+		});
 
 
 
-	}
+	};
 
-})
+});
