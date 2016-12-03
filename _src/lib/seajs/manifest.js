@@ -31,7 +31,7 @@
         'img-loaded'                        : 'v0.0.1',
         'img-ready'                         : 'v1.0.0',
         'instantclick'                      : 'v0.0.1',
-        'lazyload'                          : 'v2.0.1',
+        'lazyload'                          : 'v2.1.0',
         'marquee'                           : 'v0.10.1',
         'masonry'                           : 'v0.0.1',
         'mousemenu'                         : 'v1.0.0',
