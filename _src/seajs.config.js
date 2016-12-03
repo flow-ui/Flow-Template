@@ -1,11 +1,7 @@
-//开发模式
-seajs.develop = true;
+
 // 模块根路径
 seajs.root = '__serverRoot' ? '/' + '__serverRoot' : ''; 
-// api管理
-seajs.api = {
-	test: seajs.develop ? '/develop' : '/product'
-};
+
 // 插件设置
 seajs.set = {
 	util: {
