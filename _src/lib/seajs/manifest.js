@@ -19,7 +19,7 @@
         'base'                              : 'v3.0.1',
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.10.5',
-        'city-select'                       : 'v0.0.5',
+        'city-select'                       : 'v0.0.6',
         'countdown'                         : 'v1.0.2',
         'counter'                           : 'v0.0.1',
         'datepicker'                        : 'v1.0.0',

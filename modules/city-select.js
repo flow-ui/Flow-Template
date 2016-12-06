@@ -1,8 +1,8 @@
 /*
  * name: city-selector.js
- * version: v0.0.5
- * update: loading居中
- * date: 2016-11-25
+ * version: v0.0.6
+ * update: 去掉data url合法性判断
+ * date: 2016-12-06
  */
 define('city-select', function(require, exports, module) {
 	var $ = require('jquery');
@@ -127,7 +127,7 @@ define('city-select', function(require, exports, module) {
 
 			if ($.isArray(opt.data)) {
 				cityData = opt.data;
-			} else if(!opt.data || !opt.data.split || !/^([\w-]+:)?\/\/([^\/]+)/.test(opt.data)){
+			} else if(!opt.data || !opt.data.split){
 				return console.log('data配置错误！');
 			}
 
