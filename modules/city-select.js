@@ -1,10 +1,11 @@
 /*
  * name: city-selector.js
- * version: v0.0.6
- * update: 去掉data url合法性判断
+ * version: v0.0.7
+ * update: bug fix
  * date: 2016-12-06
  */
 define('city-select', function(require, exports, module) {
+	'use strict';
 	var $ = require('jquery');
 	var base = require('base');
 	base.ajaxSetup($);
@@ -16,7 +17,7 @@ define('city-select', function(require, exports, module) {
 		.city-selector-head-close{position:absolute;right:0;top:0;padding:0 .5em;cursor:pointer;font-family:tahoma;font-size:2em;}\
 		.city-selector-head-back:hover,.city-selector-head-close:hover{color:#ff6e0a;}\
 		.city-selector-items{overflow:hidden;}\
-		.city-selector-item{float:left;width:12.5%;cursor:pointer;margin:1em 0;}\
+		.city-selector-item{float:left; cursor:pointer;margin:1em;}\
 		.city-selector-item:hover,.city-selector-items.cur{color:#ff6e0a;}\
 		', module.uri);
 	var def = {
@@ -77,7 +78,7 @@ define('city-select', function(require, exports, module) {
 			} else {
 				_data = cityData;
 			}
-			if ($.isArray(_data)) {
+			if ($.isArray(_data) && _data.length) {
 				$.each(_data, function(i, e) {
 					_html += ('<span class="city-selector-item" data-index="' + i + '" data-id="' + e.id + '">' + e.name + '</span>');
 				});
