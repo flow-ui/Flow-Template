@@ -23,7 +23,7 @@
         'countdown'                         : 'v1.0.2',
         'counter'                           : 'v0.0.1',
         'datepicker'                        : 'v1.0.0',
-        'drag'                              : 'v0.6.0',
+        'drag'                              : 'v0.7.0',
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.0.2',
         'etpl'                              : 'v0.0.1',
