@@ -43,6 +43,7 @@
         'pjax'                              : 'v0.0.1',
         'placeholder'                       : 'v0.0.1',
         'qr'                                : 'v0.1.0',
+        'responsive'                        : 'v0.0.1',
         'scroll-bar'                        : 'v2.2.7',
         'scroll-col'                        : 'v4.2.4',
         'scroll-load'                       : 'v0.0.1',
