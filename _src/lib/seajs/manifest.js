@@ -39,6 +39,7 @@
         'mousewheel'                        : 'v0.0.1',
         'offcanvas'                         : 'v2.0.4',
         'on-scroll'                         : 'v2.1.3',
+        'page'                              : 'v0.0.1',
         'photowall'                         : 'v0.1.1',
         'pjax'                              : 'v0.0.1',
         'placeholder'                       : 'v0.0.1',
