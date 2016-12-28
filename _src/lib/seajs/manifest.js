@@ -48,7 +48,7 @@
         'scroll-col'                        : 'v4.2.4',
         'scroll-load'                       : 'v0.0.1',
         'scroll-row'                        : 'v3.0.6',
-        'select'                            : 'v3.1.9',
+        'select'                            : 'v4.0.0',
         'sendcode'                          : 'v0.0.1',
         'slide'                             : 'v4.1.8',
         'tab'                               : 'v2.1.2',
