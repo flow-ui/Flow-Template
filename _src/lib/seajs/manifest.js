@@ -46,7 +46,7 @@
         'responsive'                        : 'v0.0.1',
         'scroll-bar'                        : 'v2.2.7',
         'scroll-col'                        : 'v4.2.4',
-        'scroll-load'                       : 'v0.0.1',
+        'scroll-load'                       : 'v1.0.0',
         'scroll-row'                        : 'v3.0.6',
         'select'                            : 'v4.0.0',
         'sendcode'                          : 'v0.0.1',
