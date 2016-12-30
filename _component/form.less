@@ -44,8 +44,10 @@ input[type='radio'][disabled], input[type='checkbox'][disabled], input[type='rad
 .form-group-lg .form-control { font-size: @font-size-lg; height: @form-lg-height; padding:@line-height / 5.5 * @font-size @form-base-space;}
 .form-group-lg .form-control-static { font-size: @font-size-lg; line-height: 1.3333333; height:  @form-lg-height; min-height:@form-base-height; padding: @form-base-space 16px;}
 .has-feedback { position: relative;}
-.has-feedback .form-control { padding-right: 42.5px; *padding-right: 0;}
+.has-feedback .form-control { padding-right: @form-base-height;}
+.has-feedback .input-group .form-control{padding-right: 0;} 
 .form-group .form-control-feedback { line-height:@form-base-height; position: absolute; z-index: 2; top: 0; right: 0; display: block; width:@form-base-height; height:@form-base-height; text-align: center; pointer-events: none;}
+.has-feedback .input-group .form-control{padding-left: @form-base-height;}
 .form-group-lg .form-control-feedback, .input-lg +.form-control-feedback { line-height:  @form-lg-height; width:  @form-lg-height; height:  @form-lg-height;}
 .form-group-sm .form-control-feedback, .input-sm +.form-control-feedback { line-height: @form-sm-height; width: @form-sm-height; height: @form-sm-height;}
 .has-success .help-block, .has-success .control-label, .has-success .radio, .has-success .checkbox, .has-success .radio-inline, .has-success .checkbox-inline, .has-success.radio label, .has-success.checkbox label, .has-success.radio-inline label, .has-success.checkbox-inline label { color: @success;}
