@@ -30,6 +30,7 @@
         'img-loaded'                        : 'v0.0.1',
         'img-ready'                         : 'v1.0.0',
         'input-number'                      : 'v0.0.2',
+        'input'                             : 'v0.0.1',
         'instantclick'                      : 'v0.0.1',
         'lazyload'                          : 'v2.1.0',
         'marquee'                           : 'v0.10.1',
