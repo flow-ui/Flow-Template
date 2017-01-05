@@ -151,15 +151,19 @@ define('input', function(require, exports, module) {
                     }
                 }
             };
+        if (!$(this).length) {
+            return null;
+        }
         $(this).each(function(i, e) {
             var $this = $(e),
                 opt = $.extend({}, def, config || {}, $.isPlainObject($this.data('options')) ? $this.data('options') : {}),
                 render,
                 tagname = $this.get(0).tagName.toLowerCase(),
                 template = opt.template || ''; //接受自定义模板
-            if (!$this.length) {
-                return null;
+            if ($this.data('input-init')) {
+                return true;
             }
+            $this.data('input-init', true);
             //数据准备
             if (opt.color && opt.color.split) {
                 opt.color = ' has-' + $.trim(opt.color);
@@ -219,11 +223,6 @@ define('input', function(require, exports, module) {
             var renderDom = $(render(opt)),
                 shadowInput = renderDom.find('#' + opt.id),
                 validformHandle;
-            if ($this.data('input-init')) {
-                return true;
-            } else {
-                $this.data('input-init', true);
-            }
 
             //生成
             if (tagname === 'textarea' || tagname === 'input') {
