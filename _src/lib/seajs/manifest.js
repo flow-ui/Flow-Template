@@ -22,7 +22,7 @@
         'city-select'                       : 'v0.0.7',
         'countdown'                         : 'v1.1.0',
         'datepicker'                        : 'v1.0.0',
-        'drag'                              : 'v0.7.1',
+        'drag'                              : 'v0.7.2',
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.0.2',
         'etpl'                              : 'v0.0.1',
@@ -56,7 +56,7 @@
         'tab'                               : 'v2.1.2',
         'tip'                               : 'v1.2.4',
         'touch'                             : 'v0.1.1',
-        'zoom'                              : 'v2.0.2'
+        'zoom'                              : 'v2.0.3'
     };
     var manifest = {};
     for(var key in mod){
