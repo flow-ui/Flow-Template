@@ -10,5 +10,6 @@
 	"distHolder":			"__folder",
 	"UUIDHolder":			"__uuid",
 	"checkUpdate":			true,
-	"compress":				true
+	"compress":				true,
+	"extendsPath":			["modules/**"]
 }
