@@ -16,7 +16,7 @@
         'webuploader/webuploader'           : 'v1.0.0',
         'album'                             : 'v2.2.11',
         'appcan'                            : 'v0.1.0',
-        'autocomplete'                      : 'v0.0.1',
+        'autocomplete'                      : 'v0.1.0',
         'base'                              : 'v3.1.3',
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.10.7',
