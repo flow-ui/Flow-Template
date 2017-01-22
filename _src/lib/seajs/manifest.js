@@ -14,7 +14,7 @@
         'validform/validform'               : 'v2.4.3',
         'video/video'                       : 'v0.0.1',
         'webuploader/webuploader'           : 'v1.0.0',
-        'album'                             : 'v2.2.11',
+        'album'                             : 'v2.2.12',
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.1.0',
         'base'                              : 'v3.1.3',
