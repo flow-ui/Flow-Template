@@ -26,7 +26,7 @@
         'drag'                              : 'v0.7.2',
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.0.2',
-        'etpl'                              : 'v0.0.1',
+        'etpl'                              : 'v0.1.0',
         'fastclick'                         : 'v0.0.1',
         'img-loaded'                        : 'v0.0.1',
         'img-ready'                         : 'v1.0.0',
