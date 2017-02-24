@@ -54,7 +54,7 @@
         'select'                            : 'v4.2.0',
         'sendcode'                          : 'v0.2.0',
         'slide'                             : 'v4.2.0',
-        'tab'                               : 'v2.1.2',
+        'tab'                               : 'v2.2.1',
         'tip'                               : 'v1.2.4',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.3'
