@@ -24,6 +24,7 @@
         'countdown'                         : 'v1.1.1',
         'datepicker'                        : 'v1.0.0',
         'drag'                              : 'v0.7.2',
+        'dropdown'                          : 'v0.0.1',
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.0.2',
         'etpl'                              : 'v0.1.1',
