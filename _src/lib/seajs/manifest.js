@@ -24,7 +24,7 @@
         'countdown'                         : 'v1.1.1',
         'datepicker'                        : 'v1.0.0',
         'drag'                              : 'v0.7.2',
-        'dropdown'                          : 'v0.0.1',
+        'dropdown'                          : 'v0.1.0',
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.0.2',
         'etpl'                              : 'v0.1.1',
@@ -40,6 +40,7 @@
         'mousemenu'                         : 'v1.0.0',
         'mousetrap'                         : 'v1.5.3',
         'mousewheel'                        : 'v0.0.1',
+        'notice'                            : 'v0.0.1',
         'offcanvas'                         : 'v2.0.4',
         'on-scroll'                         : 'v2.1.3',
         'page'                              : 'v0.0.1',
@@ -56,7 +57,7 @@
         'sendcode'                          : 'v0.2.0',
         'slide'                             : 'v4.2.0',
         'tab'                               : 'v2.2.1',
-        'tip'                               : 'v1.3.1',
+        'tip'                               : 'v1.3.2',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.3'
     };
