@@ -53,7 +53,7 @@
         'scroll-col'                        : 'v4.2.4',
         'scroll-load'                       : 'v1.0.0',
         'scroll-row'                        : 'v3.0.6',
-        'select'                            : 'v4.2.0',
+        'select'                            : 'v4.3.0',
         'sendcode'                          : 'v0.2.0',
         'slide'                             : 'v4.2.0',
         'tab'                               : 'v2.2.1',
