@@ -6,7 +6,6 @@
         'jquery/1/jquery'                   : 'v1.11.3',
         'jquery/2/jquery'                   : 'v2.1.4',
         'jquery/3/jquery'                   : 'v3.1.1',
-        'My97DatePicker/WdatePicker'        : 'v0.0.1',
         'raty/raty'                         : 'v0.1.0',
         'upload/upload'                     : 'v1.1.1',
         'upload/makethumb'                  : 'v0.0.1',
