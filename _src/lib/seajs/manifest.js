@@ -56,7 +56,8 @@
         'sendcode'                          : 'v0.2.0',
         'slide'                             : 'v4.2.0',
         'tab'                               : 'v2.2.1',
-        'tip'                               : 'v1.3.2',
+        'timepicker'                        : 'v0.0.1',
+        'tip'                               : 'v1.4.0',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.3'
     };
