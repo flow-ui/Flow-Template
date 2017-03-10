@@ -23,7 +23,7 @@
         'countdown'                         : 'v1.1.1',
         'datepicker'                        : 'v1.0.2',
         'drag'                              : 'v0.7.2',
-        'drag-panel'                        : 'v0.0.1',
+        'drag-panel'                        : 'v0.0.2',
         'dropdown'                          : 'v0.1.0',
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.0.2',
