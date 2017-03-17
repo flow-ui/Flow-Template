@@ -1,5 +1,5 @@
 @menu-horizontal-height: round(@font-size * 4.2);
-.menu-ui{position: relative;display: block;}
+.menu-ui{position: relative;display: block;user-select:none;}
 .menu-item{position: relative;z-index: 1;display: block;cursor: pointer;transition: all .2s ease-in-out;}
 .menu-item > .ion{margin-right: .5em;}
 .menu-horizontal{line-height: @menu-horizontal-height;height: @menu-horizontal-height;}
@@ -21,6 +21,8 @@
 .menu-vertical .menu-item,.menu-vertical .menu-item-title{position: relative;z-index: 1;padding: @font-size @font-size * 1.7;cursor: pointer;transition: all .2s ease-in-out;}
 .menu-vertical .menu-item:hover,.menu-vertical .menu-item-title:hover{background: @gray-lighter;}
 .menu-vertical .menu-submenu .menu-item{padding-left: @font-size * 2.7;}
+.menu-vertical .menu-sub-group{display: none;}
+.menu-vertical .menu-opened .menu-sub-group{display: block;}
 .menu-light.menu-vertical .menu-item{border-right: 2px solid transparent;}
 .menu-light.menu-vertical .menu-item:hover{color: @primary;}
 .menu-light.menu-vertical .menu-item-active{z-index: 2;color: @primary;border-right: 2px solid @primary;}
@@ -28,12 +30,14 @@
 .menu-dark.menu-vertical .menu-item:hover,.menu-dark.menu-vertical .menu-item-title:hover{color: @light;background: inherit;}
 .menu-dark.menu-vertical .menu-item-active,.menu-dark.menu-vertical .menu-item-active:hover{color: @light;background: @primary;}
 .menu-dark.menu-vertical .menu-opened{background: @gray-darker;}
-.menu-dark.menu-vertical .menu-opened .menu-item-title{background: @gray-dark;}
+.menu-dark.menu-vertical .menu-opened .menu-item-title{background: @gray-dark;color:@light;}
 .menu-primary.menu-vertical .menu-item,.menu-primary.menu-vertical .menu-item-title{color: @gray-lighter;}
 .menu-primary.menu-vertical .menu-item:hover,.menu-primary.menu-vertical .menu-item-title:hover{color: @light;background: @primary-dark;}
-.menu-primary.menu-vertical .menu-item-active,.menu-primary.menu-vertical .menu-item-active:hover{color: @light;background: @primary-dark;}
+.menu-primary.menu-vertical .menu-sub-group .menu-item:hover{background:inherit;color:@primary-dark;}
+.menu-primary.menu-vertical .menu-item-active,.menu-primary.menu-vertical .menu-sub-group .menu-item-active,.menu-primary.menu-vertical .menu-sub-group .menu-item-active:hover, .menu-primary.menu-vertical .menu-item-active:hover{
+    color: @light;background: @primary-dark;}
 .menu-primary.menu-vertical .menu-opened{background: lighten(@primary, 20%);}
-.menu-primary.menu-vertical .menu-opened .menu-item-title{background: @primary;}
+.menu-primary.menu-vertical .menu-opened .menu-item-title{background: @primary;color:@light;}
 .menu-sub-ion{font-size: .9em;transition: transform .2s ease-in-out;margin:0 .5em;}
 .menu-vertical .menu-sub-ion{position: relative;top: 4px;float: right;margin-right: 0;}
 .menu-opened .menu-sub-ion{transform: rotate(180deg);}
