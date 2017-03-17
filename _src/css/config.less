@@ -37,26 +37,34 @@
 @danger-dark: 		darken(@danger, 20%);
 
 //间距
-@space: 			1.5 * @font-size;
+@space: 			1.6 * @font-size;
 @space-sm: 			1 * @font-size;
-@space-lg: 			3 * @font-size;
+@space-lg: 			2.4 * @font-size;
 
 //版式
 @view-width: 		1200px;
 @radius: 			4px;
 
-//栅格
-@gridColumns: 		12;
-@gridGutter: 		2%;
-
 //响应节点
 @Pc: 				1024px;
 @Pad: 				640px;
 
-//精灵图标
+//grid.less
+@gridColumns: 		12;
+@gridGutter: 		2%;
+//form.less
+@form-base-height: round(@font-size * 2.3);
+@form-sm-height: round(@font-size-sm * 2.1);
+@form-lg-height: round(@font-size-lg * 2.5);
+@form-base-space: round(@line-height / 3 * @font-size);
+@form-lg-space: round(@line-height / 2.5 * @font-size);
+//iconsprite.less
  @sprite-matrix: 	5;
  @sprite-width: 	25px;
-
+//btn.less
+@btn-base-height: @form-base-height;
+@btn-sm-height: @form-sm-height;
+@btn-lg-height: @form-lg-height;
 //dl.less
 @dl-label-width: 	10em;
 //table.less
