@@ -1,8 +1,8 @@
 /*
  * name: dropdown.js
- * version: v0.2.0
- * update: text => item; add width;
- * date: 2017-03-06
+ * version: v0.2.1
+ * update: 方法最终返回触发元素；点击项高亮
+ * date: 2017-03-17
  */
 define('dropdown', function(require, exports, module) {
 	"use strict";
@@ -10,7 +10,7 @@ define('dropdown', function(require, exports, module) {
 		.dropdown-default{background:#fff;color:#434343;border-radius:4px;overflow:hidden;box-shadow: 0 1px 6px rgba(0,0,0,.2);border:1px solid #eee;padding:.5em 0;}\
 		.dropdown-item{text-align:center;min-width:4em; padding:0 1.5em;line-height:2.6em;cursor:pointer;white-space:nowrap;}\
 		.dropdown-item.disabled{color:#ccc; cursor:not-allowed;}\
-		.dropdown-default .dropdown-item:hover{background:#dedede;}\
+		.dropdown-default .dropdown-item.on, .dropdown-default .dropdown-item:hover{background:#dedede;}\
 		.dropdown-default .dropdown-item.disabled:hover{background:inherit;}\
 		.dropdown-default .dropdown-group{padding:4px 0; border-bottom:1px solid #eee;}', module.uri);
 
@@ -23,7 +23,7 @@ define('dropdown', function(require, exports, module) {
 			items: [], //item, disabled
 			width: null,
 			theme: 'dropdown-default',
-			onclick: function() {}
+			onclick: null
 		},
 		render = function(data, hook) {
 			var result = '<ul class="dropdown-menu ' + (hook || '') + '">';
@@ -53,9 +53,13 @@ define('dropdown', function(require, exports, module) {
 			menuHtml.css('min-width',opt.width);
 		}
 		var model = Tip(menuHtml, $.extend(opt, {
-			onshow: function() {
+			onshow: function($el) {
+				if($el.data('dropdown-value') !== void(0)){
+					menuHtml.find('.dropdown-item').eq($el.data('dropdown-value')).addClass('on').siblings('.on').removeClass('on');
+				}
 				menuHtml.on('click', '.dropdown-item', function() {
 					var item = opt.items[$(this).index()];
+					$el.data('dropdown-value', $(this).index());
 					if (!$(this).hasClass('disabled')) {
 						model.hide();
 						typeof(opt.onclick) === 'function' && opt.onclick(item);
@@ -63,6 +67,7 @@ define('dropdown', function(require, exports, module) {
 				});
 			}
 		}));
+		return $(opt.el);
 	};
 
 	$.fn.dropdown = function(config) {
