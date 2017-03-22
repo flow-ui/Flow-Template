@@ -1,8 +1,8 @@
 /*
  * name: dropdown.js
- * version: v0.2.1
- * update: 方法最终返回触发元素；点击项高亮
- * date: 2017-03-17
+ * version: v0.2.2
+ * update: onclick增加第二个参数isCurrent
+ * date: 2017-03-22
  */
 define('dropdown', function(require, exports, module) {
 	"use strict";
@@ -58,11 +58,13 @@ define('dropdown', function(require, exports, module) {
 					menuHtml.find('.dropdown-item').eq($el.data('dropdown-value')).addClass('on').siblings('.on').removeClass('on');
 				}
 				menuHtml.on('click', '.dropdown-item', function() {
-					var item = opt.items[$(this).index()];
-					$el.data('dropdown-value', $(this).index());
+					var itemIndex = $(this).index();
+					var isCurrent = $el.data('dropdown-value') === itemIndex;
+					var item = opt.items[itemIndex];
+					$el.data('dropdown-value', itemIndex);
 					if (!$(this).hasClass('disabled')) {
 						model.hide();
-						typeof(opt.onclick) === 'function' && opt.onclick(item);
+						typeof(opt.onclick) === 'function' && opt.onclick(item, isCurrent);
 					}
 				});
 			}
