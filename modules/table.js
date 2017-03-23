@@ -589,6 +589,7 @@ define('table', function(require, exports, module) {
 										}
 									});
 								}
+
 								if (typeof opt.onSelect === 'function') {
 									opt.onSelect($(this).data('index'), $this.data('data')[index], multiCollection);
 								}
@@ -598,7 +599,7 @@ define('table', function(require, exports, module) {
 							if (multiCollection.length === $this.data('data').length) {
 								multiCollection = [];
 							} else {
-								multiCollection = $this.data('data');
+								multiCollection = deepcopy($this.data('data'));
 							}
 							if (typeof opt.onSelect === 'function') {
 								opt.onSelect('all', null, multiCollection);
