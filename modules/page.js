@@ -6,16 +6,15 @@
  */
 define('page', function(require, exports, module) {
 	"use strict";
-	seajs.importStyle('.pagination{display:inline-block;padding-left:0;border-radius:4px}.pagination>li{display:inline}.pagination>li>a,.pagination>li>span{position:relative;float:left;padding:8px 15px;margin-left:-1px;line-height:1.42857143;color:#ff6e0a;text-decoration:none;background-color:#fff;border:1px solid #ddd}.pagination>li:first-child>a,.pagination>li:first-child>span{margin-left:0;border-top-left-radius:4px;border-bottom-left-radius:4px}.pagination>li:last-child>a,.pagination>li:last-child>span{border-top-right-radius:4px;border-bottom-right-radius:4px}.pagination>li>a:focus,.pagination>li>a:hover,.pagination>li>span:focus,.pagination>li>span:hover{color:#ff6e0a;background-color:#eee}.pagination>.active>a,.pagination>.active>a:focus,.pagination>.active>a:hover,.pagination>.active>span,.pagination>.active>span:focus,.pagination>.active>span:hover{z-index:2;color:#fff;cursor:default;background-color:#ff6e0a;border-color:#ff6e0a}.pagination>.disabled>a,.pagination>.disabled>a:focus,.pagination>.disabled>a:hover,.pagination>.disabled>span,.pagination>.disabled>span:focus,.pagination>.disabled>span:hover{color:#777;cursor:not-allowed;background-color:#fff;border-color:#ddd}.pagination-lg>li>a,.pagination-lg>li>span{padding:10px 16px;font-size:18px;line-height:1.3333333}.pagination-lg>li:first-child>a,.pagination-lg>li:first-child>span{border-top-left-radius:6px;border-bottom-left-radius:6px}.pagination-lg>li:last-child>a,.pagination-lg>li:last-child>span{border-top-right-radius:6px;border-bottom-right-radius:6px}.pagination-sm>li>a,.pagination-sm>li>span{padding:5px 10px;font-size:12px;line-height:1.5}.pagination-sm>li:first-child>a,.pagination-sm>li:first-child>span{border-top-left-radius:3px;border-bottom-left-radius:3px}.pagination-sm>li:last-child>a,.pagination-sm>li:last-child>span{border-top-right-radius:3px;border-bottom-right-radius:3px}.pagination>li>.unable,.pagination>li>.unable:hover{color:#ccc;cursor:default;background:#fff}', module.uri);
 	var $ = require('jquery'),
 		etpl = require('etpl'),
 		template = '<ul class="${wrapClass}">\
-                        <li><a href="javascript:;"<!-- if: ${isFirst} --> class="unable"<!-- else --> data-to="${prevPage}"<!-- /if -->>上一页</a></li>\
-                        <!-- for: ${pages} as ${page} -->\
-                        <li<!-- if: ${page.active} --> class="active"<!-- /if -->><a href="javascript:;" data-to="${page.to}">${page.num}</a></li>\
-                        <!-- /for -->\
-                        <li><a href="javascript:;"<!-- if: ${isLast} --> class="unable"<!-- else --> data-to="${nextPage}"<!-- /if -->>下一页</a></li>\
-                    </ul>',
+            <li><a href="javascript:;"<!-- if: ${isFirst} --> class="unable"<!-- else --> data-to="${prevPage}"<!-- /if -->>上一页</a></li>\
+            <!-- for: ${pages} as ${page} -->\
+            <li<!-- if: ${page.active} --> class="active"<!-- /if -->><a href="javascript:;" data-to="${page.to}">${page.num}</a></li>\
+            <!-- /for -->\
+            <li><a href="javascript:;"<!-- if: ${isLast} --> class="unable"<!-- else --> data-to="${nextPage}"<!-- /if -->>下一页</a></li>\
+        </ul>',
 		pagerender = etpl.compile(template),
 		def = {
 			el: null,
@@ -94,7 +93,7 @@ define('page', function(require, exports, module) {
 					}
 				};
 			if (!$(opt.el).length || !opt.total) {
-				return console.warn('page():参数异常');
+				return console.warn('page():缺少el或total参数!');
 			}
 
 			if (opt.hook && opt.hook.split) {
@@ -117,20 +116,17 @@ define('page', function(require, exports, module) {
 
 			render($(opt.el), pageData);
 
-			if (!$(opt.el).data('pageinit')) {
-				$(opt.el).data('pageinit', 1).on('click', 'a[data-to]', function(e) {
-					e.preventDefault();
-					if (!$(this).parent('.active').length && typeof(opt.onClick) === 'function') {
-						opt.onClick($(this).data('to'));
-					}
-					if (opt.auto) {
-						set({
-							current: $(this).data('to')
-						});
-					}
-				});
-			}
-
+			$(opt.el).unbind('click').on('click', 'a[data-to]', function(e) {
+				e.preventDefault();
+				if (!$(this).parent('.active').length && typeof(opt.onClick) === 'function') {
+					opt.onClick($(this).data('to'));
+				}
+				if (opt.auto) {
+					set({
+						current: $(this).data('to')
+					});
+				}
+			});
 			return {
 				set: set
 			};
