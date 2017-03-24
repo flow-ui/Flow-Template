@@ -1,8 +1,8 @@
 /*
  * name: page.js
- * version: v1.0.1
- * update: set方法同步onClick方法
- * date: 2017-03-23
+ * version: v1.0.2
+ * update: onClick => onChange
+ * date: 2017-03-24
  */
 define('page', function(require, exports, module) {
 	"use strict";
@@ -22,7 +22,7 @@ define('page', function(require, exports, module) {
 			showNum: 5,
 			total: null,
 			holder: '...',
-			onClick: null,
+			onChange: null,
 			hook: '',
 			size: '', //sm | lg
 			auto: true
@@ -90,8 +90,8 @@ define('page', function(require, exports, module) {
 					if (pageData.total < current) {
 						current = pageData.total;
 					}
-					if ($(opt.el).data('pagedata').current !== current && typeof(opt.onClick) === 'function') {
-						opt.onClick(current);
+					if ($(opt.el).data('pagedata').current !== current && typeof(opt.onChange) === 'function') {
+						opt.onChange(current);
 					}
 					if (opt.auto && pageData && conf && $.isPlainObject(conf)) {
 						pageData.current = current;
