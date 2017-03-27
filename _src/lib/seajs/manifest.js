@@ -58,7 +58,7 @@
         'sendcode'                          : 'v0.2.0',
         'slide'                             : 'v4.2.0',
         'tab'                               : 'v2.2.1',
-        'table'                             : 'v1.1.1',
+        'table'                             : 'v1.1.2',
         'timepicker'                        : 'v0.0.1',
         'tip'                               : 'v1.4.0',
         'touch'                             : 'v0.1.1',
