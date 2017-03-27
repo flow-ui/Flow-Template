@@ -45,6 +45,7 @@
         'offcanvas'                         : 'v2.0.4',
         'on-scroll'                         : 'v2.1.3',
         'page'                              : 'v1.0.2',
+        'paging-load'                       : 'v0.0.1',
         'photowall'                         : 'v0.1.1',
         'pjax'                              : 'v0.0.1',
         'placeholder'                       : 'v0.0.1',
