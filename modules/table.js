@@ -4,10 +4,8 @@
  * update: add methods
  * date: 2017-03-23
  */
- //TODO edit状态插值
 define('table', function(require, exports, module) {
 	"use strict";
-	seajs.importStyle('', module.uri);
 	require('dropdown');
 	var $ = require('jquery'),
 		base = require('base'),
