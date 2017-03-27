@@ -16,7 +16,7 @@
         'album'                             : 'v2.2.12',
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.1.0',
-        'base'                              : 'v3.2.0',
+        'base'                              : 'v3.3.0',
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.11.0',
         'city-select'                       : 'v0.1.0',
