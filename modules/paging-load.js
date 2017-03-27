@@ -11,7 +11,6 @@ define('paging-load', function(require, exports, module) {
 			url: null,
 			size: 6,
 			data: {},
-			reload: false,
 			success: null,
 			nomore: null,
 			error: null
@@ -19,60 +18,81 @@ define('paging-load', function(require, exports, module) {
 		pagingLoad = function(option) {
 			var opt = $.extend({}, def, option || {}),
 				sendParam = $.extend(true, {}, opt.data),
-				process = pagingLoad.prototype.process,
 				trueUrl,
-				getPage,
-				i = 0,
-				n = process.length;
+				thisProcessIndex;
 			if (!opt.url) {
 				return console.warn('toload()参数缺少url');
 			}
 			trueUrl = opt.url + '?' + $.param(opt.data);
-			for (; i < n; ++i) {
-				if (process[i].url == trueUrl) {
-					if (opt.reload) {
-						getPage = null;
-						process.splice(i, 1);
-					} else {
-						getPage = process[i].getPage;
+			
+			var init = function() {
+				var processes = pagingLoad.prototype.process,
+					i = 0,
+					n = processes.length,
+					getPage;
+				for (; i < n; ++i) {
+					if (processes[i].url == trueUrl) {
+						thisProcessIndex = i;
+						getPage = processes[i].getPage;
+						break;
 					}
-					break;
 				}
-			}
-			if (!getPage) {
-				var newProcess = {};
-				getPage = pagingLoad.prototype.newGetPage();
-				newProcess.url = trueUrl;
-				newProcess.getPage = getPage;
-				process.push(newProcess);
-				pagingLoad.prototype.process = process;
-			}
-			trueUrl = null;
-			process = null;
-			sendParam.page_index = getPage();
-			sendParam.page_size = opt.size;
-			$.ajax({
-				type: 'get',
-				url: opt.url,
-				data: sendParam,
-				dataType: opt.dataType || 'json',
-				success: function(res) {
-					if ($.isPlainObject(res) && res.status === 'Y' || (res && opt.dataType != 'json')) {
-						typeof(opt.success) === 'function' && opt.success(res);
-						if ($.isPlainObject(res) && res.data && res.count) {
-							var listLength = res.data.split ? JSON.parse(res.data).length : res.data.length;
-							if (listLength + sendParam.page_size * (sendParam.page_index - 1) >= parseInt(res.count)) {
-								typeof(opt.nomore) === 'function' && opt.nomore();
+				if (!getPage) {
+					getPage = pagingLoad.prototype.newGetPage();
+					processes.push({
+						url: trueUrl,
+						getPage: getPage
+					});
+					pagingLoad.prototype.process = processes;
+				}
+				return getPage;
+			};
+
+			return {
+				load: function() {
+					sendParam.page_index = init()();
+					sendParam.page_size = opt.size;
+					$.ajax({
+						type: 'get',
+						url: opt.url,
+						data: sendParam,
+						dataType: opt.dataType || 'json',
+						success: function(res) {
+							if ($.isPlainObject(res) && res.status === 'Y' || (res && opt.dataType != 'json')) {
+								typeof(opt.success) === 'function' && opt.success(res);
+								if ($.isPlainObject(res) && res.data && res.count) {
+									var listLength = res.data.split ? JSON.parse(res.data).length : res.data.length;
+									if (listLength + sendParam.page_size * (sendParam.page_index - 1) >= parseInt(res.count)) {
+										typeof(opt.nomore) === 'function' && opt.nomore();
+									}
+								}
+							} else {
+								console.log('数据异常页码回退');
+								getPage(true);
+								typeof(opt.success) === 'function' && opt.success(res);
 							}
 						}
-					} else {
-						console.log('数据异常页码回退');
-						getPage(true);
-						typeof(opt.success) === 'function' && opt.success(res);
+					});
+				},
+				reload: function() {
+					if (thisProcessIndex !== void 0) {
+						var processes = pagingLoad.prototype.process;
+						processes.splice(thisProcessIndex, 1);
+						pagingLoad.prototype.process = processes;
+					}
+				},
+				destroy: function() {
+					if (thisProcessIndex !== void 0) {
+						this.reload();
+						delete this.init;
+						delete this.load;
+						delete this.reload;
+						delete this.destroy;
 					}
 				}
-			});
+			};
 		};
+
 	pagingLoad.prototype.newGetPage = function() {
 		var loadPage = 0,
 			func = function(pullback) {
