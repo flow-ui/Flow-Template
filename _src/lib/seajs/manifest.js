@@ -38,7 +38,7 @@
         'marquee'                           : 'v0.10.1',
         'masonry'                           : 'v0.0.1',
         'menu'                              : 'v0.0.1',
-        'mousemenu'                         : 'v1.0.0',
+        'mousemenu'                         : 'v1.0.1',
         'mousetrap'                         : 'v1.5.3',
         'mousewheel'                        : 'v0.0.1',
         'notice'                            : 'v0.0.2',
