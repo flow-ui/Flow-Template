@@ -21,7 +21,7 @@
         'box'                               : 'v3.11.1',
         'city-select'                       : 'v1.0.0',
         'countdown'                         : 'v1.1.1',
-        'datepicker'                        : 'v1.0.2',
+        'datepicker'                        : 'v2.0.0',
         'drag'                              : 'v0.7.2',
         'drag-panel'                        : 'v0.0.2',
         'dropdown'                          : 'v0.2.2',
