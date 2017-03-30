@@ -60,7 +60,7 @@
         'slide'                             : 'v4.2.0',
         'tab'                               : 'v3.0.0',
         'table'                             : 'v1.1.2',
-        'timepicker'                        : 'v0.1.0',
+        'timepicker'                        : 'v0.1.1',
         'tip'                               : 'v1.4.0',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.3'
