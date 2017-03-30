@@ -1,7 +1,7 @@
 /*
  * name: tip.js
- * version: v1.4.1
- * update: 引入全局层级管理
+ * version: v1.4.2
+ * update: 背景层通用
  * date: 2017-03-30
  */
 define('tip', function(require, exports, module) {
@@ -46,19 +46,31 @@ define('tip', function(require, exports, module) {
 	<div class="tip-object" id="tip-object"></div>\
 	<i class="tip-arr" id="tip-arr"></i><i class="tip-arr-cell" id="tip-arr-cell"></i>\
 </div>',
-		$blank = $("#boxBlank"),
+		$blank,
 		$tipbox = $('#tip-box'),
 		closeTip = function($this, opt) {
 			$tipbox.hide().find('#tip-object').empty();
 			$this.removeClass('showTip');
-			if (opt.modal) $blank.hide();
+			if (opt.modal){
+				if($blank.data('call')){
+					$blank.data('call', $blank.data('call') - 1);
+				}
+				
+				if(!$blank.data('call')){
+					$blank.hide();
+				}
+			} 
 			if (typeof(opt.onclose) === 'function') opt.onclose();
 		};
-	if ($blank.length) {
+	if ($("#boxBlank").length) {
+		$blank = $("#boxBlank");
+	}else{
 		$blank = $('<div id="boxBlank" style="position:fixed;z-index:98;left:0;top:0;width:100%;height:100%;background: #000;" onselectstart="return false" />');
 		$('body').append($blank);
 	}
-
+	if(!$blank.data('call')){
+		$blank.hide();
+	}
 	if (!$tipbox.length) {
 		$tipbox = $(tipBoxHtml);
 		$('body').append($tipbox);
@@ -203,6 +215,11 @@ define('tip', function(require, exports, module) {
 						}).stop(true).fadeIn(160).unbind().data('from', $this);
 
 					if (opt.modal && opt.trigger === 'click') {
+						if($blank.data('call')){
+							$blank.data('call', $blank.data('call') + 1);
+						}else{
+							$blank.data('call', 1);
+						}
 						$blank.show();
 					}
 					if (opt.trigger === 'hover') {

@@ -18,7 +18,7 @@
         'autocomplete'                      : 'v0.1.0',
         'base'                              : 'v3.3.1',
         'bdshare'                           : 'v3.1.2',
-        'box'                               : 'v3.11.2',
+        'box'                               : 'v3.11.3',
         'city-select'                       : 'v1.0.1',
         'countdown'                         : 'v1.1.1',
         'datepicker'                        : 'v2.0.1',
@@ -61,7 +61,7 @@
         'tab'                               : 'v3.0.0',
         'table'                             : 'v1.1.2',
         'timepicker'                        : 'v0.1.1',
-        'tip'                               : 'v1.4.1',
+        'tip'                               : 'v1.4.2',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.4'
     };
