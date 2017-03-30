@@ -41,7 +41,7 @@
         'mousemenu'                         : 'v1.0.0',
         'mousetrap'                         : 'v1.5.3',
         'mousewheel'                        : 'v0.0.1',
-        'notice'                            : 'v0.0.1',
+        'notice'                            : 'v0.0.2',
         'offcanvas'                         : 'v2.0.4',
         'on-scroll'                         : 'v2.1.3',
         'page'                              : 'v1.0.2',
