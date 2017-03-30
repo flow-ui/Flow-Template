@@ -63,7 +63,7 @@
         'timepicker'                        : 'v0.1.1',
         'tip'                               : 'v1.4.1',
         'touch'                             : 'v0.1.1',
-        'zoom'                              : 'v2.0.3'
+        'zoom'                              : 'v2.0.4'
     };
     var manifest = {};
     for(var key in mod){
