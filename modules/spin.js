@@ -25,6 +25,7 @@ define('spin', function(require, exports, module) {
 				$this = $(opt.el).length ? $(opt.el) : $('body'),
 				$spin = $(template),
 				hide = function(){
+					$this.data('spining',false);
 					$spin.remove();
 				},
 				classes = [];
@@ -52,7 +53,11 @@ define('spin', function(require, exports, module) {
 				classes.push(opt.hook);
 			}
 
-			$this.append($spin.addClass(classes.join(' ')).css('zIndex', base.getIndex()));
+			if($this.data('spining')) {
+				return null;
+			}
+
+			$this.append($spin.addClass(classes.join(' ')).css('zIndex', base.getIndex())).data('spining',true);
 			
 			return {
 				hide: hide

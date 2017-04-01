@@ -60,7 +60,7 @@
         'slide'                             : 'v4.2.0',
         'spin'                              : 'v0.0.1',
         'tab'                               : 'v3.0.0',
-        'table'                             : 'v1.1.2',
+        'table'                             : 'v1.2.0',
         'timepicker'                        : 'v0.1.1',
         'tip'                               : 'v1.4.3',
         'touch'                             : 'v0.1.1',
