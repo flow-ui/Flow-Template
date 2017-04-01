@@ -1,8 +1,8 @@
 /*
  * name: tip.js
- * version: v1.4.2
- * update: 背景层通用
- * date: 2017-03-30
+ * version: v1.4.3
+ * update: 默认place => bottom-center
+ * date: 2017-04-01
  */
 define('tip', function(require, exports, module) {
 	'use strict';
@@ -28,7 +28,7 @@ define('tip', function(require, exports, module) {
 		def = {
 			el: null,
 			trigger: 'hover', // hover | click | custom
-			place: 'left-center', // [posi]-[posi]-[in or null]，前两项必须，表示位置，第三项表示从内部定位，可省
+			place: 'bottom-center', // [posi]-[posi]-[in or null]，前两项必须，表示位置，第三项表示从内部定位，可省
 			title: false, // title text | false
 			hasarr: true, // 有无箭头
 			offset: 0, // 提示框与元素间距，默认0
@@ -111,7 +111,7 @@ define('tip', function(require, exports, module) {
 						}
 						if ($(_mytip).get(0).tagName.toLowerCase() === 'img') {
 							//ie8图片无法撑开宽度bug
-							_tipObj = $('<div />').width($(_mytip).width()).append($(_mytip).show());
+							_tipObj = $('<div />').append($(_mytip).show()).width($(_mytip).width() || 'auto');
 						} else {
 							_tipObj = $(_mytip).show();
 						}
