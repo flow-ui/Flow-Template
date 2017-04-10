@@ -1,8 +1,8 @@
 /*
  * name: base
- * version: 3.3.1
- * update: 增加getIndex()
- * date: 2017-03-30
+ * version: 3.3.2
+ * update: 移除ajax默认回调
+ * date: 2017-04-10
  */
 define('base', function(require, exports, module) {
 	'use strict';
@@ -89,28 +89,6 @@ define('base', function(require, exports, module) {
 						}
 					}
 					setting.dataType = 'json';
-				}
-				//默认回调处理
-				if (setting.dataType === 'json') {
-					setting.success = function(res) {
-						//某些环境json数据不能正确解析
-						if(res.split){
-							res = $.parseJSON(res);
-						}
-						if (res.msg) {
-							require.async('box', function() {
-								$.box.msg(res.msg, {
-									color: res.status === 'Y' ? 'success' : 'danger',
-									delay: 2000,
-									onclose: function() {
-										tempSuccess(res, res.status !== 'Y');
-									}
-								});
-							});
-						} else {
-							typeof tempSuccess === 'function' && tempSuccess(res, res.status !== 'Y');
-						}
-					};
 				}
 				//默认超时时间
 				if (!setting.timeout) {
