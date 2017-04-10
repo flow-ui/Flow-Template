@@ -16,74 +16,77 @@ define('switch', function(require, exports, module) {
 			onChange: null
 		},
 		template = '<label class="switch"><div class="track"><div class="handle"></div></div></label>',
-		Switch = function(config){
+		Switch = function(config) {
 			var opt = $.extend({}, def, config || {}),
 				$this = $(opt.el).eq(0),
 				$switch,
 				$syncInput,
 				classTemp = [],
-				set = function(value){
-					if(value){
-						$switch.addClass('switch-on');
-					}else{
-						$switch.removeClass('switch-on');
-					}
-					$syncInput.prop('checked', !!value);
-					if(typeof opt.onChange === 'function'){
-						opt.onChange(!!value);
+				set = function(value) {
+					var status = $syncInput.prop('checked');
+					if (!!value !== status) {
+						if (value) {
+							$switch.addClass('switch-on');
+						} else {
+							$switch.removeClass('switch-on');
+						}
+						$syncInput.prop('checked', !!value);
+						if (typeof opt.onChange === 'function') {
+							opt.onChange(!!value);
+						}
 					}
 				};
-			if(!$this.length){
+			if (!$this.length) {
 				return null;
 			}
 			$switch = $(template);
-			if(opt.round){
+			if (opt.round) {
 				classTemp.push('switch-round');
 			}
-			if(opt.color && opt.color.split){
+			if (opt.color && opt.color.split) {
 				classTemp.push('switch-' + opt.color);
 			}
-			switch(opt.size){
+			switch (opt.size) {
 				case "lg":
 					classTemp.push('switch-lg');
-				break;
+					break;
 				case "sm":
 					classTemp.push('switch-sm');
-				break;
+					break;
 			}
 
-			if(opt.name && opt.name.split){
-				if($('input[name="'+opt.name+'"]').length){
-					$syncInput = $('input[name="'+opt.name+'"]');
-				}else{
-					$syncInput = $('<input type="checkbox" name="'+opt.name+'" style="display:none">').appendTo($this);
+			if (opt.name && opt.name.split) {
+				if ($('input[name="' + opt.name + '"]').length) {
+					$syncInput = $('input[name="' + opt.name + '"]');
+				} else {
+					$syncInput = $('<input type="checkbox" name="' + opt.name + '" style="display:none">').appendTo($this);
 				}
-			}else{
+			} else {
 				$syncInput = $('<input type="checkbox" >');
 			}
-			if($syncInput.prop('checked')){
+			if ($syncInput.prop('checked')) {
 				classTemp.push('switch-on');
 			}
 			$switch
 				.addClass(classTemp.join(' '))
-				.on('mouseup', '.handle', function(e){
+				.on('mouseup', '.handle', function(e) {
 					e.preventDefault();
 					var status = $syncInput.prop('checked');
 					set(!status);
 				})
 				.appendTo($this);
-			
+
 			return {
-				on: function(){
+				on: function() {
 					set(true);
 				},
-				off: function(){
+				off: function() {
 					set(false);
 				}
 			};
 		};
 
-	$.fn.switch = function(config){
+	$.fn.switch = function(config) {
 		return Switch($.extend({
 			el: this
 		}, config || {}));
