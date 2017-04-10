@@ -1,0 +1,147 @@
+
+.switch{
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: @font-size;
+}
+.switch .track{
+    display: block;
+    overflow: hidden;
+    position: relative;
+    width: @form-base-height * 2;
+    height: @form-base-height - 4px;
+
+    content: ' ';
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.3s;
+    transition-property: background-color border;
+
+    border: solid 2px darken(@gray-lighter, 10%);
+    border-radius: @radius;
+    background-color: @gray-lighter;
+}
+.switch .handle{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: @form-base-height - 4px;
+    height: @form-base-height - 4px;
+
+    transition: 0.3s cubic-bezier(0, 1.1, 1, 1.1);
+    transition-property: background-color, left;
+
+    background-color: @light;
+}
+.switch .handle:before,.switch .handle:after{
+    position: absolute;
+    height: @form-base-height - 4px;
+    line-height: @form-base-height - 4px;
+    width: @form-base-height + 4px;
+    text-align: center;
+    overflow: hidden;
+}
+.switch .handle:before{
+    content: "ON";
+    left: -(@form-base-height + 4px);
+    color: @light;
+}
+.switch .handle:after{
+    content: "OFF";
+    left: 100%;
+    color: darken(@gray-lighter, 10%);
+}
+
+.switch-on .track{
+    border-color: @gray-light;
+    background-color: @gray-light;
+}
+.switch-on .handle{
+    left: @form-base-height + 4px;
+}
+
+.switch-disabled{
+    cursor: not-allowed;
+}
+.switch-disabled  .track{
+    opacity: 0.6;
+}
+
+.switch-round .track{
+    border-radius: @form-base-height;
+}
+.switch-round .handle{
+    border-radius: @form-base-height;
+    box-shadow: 0 2px 0.56em rgba(0, 0, 0, 0.35), 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.switch-sm{
+    font-size: @font-size-sm;
+}
+.switch-sm .track{
+    width: @form-sm-height * 2;
+    height: @form-sm-height - 4px;
+}
+.switch-sm .handle{
+    width: @form-sm-height - 4px;
+    height: @form-sm-height - 4px;
+}
+.switch-sm.switch-on .handle{
+    left: @form-sm-height + 4px;
+}
+.switch-sm .handle:before,.switch-sm .handle:after{
+    width: @form-sm-height + 4px;
+    height: @form-sm-height - 4px;
+    line-height: @form-sm-height - 4px;
+}
+.switch-sm .handle:before{
+    left: -(@form-sm-height + 4px);
+}
+.switch-lg{
+    font-size: @font-size-lg;
+}
+.switch-lg .track{
+    width: @form-lg-height * 2;
+    height: @form-lg-height - 4px;
+}
+.switch-lg .handle{
+    width: @form-lg-height - 4px;
+    height: @form-lg-height - 4px;
+}
+.switch-lg.switch-on .handle{
+    left: @form-lg-height + 4px;
+}
+.switch-lg .handle:before,.switch-lg .handle:after{
+    width: @form-lg-height + 4px;
+    height: @form-lg-height - 4px;
+    line-height: @form-lg-height - 4px;
+}
+.switch-lg .handle:before{
+    left: -(@form-lg-height + 4px);
+}
+
+.switch-primary.switch-on .track{
+    border-color: @primary;
+    background-color: @primary;
+}
+.switch-auxiliary.switch-on .track{
+    border-color: @auxiliary;
+    background-color: @auxiliary;
+}
+.switch-success.switch-on .track{
+    border-color: @success;
+    background-color: @success;
+}
+.switch-info.switch-on .track{
+    border-color: @info;
+    background-color: @info;
+}
+.switch-warning.switch-on .track{
+    border-color: @warning;
+    background-color: @warning;
+}
+.switch-danger.switch-on .track{
+    border-color: @danger;
+    background-color: @danger;
+}
