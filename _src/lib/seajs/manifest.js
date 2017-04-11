@@ -16,6 +16,7 @@
         'album'                             : 'v2.2.13',
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.1.0',
+        'badge'                             : 'v0.0.1',
         'base'                              : 'v3.3.2',
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.11.4',
