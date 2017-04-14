@@ -1,7 +1,7 @@
 /*
  * name: switch.js
- * version: v0.1.0
- * update: add disabled/disabled()
+ * version: v0.2.0
+ * update: add value
  * date: 2017-04-14
  */
 define('switch', function(require, exports, module) {
@@ -10,6 +10,7 @@ define('switch', function(require, exports, module) {
 		def = {
 			el: null,
 			name: null,
+			value: false,
 			round: false,
 			color: "default",
 			disabled: false,
@@ -23,7 +24,7 @@ define('switch', function(require, exports, module) {
 				$switch,
 				$syncInput,
 				classTemp = [],
-				set = function(value) {
+				set = function(value, init) {
 					var status = $syncInput.prop('checked');
 					if(opt.disabled){
 						return null;
@@ -35,7 +36,7 @@ define('switch', function(require, exports, module) {
 							$switch.removeClass('switch-on');
 						}
 						$syncInput.prop('checked', !!value);
-						if (typeof opt.onChange === 'function') {
+						if (!init && typeof opt.onChange === 'function') {
 							opt.onChange(!!value);
 						}
 					}
@@ -85,6 +86,7 @@ define('switch', function(require, exports, module) {
 			}
 			
 			disabled(!opt.disabled, true);
+			set(opt.value, true);
 
 			$switch
 				.addClass(classTemp.join(' '))
