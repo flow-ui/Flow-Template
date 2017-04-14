@@ -1,8 +1,8 @@
 /*
  * name: progress.js
- * version: v0.0.2
- * update: init bug
- * date: 2017-04-12
+ * version: v0.0.3
+ * update: default color = primary
+ * date: 2017-04-14
  */
 define('progress', function(require, exports, module) {
 	"use strict";
@@ -10,7 +10,7 @@ define('progress', function(require, exports, module) {
 		def = {
 			el: null,
 			persent: 0,
-			color: 'info',
+			color: 'primary',
 			height: 0,
 			showInfo: true,
 			active: true,

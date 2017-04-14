@@ -1,8 +1,8 @@
 /*
  * name: slider.js
- * version: v0.0.1
- * update: build
- * date: 2017-04-12
+ * version: v0.0.2
+ * update: default color = primary
+ * date: 2017-04-14
  */
 define('slider', function(require, exports, module) {
 	"use strict";
@@ -28,7 +28,7 @@ define('slider', function(require, exports, module) {
 			min: 0,
 			max: 100,
 			step: 1,
-			color: 'info',
+			color: 'primary',
 			disabled: false,
 			tip: true,
 			tipRender: null,
