@@ -60,6 +60,7 @@
         'select'                            : 'v4.3.2',
         'sendcode'                          : 'v0.2.0',
         'slide'                             : 'v4.2.0',
+        'slider'                            : 'v0.0.1',
         'spin'                              : 'v0.0.1',
         'switch'                            : 'v0.0.2',
         'tab'                               : 'v3.0.0',
