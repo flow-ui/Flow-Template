@@ -98,11 +98,12 @@ define('switch', function(require, exports, module) {
 			$this.data('switch-init', 1).append($switch);
 
 			return {
-				on: function() {
-					set(true);
-				},
-				off: function() {
-					set(false);
+				value: function(flag){
+					if(flag === void 0){
+						return $syncInput.prop('checked');
+					}else{
+						return set(!!flag);
+					}
 				},
 				disabled: disabled
 			};
