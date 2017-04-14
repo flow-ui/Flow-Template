@@ -23,7 +23,7 @@
         'city-select'                       : 'v1.0.2',
         'countdown'                         : 'v1.1.1',
         'datepicker'                        : 'v2.0.1',
-        'drag'                              : 'v0.7.2',
+        'drag'                              : 'v0.8.0',
         'drag-panel'                        : 'v0.0.2',
         'dropdown'                          : 'v0.2.2',
         'easing'                            : 'v0.0.1',
