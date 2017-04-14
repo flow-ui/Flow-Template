@@ -1,8 +1,8 @@
 /*
  * name: input-number.js
- * version: v0.1.0
- * update: 继承input
- * date: 2017-01-03
+ * version: v0.1.1
+ * update: 删除多余空格
+ * date: 2017-04-14
  */
 define("input-number", function(require, exports, module) {
 	"use strict";
@@ -142,17 +142,15 @@ define("input-number", function(require, exports, module) {
 		switch ($.trim(opt.style)) {
 			case "inline":
 				template = '<${wrapTag} data-input-init="true" class="counter_wrap counter_inline input-group${color}<!-- if: ${className} --> ${className}<!-- /if -->"<!-- if: ${width} --> style="width:${width}px"<!-- /if -->>\
-                    <div class="pro_counter_btn pro_counter_reduce input-group-addon">-</div>\
-                    <input type="${type}" id="${id}" placeholder="${holder}" value="${val}" class="form-control pro_counter_val"<!-- if: ${disable} --> disabled<!-- /if --><!-- if: ${readonly} --> readonly<!-- /if -->>\
-                    <div class="pro_counter_btn pro_counter_add input-group-addon">+</div>\
-                </${wrapTag}>';
+    <div class="pro_counter_btn pro_counter_reduce input-group-addon">-</div>\
+    <input type="${type}" id="${id}" placeholder="${holder}" value="${val}" class="form-control pro_counter_val"<!-- if: ${disable} --> disabled<!-- /if --><!-- if: ${readonly} --> readonly<!-- /if -->><div class="pro_counter_btn pro_counter_add input-group-addon">+</div>\
+</${wrapTag}>';
 				break;
 			default:
 				template = '<${wrapTag} data-input-init="true" class="counter_wrap counter_default${color}<!-- if: ${className} --> ${className}<!-- /if -->"<!-- if: ${width} --> style="width:${width}px"<!-- /if -->>\
-                    <div class="pro_counter_btn pro_counter_reduce">-</div>\
-                    <input type="${type}" id="${id}" placeholder="${holder}" value="${val}" class="form-control pro_counter_val"<!-- if: ${disable} --> disabled<!-- /if --><!-- if: ${readonly} --> readonly<!-- /if -->>\
-                    <div class="pro_counter_btn pro_counter_add">+</div>\
-                </${wrapTag}>';
+    <div class="pro_counter_btn pro_counter_reduce">-</div>\
+    <input type="${type}" id="${id}" placeholder="${holder}" value="${val}" class="form-control pro_counter_val"<!-- if: ${disable} --> disabled<!-- /if --><!-- if: ${readonly} --> readonly<!-- /if -->><div class="pro_counter_btn pro_counter_add">+</div>\
+</${wrapTag}>';
 		}
 		opt.template = template;
 
