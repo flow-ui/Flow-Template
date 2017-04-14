@@ -1,8 +1,8 @@
 /*
  * name: switch.js
- * version: v0.0.2
- * update: 初始化锁
- * date: 2017-04-10
+ * version: v0.1.0
+ * update: add disabled/disabled()
+ * date: 2017-04-14
  */
 define('switch', function(require, exports, module) {
 	"use strict";
@@ -12,6 +12,7 @@ define('switch', function(require, exports, module) {
 			name: null,
 			round: false,
 			color: "default",
+			disabled: false,
 			size: null,
 			onChange: null
 		},
@@ -24,6 +25,9 @@ define('switch', function(require, exports, module) {
 				classTemp = [],
 				set = function(value) {
 					var status = $syncInput.prop('checked');
+					if(opt.disabled){
+						return null;
+					}
 					if (!!value !== status) {
 						if (value) {
 							$switch.addClass('switch-on');
@@ -35,6 +39,17 @@ define('switch', function(require, exports, module) {
 							opt.onChange(!!value);
 						}
 					}
+				},
+				disabled = function(flag, init){
+					if(!init && (opt.disabled === !flag)){
+						return null;
+					}
+					if(flag){
+						$switch.removeClass('switch-disabled');
+					}else{
+						$switch.addClass('switch-disabled');
+					}
+					return opt.disabled = !flag;
 				};
 			if (!$this.length || $this.data('switch-init')) {
 				return null;
@@ -68,6 +83,9 @@ define('switch', function(require, exports, module) {
 			if ($syncInput.prop('checked')) {
 				classTemp.push('switch-on');
 			}
+			
+			disabled(!opt.disabled, true);
+
 			$switch
 				.addClass(classTemp.join(' '))
 				.on('mouseup', '.handle', function(e) {
@@ -83,7 +101,8 @@ define('switch', function(require, exports, module) {
 				},
 				off: function() {
 					set(false);
-				}
+				},
+				disabled: disabled
 			};
 		};
 
