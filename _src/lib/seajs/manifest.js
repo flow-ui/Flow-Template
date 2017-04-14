@@ -29,7 +29,6 @@
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.0.2',
         'etpl'                              : 'v0.1.1',
-        'fastclick'                         : 'v0.0.1',
         'img-loaded'                        : 'v0.0.1',
         'img-ready'                         : 'v1.0.0',
         'input-number'                      : 'v0.1.0',
