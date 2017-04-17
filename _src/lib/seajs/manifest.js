@@ -31,7 +31,7 @@
         'etpl'                              : 'v0.1.1',
         'img-loaded'                        : 'v0.0.1',
         'img-ready'                         : 'v1.0.0',
-        'input-number'                      : 'v0.1.1',
+        'input-number'                      : 'v0.1.2',
         'input'                             : 'v0.1.1',
         'instantclick'                      : 'v0.0.1',
         'label'                             : 'v0.0.1',
