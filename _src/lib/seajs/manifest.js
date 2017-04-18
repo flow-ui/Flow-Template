@@ -25,7 +25,7 @@
         'datepicker'                        : 'v2.0.2',
         'drag'                              : 'v0.8.0',
         'drag-panel'                        : 'v0.0.2',
-        'dropdown'                          : 'v0.2.2',
+        'dropdown'                          : 'v0.2.3',
         'easing'                            : 'v0.0.1',
         'echarts'                           : 'v0.1.0',
         'etpl'                              : 'v0.1.1',
