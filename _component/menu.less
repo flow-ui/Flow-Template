@@ -1,45 +1,177 @@
 @menu-horizontal-height: round(@font-size * 4.2);
 
-.menu-ui{position: relative;display: block;user-select:none;font-size: @font-size;border-radius: @radius;overflow: hidden;}
-.menu-item{position: relative;z-index: 1;display: block;cursor: pointer;transition: all .2s ease-in-out;}
-.menu-item > .ion, .menu-item-title > .ion{margin-right: .5em;}
-.menu-horizontal{line-height: @menu-horizontal-height;height: @menu-horizontal-height;}
-.menu-horizontal .menu-item, .menu-horizontal .menu-submenu{position: relative;z-index: 3;
-    float: left;padding: 0 @space;cursor: pointer;transition: all .2s ease-in-out;}
-.menu-light{background: @light;}
-.menu-light .menu-item{border-bottom: 2px solid transparent;}
-.menu-light.menu-horizontal .menu-item, .menu-light.menu-horizontal .menu-submenu{height: @menu-horizontal-height - 2px;line-height: @menu-horizontal-height - 2px;}
+.menu-ui{
+    display: block;
+    overflow: hidden;
+    position: relative;
+    font-size: @font-size;
+
+    user-select: none;
+
+    border-radius: @radius;
+}
+.menu-item{
+    display: block;
+    position: relative;
+    z-index: 1;
+
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.menu-item > .ion,.menu-item-title > .ion{
+    margin-right: 0.5em;
+    vertical-align: middle;
+}
+.menu-horizontal{
+    line-height: @menu-horizontal-height;
+    height: @menu-horizontal-height;
+}
+.menu-horizontal .menu-item,.menu-horizontal .menu-submenu{
+    float: left;
+    position: relative;
+    z-index: 3;
+    padding: 0 @space;
+
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.menu-light{
+    background: @light;
+}
+.menu-light .menu-item{
+    border-bottom: 2px solid transparent;
+}
+.menu-light.menu-horizontal .menu-item,.menu-light.menu-horizontal .menu-submenu{
+    line-height: @menu-horizontal-height - 2px;
+    height: @menu-horizontal-height - 2px;
+}
 .menu-light.menu-horizontal .menu-item-active,.menu-light.menu-horizontal .menu-item:hover,.menu-light.menu-horizontal .menu-opened{
-    color: @primary;border-bottom-color: @primary;}
-.menu-horizontal.menu-light:after,.menu-vertical.menu-light:after{position: absolute;bottom: 0;display: block;content: '';background: @border;}
-.menu-horizontal.menu-light:after{left: 0;width: 100%;height: 1px;}
-.menu-dark{background: @gray-dark;}
-.menu-dark.menu-horizontal .menu-item, .menu-dark.menu-horizontal .menu-submenu{color: @gray-light;}
-.menu-dark.menu-horizontal .menu-item-active,.menu-dark.menu-horizontal .menu-item:hover,.menu-dark.menu-horizontal .menu-opened,.menu-primary.menu-horizontal .menu-item{color: @light;}
-.menu-primary{background: @primary;}
-.menu-primary.menu-horizontal .menu-item-active,.menu-primary.menu-horizontal .menu-item:hover{background: @primary-dark;}
-.menu-vertical{height: 100%;}
-.menu-vertical.menu-light:after{z-index: 1;top: 0;right: 0;width: 1px;height: 100%;}
-.menu-vertical .menu-item,.menu-vertical .menu-item-title{position: relative;z-index: 1;padding: @font-size @font-size * 1.7;cursor: pointer;transition: all .2s ease-in-out;}
-.menu-vertical .menu-item:hover,.menu-vertical .menu-item-title:hover{background: @gray-lighter;}
-.menu-vertical .menu-submenu .menu-item{padding-left: @font-size * 2.7;}
-.menu-vertical .menu-sub-group{display: none;}
-.menu-vertical .menu-opened .menu-sub-group{display: block;}
-.menu-light.menu-vertical .menu-item{border-right: 2px solid transparent;}
-.menu-light.menu-vertical .menu-item:hover{color: @primary;}
-.menu-light.menu-vertical .menu-item-active{z-index: 2;color: @primary;border-right: 2px solid @primary;}
-.menu-dark.menu-vertical .menu-item,.menu-dark.menu-vertical .menu-item-title{color: @gray-light;}
-.menu-dark.menu-vertical .menu-item:hover,.menu-dark.menu-vertical .menu-item-title:hover{color: @light;background: inherit;}
-.menu-dark.menu-vertical .menu-item-active,.menu-dark.menu-vertical .menu-item-active:hover{color: @light;background: @primary;}
-.menu-dark.menu-vertical .menu-opened{background: @gray-darker;}
-.menu-dark.menu-vertical .menu-opened .menu-item-title{background: @gray-dark;color:@light;}
-.menu-primary.menu-vertical .menu-item,.menu-primary.menu-vertical .menu-item-title{color: @gray-lighter;}
-.menu-primary.menu-vertical .menu-item:hover,.menu-primary.menu-vertical .menu-item-title:hover{color: @light;background: @primary-dark;}
-.menu-primary.menu-vertical .menu-sub-group .menu-item:hover{background:inherit;color:@primary-dark;}
-.menu-primary.menu-vertical .menu-item-active,.menu-primary.menu-vertical .menu-sub-group .menu-item-active,.menu-primary.menu-vertical .menu-sub-group .menu-item-active:hover, .menu-primary.menu-vertical .menu-item-active:hover{
-    color: @light;background: @primary-dark;}
-.menu-primary.menu-vertical .menu-opened{background: lighten(@primary, 20%);}
-.menu-primary.menu-vertical .menu-opened .menu-item-title{background: @primary;color:@light;}
-.menu-sub-ion{font-size: .9em;transition: transform .2s ease-in-out;margin:0 .5em;}
-.menu-vertical .menu-sub-ion{position: relative;top: 4px;float: right;margin-right: 0;}
-.menu-opened .menu-sub-ion{transform: rotate(180deg);}
+    color: @primary;
+    border-bottom-color: @primary;
+}
+.menu-horizontal.menu-light:after,.menu-vertical.menu-light:after{
+    display: block;
+    position: absolute;
+    bottom: 0;
+
+    content: '';
+
+    background: @border;
+}
+.menu-horizontal.menu-light:after{
+    left: 0;
+    width: 100%;
+    height: 1px;
+}
+.menu-dark{
+    background: @gray-dark;
+}
+.menu-dark.menu-horizontal .menu-item,.menu-dark.menu-horizontal .menu-submenu{
+    color: @gray-light;
+}
+.menu-dark.menu-horizontal .menu-item-active,.menu-dark.menu-horizontal .menu-item:hover,.menu-dark.menu-horizontal .menu-opened,.menu-primary.menu-horizontal .menu-item{
+    color: @light;
+}
+.menu-primary{
+    background: @primary;
+}
+.menu-primary.menu-horizontal .menu-item-active,.menu-primary.menu-horizontal .menu-item:hover{
+    background: @primary-dark;
+}
+.menu-vertical{
+    height: 100%;
+}
+.menu-vertical.menu-light:after{
+    z-index: 1;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+}
+.menu-vertical .menu-item,.menu-vertical .menu-item-title{
+    position: relative;
+    z-index: 1;
+    padding: @font-size @font-size * 1.7;
+
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.menu-vertical .menu-item:hover,.menu-vertical .menu-item-title:hover{
+    background: @gray-lighter;
+}
+.menu-vertical .menu-submenu .menu-item{
+    padding-left: @font-size * 2.7;
+}
+.menu-vertical .menu-sub-group{
+    display: none;
+}
+.menu-vertical .menu-opened .menu-sub-group{
+    display: block;
+}
+.menu-light.menu-vertical .menu-item{
+    border-right: 2px solid transparent;
+}
+.menu-light.menu-vertical .menu-item:hover{
+    color: @primary;
+}
+.menu-light.menu-vertical .menu-item-active{
+    z-index: 2;
+
+    color: @primary;
+    border-right: 2px solid @primary;
+}
+.menu-dark.menu-vertical .menu-item,.menu-dark.menu-vertical .menu-item-title{
+    color: @gray-light;
+}
+.menu-dark.menu-vertical .menu-item:hover,.menu-dark.menu-vertical .menu-item-title:hover{
+    color: @light;
+    background: inherit;
+}
+.menu-dark.menu-vertical .menu-item-active,.menu-dark.menu-vertical .menu-item-active:hover{
+    color: @light;
+    background: @primary;
+}
+.menu-dark.menu-vertical .menu-opened{
+    background: @gray-darker;
+}
+.menu-dark.menu-vertical .menu-opened .menu-item-title{
+    color: @light;
+    background: @gray-dark;
+}
+.menu-primary.menu-vertical .menu-item,.menu-primary.menu-vertical .menu-item-title{
+    color: @gray-lighter;
+}
+.menu-primary.menu-vertical .menu-item:hover,.menu-primary.menu-vertical .menu-item-title:hover{
+    color: @light;
+    background: @primary-dark;
+}
+.menu-primary.menu-vertical .menu-sub-group .menu-item:hover{
+    color: @primary-dark;
+    background: inherit;
+}
+.menu-primary.menu-vertical .menu-item-active,.menu-primary.menu-vertical .menu-sub-group .menu-item-active,.menu-primary.menu-vertical .menu-sub-group .menu-item-active:hover,.menu-primary.menu-vertical .menu-item-active:hover{
+    color: @light;
+    background: @primary-dark;
+}
+.menu-primary.menu-vertical .menu-opened{
+    background: lighten(@primary, 20%);
+}
+.menu-primary.menu-vertical .menu-opened .menu-item-title{
+    color: @light;
+    background: @primary;
+}
+.menu-sub-ion{
+    font-size: 0.9em;
+    margin: 0 0.5em;
+
+    transition: transform 0.2s ease-in-out;
+}
+.menu-vertical .menu-sub-ion{
+    float: right;
+    position: relative;
+    top: 4px;
+    margin-right: 0;
+}
+.menu-opened .menu-sub-ion{
+    transform: rotate(180deg);
+}
