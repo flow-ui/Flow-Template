@@ -99,7 +99,7 @@ define('menu', function(require, exports, module) {
 				$this.html(html);
 			}else{
 				if(opt.actived){
-					$this.find('[data-menu-key="'+ opt.actived +'"]').addClass('menu-item-active');
+					$this.find('[data-menu-key="'+ opt.actived +'"]').addClass('menu-item-active').parents('.menu-submenu').addClass('menu-opened');
 				}
 				if($.isArray(opt.opened) && opt.opened.length){
 					$.each(opt.opened, function(i, opened){
