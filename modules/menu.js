@@ -25,6 +25,7 @@ define('menu', function(require, exports, module) {
 			if (!$.isArray(opt.data) || !opt.data.length) {
 				return null;
 			}
+
 			var menu = '<ul class="menu-ui">';
 			$.each(opt.data, function(i, m) {
 				var isActive = opt.actived !== null && opt.actived === m[opt.key],
@@ -91,12 +92,12 @@ define('menu', function(require, exports, module) {
 				return null;
 			}
 			
-			if (!opt.key) {
-				console.warn('menu: key未配置，部分功能无法使用');
-			}
 			html = render(opt);
 			if(html){
 				$this.html(html);
+				if (!opt.key) {
+					console.warn('menu: key未配置，部分功能无法使用');
+				}
 			}else{
 				if(opt.actived){
 					$this.find('[data-menu-key="'+ opt.actived +'"]').addClass('menu-item-active').parents('.menu-submenu').addClass('menu-opened');
