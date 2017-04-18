@@ -99,7 +99,6 @@ define('menu', function(require, exports, module) {
 				$this.html(html);
 			}else{
 				if(opt.actived){
-					console.log($this.find('[data-menu-key="'+ opt.actived +'"]'))
 					$this.find('[data-menu-key="'+ opt.actived +'"]').addClass('menu-item-active');
 				}
 				if($.isArray(opt.opened) && opt.opened.length){
