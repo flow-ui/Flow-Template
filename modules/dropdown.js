@@ -43,7 +43,7 @@ define('dropdown', function(require, exports, module) {
 		var opt = $.extend({}, def, config),
 			menuHtml;
 		if (!$(opt.el).length) {
-			return console.warn('dorpdown: el 参数有误:', opt.el);
+			return console.warn('dorpdown: el不存在:', opt.el);
 		}
 		if (!opt.items.length) {
 			return console.warn('dorpdown: items 参数有误:', opt.items);
