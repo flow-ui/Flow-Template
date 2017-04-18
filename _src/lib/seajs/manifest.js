@@ -60,7 +60,7 @@
         'sendcode'                          : 'v0.2.0',
         'slide'                             : 'v4.2.1',
         'slider'                            : 'v0.0.2',
-        'spin'                              : 'v0.0.1',
+        'spin'                              : 'v0.0.2',
         'switch'                            : 'v0.2.0',
         'tab'                               : 'v3.0.0',
         'table'                             : 'v1.3.2',
