@@ -63,7 +63,7 @@
         'spin'                              : 'v0.0.2',
         'switch'                            : 'v0.2.0',
         'tab'                               : 'v3.0.0',
-        'table'                             : 'v1.3.2',
+        'table'                             : 'v1.4.0',
         'timepicker'                        : 'v0.1.1',
         'tip'                               : 'v1.5.0',
         'touch'                             : 'v0.1.1',

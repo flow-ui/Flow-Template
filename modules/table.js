@@ -1,8 +1,8 @@
 /*
  * name: table.js
- * version: v1.3.2
- * update: 本地数据脏检查bug
- * date: 2017-04-17
+ * version: v1.4.0
+ * update: add load.dataParser()
+ * date: 2017-04-19
  */
 define('table', function(require, exports, module) {
 	"use strict";
@@ -66,9 +66,9 @@ define('table', function(require, exports, module) {
 			}
 			var indexKey = 'index-' + base.getUUID();
 			//交互控件过滤
-			var controlParser = function($dom, clone){
+			var controlParser = function($dom, clone) {
 				var $target = $dom;
-				if(clone){
+				if (clone) {
 					$target = $dom.clone(true);
 				}
 				$target.find('[name]').removeAttr('name');
@@ -135,7 +135,7 @@ define('table', function(require, exports, module) {
 										var fixedTable = $this.find('.table-fixed tbody');
 										var fixTdIndex = $this.find('.row' + rowIndex + '-' + key).index();
 										$this.find('.row' + rowIndex + '-' + key).replaceWith(inject(targetTd));
-										if(fixedTable.length){
+										if (fixedTable.length) {
 											var fixedTd = controlParser($this.find('.row' + rowIndex + '-' + key), true).html();
 											fixedTable.children('tr').eq(rowIndex).children('td').eq(fixTdIndex).html(fixedTd);
 										}
@@ -189,34 +189,34 @@ define('table', function(require, exports, module) {
 									var $input = $(inputHTML).on('blur', function(e) {
 										var newValue = $(this).val();
 										var isValid = true;
-										if(typeof col.validateMethod === 'function'){
+										if (typeof col.validateMethod === 'function') {
 											isValid = col.validateMethod(newValue);
 										}
-										if(!isValid){
+										if (!isValid) {
 											return e.preventDefault();
 										}
 										var newRow = that.set(col.key, newValue);
 										isEditing = false;
 										if (oldValue !== newValue) {
 											var updateObject;
-											$.each(changes.update, function(i, u){
-												if(u.index === rowData[indexKey]){
+											$.each(changes.update, function(i, u) {
+												if (u.index === rowData[indexKey]) {
 													updateObject = {
 														arrayIndex: i
 													};
 													return false;
 												}
 											});
-											if(updateObject !== void 0){
+											if (updateObject !== void 0) {
 												changes.update[updateObject.arrayIndex].row = newRow;
-											}else{
+											} else {
 												changes.update.push({
 													index: rowData[indexKey],
 													row: newRow,
 													origin: opt.rowData[rowData[indexKey]]
 												});
 											}
-											
+
 											if (typeof col.editable === 'function') {
 												col.editable(rowData[indexKey], col.key, newValue);
 											}
@@ -381,15 +381,15 @@ define('table', function(require, exports, module) {
 													command = 'desc';
 												}
 											}
-											if(typeof col.sort.handle === 'function'){
+											if (typeof col.sort.handle === 'function') {
 												return col.sort.handle(col.key, command);
 											}
-											if(command){
+											if (command) {
 												sortData = sortBy(col.key, col.sort.mehtod, command);
-											}else{
+											} else {
 												sortData = opt.oData;
 											}
-											
+
 											if (opt.page && opt.page.pageSize) {
 												opt.holdStatus = true;
 												generate(sortData, opt, 'body');
@@ -494,9 +494,9 @@ define('table', function(require, exports, module) {
 				}
 				html += '</div>';
 				return $this.data('data', tData).css({
-						width: opt.width,
-						height: opt.height
-					}).html(inject(html, true));
+					width: opt.width,
+					height: opt.height
+				}).html(inject(html, true));
 			};
 			var inject = function(html, isInit) {
 				var tableObj = $(html);
@@ -600,7 +600,7 @@ define('table', function(require, exports, module) {
 				}
 			};
 			var selectRow = function(index, isSelect) {
-				if(index === void 0){
+				if (index === void 0) {
 					return null;
 				}
 				if (index >= opt.oData.length) {
@@ -733,8 +733,8 @@ define('table', function(require, exports, module) {
 					}
 				}
 			};
-			var loadData = function(set, part){
-				require.async('spin', function(){
+			var loadData = function(set, part) {
+				require.async('spin', function() {
 					var loading = $this.spin({
 						icon: '&#xe66e;'
 					});
@@ -743,28 +743,34 @@ define('table', function(require, exports, module) {
 						url: set.url,
 						dataType: 'json',
 						data: set.data || {},
-						success: function(res){
+						success: function(res) {
+							var ajaxData;
 							loading.hide();
-							if($.isArray(res) && res.length){
-								opt.rowData = res;
-								generate(opt.rowData, opt, part);
-							}else{
-								console.warn('Table(): ajax必须返回Array格式！');
+							if (typeof set.dataParser === 'function') {
+								ajaxData = set.dataParser(res);
+							} else {
+								ajaxData = res;
 							}
+							if ($.isArray(ajaxData) && ajaxData.length) {
+								opt.rowData = ajaxData;
+							} else {
+								return console.warn('Table(): ajax/dataParser必须返回Array格式！');
+							}
+							generate(opt.rowData, opt, part);
 						}
 					});
 				});
 			};
 
-			if($.isArray(opt.data) && opt.data.length){
+			if ($.isArray(opt.data) && opt.data.length) {
 				opt.rowData = opt.data;
 				generate(opt.rowData, opt);
-			}else if(opt.load && opt.load.url && opt.load.url.split){
-				if(!$this.height()){
+			} else if (opt.load && opt.load.url && opt.load.url.split) {
+				if (!$this.height()) {
 					$this.height($this.height() || opt.height || 200);
 				}
 				loadData(opt.load);
-			}else{
+			} else {
 				return console.warn('Table(): 无可用数据源！');
 			}
 
@@ -776,8 +782,8 @@ define('table', function(require, exports, module) {
 						return opt.oData;
 					}
 				},
-				load: function(set){
-					if(set && set.url && set.url.split){
+				load: function(set) {
+					if (set && set.url && set.url.split) {
 						loadData(set, 'body');
 					}
 				},
@@ -826,7 +832,7 @@ define('table', function(require, exports, module) {
 					$this.find('.table-wrapper>.table-body').scrollTop(sth);
 				},
 				highlightRow: function(index) {
-					if(index === void 0){
+					if (index === void 0) {
 						return null;
 					}
 					if (index >= $this.data('data').length) {
@@ -856,7 +862,7 @@ define('table', function(require, exports, module) {
 						return console.warn('getEntity(): index 超出当前数据范围！');
 					}
 					var $td = $this.find('.row' + index + '-' + key);
-					if(!$td.length){
+					if (!$td.length) {
 						return console.warn('getEntity(): 无法获取指定单元格');
 					}
 					return $td.data('entity');
