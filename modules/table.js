@@ -1,7 +1,7 @@
 /*
  * name: table.js
- * version: v1.4.0
- * update: add load.dataParser()
+ * version: v1.5.0
+ * update: add onReady()
  * date: 2017-04-19
  */
 define('table', function(require, exports, module) {
@@ -25,7 +25,8 @@ define('table', function(require, exports, module) {
 			noFilterText: '暂无筛选结果',
 			highlight: false,
 			page: null,
-			onSelect: null // index, row, [all]
+			onSelect: null, // index, row, [all]
+			onReady: null
 		},
 		Table = function(config) {
 			var opt = $.extend({}, def, config || {}),
@@ -730,6 +731,9 @@ define('table', function(require, exports, module) {
 						$this.on('click', '.table-body tr', function() {
 							selectRow($(this).data('index'));
 						});
+					}
+					if(typeof opt.onReady === 'function'){
+						opt.onReady();
 					}
 				}
 			};
