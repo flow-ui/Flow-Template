@@ -62,7 +62,7 @@
         'slider'                            : 'v0.0.2',
         'spin'                              : 'v0.0.2',
         'switch'                            : 'v0.3.0',
-        'tab'                               : 'v3.0.0',
+        'tab'                               : 'v4.0.0',
         'table'                             : 'v1.5.0',
         'timepicker'                        : 'v0.1.1',
         'tip'                               : 'v1.5.0',

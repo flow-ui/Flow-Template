@@ -1,0 +1,125 @@
+.tab{
+    overflow: hidden;
+    position: relative;
+    font-size: @font-size;
+    padding-top: 2.2 * @font-size;
+}
+
+.tab .tab-nav{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    height: 2.2 * @font-size;
+
+    border-bottom: 1px solid @gray-light;
+}
+
+.tab .tab-title{
+    float: left;
+    line-height: 2.2 * @font-size - 1px;
+    height: 2.2 * @font-size - 1px;
+    margin-right: 4px;
+    padding: 0 1em;
+
+    cursor: pointer;
+    user-select: none;
+
+    border: 1px solid @gray-light;
+    border-bottom: 0;
+    border-radius: @radius @radius 0 0;
+    background: @gray-lighter;
+}
+.tab .tab-title:hover{
+    color: @primary;
+}
+.tab .tab-title.tab-actived{
+    height: 2.2 * @font-size;
+
+    cursor: default;
+
+    color: @primary;
+    background: @light;;
+}
+
+.tab .tab-title.tab-disabled{
+    cursor: default;
+    pointer-events: none;
+
+    color: @gray-light;
+}
+
+.tab .tab-extra{
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+}
+.tab .tab-cont-wrap{
+    padding: @space-sm;
+
+    border: 1px solid @gray-light;
+    border-top: 0;
+    border-radius: 0 0 @radius @radius;
+    background: @light;
+}
+.tab .tab-cont{
+    display: none;
+}
+
+.tab .tab-cont.tab-actived{
+    display: block;
+}
+.tab-title.tab-primary{
+    color: @light;
+    background: @primary;
+}
+.tab-title.tab-primary.tab-actived,.tab-title.tab-primary:hover{
+    color: @light;
+    background: @primary-dark;
+}
+.tab-title.tab-auxiliary{
+    color: @light;
+    color: @light;
+    background: @auxiliary;
+}
+.tab-title.tab-auxiliary.tab-actived,.tab-title.tab-auxiliary:hover{
+    color: @light;
+    background: @auxiliary-dark;
+}
+.tab-title.tab-info{
+    color: @light;
+    color: @light;
+    background: @info;
+}
+.tab-title.tab-info.tab-actived,.tab-title.tab-info:hover{
+    color: @light;
+    background: @info-dark;
+}
+.tab-title.tab-success{
+    color: @light;
+    color: @light;
+    background: @success;
+}
+.tab-title.tab-success.tab-actived,.tab-title.tab-success:hover{
+    color: @light;
+    background: @success-dark;
+}
+.tab-title.tab-warning{
+    color: @light;
+    color: @light;
+    background: @warning;
+}
+.tab-title.tab-warning.tab-actived,.tab-title.tab-warning:hover{
+    color: @light;
+    background: @warning-dark;
+}
+.tab-title.tab-danger{
+    color: @light;
+    color: @light;
+    background: @danger;
+}
+.tab-title.tab-danger.tab-actived,.tab-title.tab-danger:hover{
+    color: @light;
+    background: @danger-dark;
+}
