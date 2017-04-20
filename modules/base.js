@@ -1,8 +1,8 @@
 /*
  * name: base
  * version: 3.3.2
- * update: 移除ajax默认回调
- * date: 2017-04-10
+ * update: url.set() bug
+ * date: 2017-04-20
  */
 define('base', function(require, exports, module) {
 	'use strict';
@@ -89,6 +89,28 @@ define('base', function(require, exports, module) {
 						}
 					}
 					setting.dataType = 'json';
+				}
+				//默认回调处理
+				if (setting.dataType === 'json') {
+					setting.success = function(res) {
+						//某些环境json数据不能正确解析
+						if(res.split){
+							res = $.parseJSON(res);
+						}
+						if (res.msg) {
+							require.async('box', function() {
+								$.box.msg(res.msg, {
+									color: res.status === 'Y' ? 'success' : 'danger',
+									delay: 2000,
+									onclose: function() {
+										tempSuccess(res, res.status !== 'Y');
+									}
+								});
+							});
+						} else {
+							typeof tempSuccess === 'function' && tempSuccess(res, res.status !== 'Y');
+						}
+					};
 				}
 				//默认超时时间
 				if (!setting.timeout) {
@@ -273,13 +295,18 @@ define('base', function(require, exports, module) {
 	var _setUrlParam = function(name, val, url){
 		var urlParamReg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 		var s = url ? (url.split('?')[1] ? url.split('?')[1] : '') : window.location.search.substr(1);
-		var r = s.match(urlParamReg);
-		if(r !== null){
-			var ori = r[0].replace(/&/g,'');
+		if(s){
 			var result = url || window.location.href;
-			return result.replace(ori, name + '=' + val);
+			var r = s.match(urlParamReg);
+			if(r !== null){
+				var ori = r[0].replace(/&/g,'');
+				return result.replace(ori, name + '=' + val);
+			}else{
+				return result + '&' + name + '=' + val;
+			}
+		}else{
+			return url + '?' + name + '=' + val;
 		}
-		return null;
 	};
 
 	/*
