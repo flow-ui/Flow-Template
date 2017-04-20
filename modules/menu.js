@@ -1,8 +1,8 @@
 /*
  * name: menu.js
- * version: v0.1.0
- * update: 支持从现有dom初始化效果
- * date: 2017-04-18
+ * version: v0.1.1
+ * update: active() 未展开父级bug
+ * date: 2017-04-20
  */
 define('menu', function(require, exports, module) {
 	"use strict";
@@ -81,7 +81,7 @@ define('menu', function(require, exports, module) {
 		},
 		activeItem = function($el, $item) {
 			$el.find('.menu-item-active').removeClass('menu-item-active');
-			return $item.addClass('menu-item-active');
+			return $item.addClass('menu-item-active').parents('.menu-submenu').addClass('menu-opened');
 		},
 		Menu = function(config) {
 			var opt = $.extend({}, def, config || {}),

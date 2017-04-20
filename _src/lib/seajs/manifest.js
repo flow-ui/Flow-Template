@@ -38,7 +38,7 @@
         'lazyload'                          : 'v2.1.0',
         'marquee'                           : 'v0.10.1',
         'masonry'                           : 'v0.0.1',
-        'menu'                              : 'v0.1.0',
+        'menu'                              : 'v0.1.1',
         'mousemenu'                         : 'v1.0.1',
         'mousetrap'                         : 'v1.5.3',
         'mousewheel'                        : 'v0.0.1',
