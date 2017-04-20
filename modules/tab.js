@@ -21,13 +21,13 @@ define('tab', function(require, exports, module) {
 		},
 		template = '<div class="tab-nav">\
     <!-- for: ${data} as ${tab} -->\
-    <div class="tab-title<!-- if: ${tab.disabled} --> tab-disabled<!-- /if --><!-- if: ${tab.actived} --> tab-actived<!-- /if -->">${tab.title}</div>\
+    <div class="tab-title<!-- if: ${tab.color} --> tab-${tab.color}<!-- /if --><!-- if: ${tab.disabled} --> tab-disabled<!-- /if --><!-- if: ${tab.actived} --> tab-actived<!-- /if -->">${tab.title | raw}</div>\
     <!-- /for -->\
 </div>\
 <div class="tab-extra"></div>\
 <div class="tab-cont-wrap">\
 	<!-- for: ${data} as ${tab} -->\
-    <div class="tab-cont<!-- if: ${tab.actived} --> tab-actived<!-- /if -->">${tab.cont}</div>\
+    <div class="tab-cont<!-- if: ${tab.actived} --> tab-actived<!-- /if -->">${tab.cont | raw}</div>\
    	<!-- /for -->\
 </div>',
 		render,
