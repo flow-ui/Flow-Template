@@ -1,8 +1,8 @@
 /*
  * name: table.js
- * version: v1.5.0
- * update: add onReady()
- * date: 2017-04-19
+ * version: v1.5.1
+ * update: onReady(ajaxRes)
+ * date: 2017-04-21
  */
 define('table', function(require, exports, module) {
 	"use strict";
@@ -733,7 +733,8 @@ define('table', function(require, exports, module) {
 						});
 					}
 					if(typeof opt.onReady === 'function'){
-						opt.onReady();
+						opt.onReady(opt.ajaxRes);
+						delete opt.ajaxRes;
 					}
 				}
 			};
@@ -760,6 +761,7 @@ define('table', function(require, exports, module) {
 							} else {
 								return console.warn('Table(): ajax/dataParser必须返回Array格式！');
 							}
+							opt.ajaxRes = res;
 							generate(opt.rowData, opt, part);
 						}
 					});
