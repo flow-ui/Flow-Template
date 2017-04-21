@@ -10,8 +10,8 @@ define('select', function(require, exports, module) {
     seajs.importStyle('.select-ui-choose{position:relative;display:inline-block;overflow:hidden;-webkit-user-select:none;user-select:none;vertical-align:middle;}\
         .select-ui-choose.disabled, .select-ui-choose.disabled ._txt .label{cursor:not-allowed;}\
         .select-ui-choose.readonly, .select-ui-choose.readonly ._txt .label{cursor:default;}\
-        .select-ui-choose ._txt{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 20px 0 8px;border:0;height:100%;line-height:inherit}\
-        .select-ui-choose ._txt .label{cursor:pointer}\
+        .select-ui-choose ._txt{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 20px 0 0;border:0;height:100%;line-height:inherit}\
+        .select-ui-choose ._txt .label{cursor:pointer;vertical-align:middle;}\
         .select-ui-choose ._txt ._close{font-size:1.2em;display:inline-block;margin-left:.5em;vertical-align:middle}\
         .select-ui-choose ._arrow{position:absolute;top:0;right:.5em;height:100%}.select-ui-choose ._arrow .arr{position:absolute;top:50%;left:0}\
         .select-ui-choose ._arrow{width:1em}\
