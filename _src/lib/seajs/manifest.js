@@ -21,6 +21,7 @@
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.11.4',
         'city-select'                       : 'v1.0.2',
+        'collapse'                          : 'v0.0.1',
         'countdown'                         : 'v1.1.1',
         'datepicker'                        : 'v2.0.2',
         'drag'                              : 'v0.8.0',
