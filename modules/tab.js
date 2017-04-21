@@ -1,8 +1,8 @@
 /*
  * name: tab.js
- * version: v4.0.0
- * update: reBuild
- * date: 2017-04-20
+ * version: v4.1.0
+ * update: add setCont() method
+ * date: 2017-04-21
  */
 define('tab', function(require, exports, module) {
 	"use strict";
@@ -10,14 +10,14 @@ define('tab', function(require, exports, module) {
 		etpl = require('etpl'),
 		def = {
 			el: null,
-			conts: ".tab-cont", //内容
+			conts: ".tab-cont", //内容元素
 			data: null,
 			active: undefined, //初始显示，默认第一个
 			act: 'click', //触发动作
 			extra: null,
-			beforeChange: null, //切换前，return false将终止切换
-			onChange: null, //回调方法 @param ($this,$tab_t,index) : 当前对象，标签，当前帧序号
-			onReady: null //扩展方法 @param ($this,$tab_t,opts) : 当前对象，标签，配置
+			beforeChange: null, 
+			onChange: null, 
+			onReady: null 
 		},
 		template = '<div class="tab-nav">\
     <!-- for: ${data} as ${tab} -->\
@@ -62,18 +62,18 @@ define('tab', function(require, exports, module) {
 			if (opt.active === void 0) {
 				$.each(tabsData, function(i, d) {
 					if (d.actived) {
-						if(opt.active === void 0){
+						if (opt.active === void 0) {
 							opt.active = i;
-						}else{
+						} else {
 							d.actived = false;
 						}
 					}
 				});
-			} 
+			}
 			if (opt.active === void 0) {
 				opt.active = 0;
 				tabsData[opt.active].actived = true;
-			} 
+			}
 
 			html = render({
 				data: tabsData
@@ -107,7 +107,7 @@ define('tab', function(require, exports, module) {
 				var index = $(this).index(),
 					_timeout,
 					_last;
-				typeof(opt.beforeChange) === 'function' && opt.beforeChange($this, $tab_t, index);
+				typeof(opt.beforeChange) === 'function' && opt.beforeChange(index);
 				if (event.timeStamp) {
 					_last = event.timeStamp;
 					_timeout = setTimeout(function() {
@@ -119,7 +119,7 @@ define('tab', function(require, exports, module) {
 					toggletab(index);
 				}
 				setTimeout(function() {
-					typeof(opt.onChange) === 'function' && opt.onChange($this, $tab_t, index);
+					typeof(opt.onChange) === 'function' && opt.onChange(index);
 					index = _timeout = _last = null;
 				}, 0);
 			}).eq(opt.active).trigger(opt.act);
@@ -144,7 +144,7 @@ define('tab', function(require, exports, module) {
 					}
 				});
 			}
-			typeof opt.onReady === 'function' && opt.onReady($this, $tab_t, opt);
+			typeof opt.onReady === 'function' && opt.onReady($this, opt);
 
 			return {
 				active: function(index) {
@@ -161,6 +161,11 @@ define('tab', function(require, exports, module) {
 						} else {
 							$tab_t.eq(index).addClass('tab-disabled');
 						}
+					}
+				},
+				setCont: function(index, cont) {
+					if ($tab_c.eq(index).length && (cont !== void 0)) {
+						$tab_c.eq(index).html(cont);
 					}
 				}
 			};
