@@ -1,7 +1,7 @@
 /*
  * name: table.js
- * version: v1.5.1
- * update: onReady(ajaxRes)
+ * version: v1.5.2
+ * update: bug fix
  * date: 2017-04-21
  */
 define('table', function(require, exports, module) {
@@ -307,12 +307,13 @@ define('table', function(require, exports, module) {
 				return sortData;
 			};
 			var render = function(tData, opt, part) {
-				if (!$.isArray(tData) || !tData.length || !$.isArray(opt.column) || !opt.column.length) {
+				if (!$.isArray(tData) || !$.isArray(opt.column) || !opt.column.length) {
 					return console.warn('table: data or column配置有误！');
 				}
 				var colgroup = '<colgroup>';
 				var theadCont = '<thead><tr>';
 				var totalWidth = opt.width;
+				var totalWidthCopy = totalWidth;
 				var tableWidth = 0;
 				var otherParts = opt.column.length;
 				//收集注入元素
@@ -322,7 +323,7 @@ define('table', function(require, exports, module) {
 					//预计算列宽
 					col.width = isNaN(parseFloat(col.width)) ? 0 : parseFloat(col.width);
 					if (col.width) {
-						totalWidth -= col.width;
+						totalWidthCopy -= col.width;
 						otherParts -= 1;
 					}
 					//fixed列位置
@@ -330,16 +331,27 @@ define('table', function(require, exports, module) {
 						fixedIndex = i;
 					}
 				});
+				var otherPartsCopy = otherParts;
+				var totalWidthCopy2 = Math.max(totalWidthCopy, 0);
 				opt.fixedIndex = fixedIndex;
 				$.each(opt.column, function(i, col) {
 					var thisColWidth = col.width;
 					var thisColClass = [];
 					if (!thisColWidth) {
-						thisColWidth = Math.max(Math.floor(totalWidth / otherParts), 60 + (col.sort || $.isArray(col.filters) ? 40 : 0));
+						if(totalWidthCopy2 && otherPartsCopy===1){
+							thisColWidth = totalWidthCopy2;
+						}else{
+							thisColWidth = Math.max(Math.floor(totalWidthCopy / otherParts), 60 + (col.sort || $.isArray(col.filters) ? 40 : 0));
+							if(totalWidthCopy2 > thisColWidth){
+								totalWidthCopy2 -= thisColWidth;
+							}
+						}
+						otherPartsCopy--;
 					}
 					if (fixedIndex !== void(0) && fixedIndex >= i) {
 						fixedWidth += thisColWidth;
 					}
+					
 					tableWidth += thisColWidth;
 					switch (col.align) {
 						case 'center':
@@ -410,7 +422,7 @@ define('table', function(require, exports, module) {
 											});
 										}
 									});
-									$el.append($('<span class="table-filter"><i class="ion">&#xe64d;</i></span>').dropdown({
+									$el.append($('<span class="table-filter"><i class="ion">&#xeabf;</i></span>').dropdown({
 										items: dropData,
 										trigger: 'click',
 										onclick: function(item, isCurrent) {
@@ -446,32 +458,7 @@ define('table', function(require, exports, module) {
 							theadCont += (thisColTag + thisTagCont + '</div></th>');
 					}
 				});
-				var tbodyCont = getBody(tData, opt);
-				if (part === 'body') {
-					//body局部更新
-					var tbodyUpdate = inject(tbodyCont);
-					if (opt.fixedIndex !== void(0)) {
-						//移除交互控件name
-						var tbodyUpdateFixed = tbodyUpdate.clone(true);
-						tbodyUpdateFixed.each(function(row, tr) {
-							$(tr).find('td').each(function(i, td) {
-								if (i > opt.fixedIndex) {
-									controlParser($(td)).attr('class', 'tofixed');
-								}
-							});
-						});
-						tbodyUpdate.each(function(row, tr) {
-							$(tr).find('td').each(function(i, td) {
-								if (i <= opt.fixedIndex) {
-									controlParser($(td)).attr('class', 'tofixed');
-								}
-							});
-						});
-						$this.find('.table-fixed .table-body tbody').html(tbodyUpdateFixed);
-					}
-					$this.data('data', tData).find('.table-wrapper>.table-body tbody').html(tbodyUpdate);
-					return syncStatus();
-				}
+				var tbody = '<div class="table-body" style="width:' + tableWidth + 'px">';
 				var html = '<div class="table-wrapper' + (tableWidth > totalWidth ? ' table-scroll-x' : '') + '" style="width:' + opt.width + 'px">';
 				var thead = '<div class="table-header" style="width:' + tableWidth + 'px"><table class="table">';
 				theadCont += '</tr></thead>';
@@ -479,13 +466,45 @@ define('table', function(require, exports, module) {
 				thead += colgroup;
 				thead += theadCont;
 				thead += '</table></div>';
-				var tbody = '<div class="table-body" style="width:' + tableWidth + 'px"><table class="table' + (opt.hover ? ' table-hover' : '') + (opt.condensed ? ' table-condensed' : '') + (opt.bordered ? ' table-bordered' : '') + (opt.striped ? ' table-striped' : '') + '" style="width:' + tableWidth + 'px">';
-				tbody += colgroup;
-				tbody += ('<tbody>' + tbodyCont + '</tbody>');
-				tbody += '</table></div>';
+				if(!tData.length){
+					tbody += ('<div class="p">' + opt.noDataText + '</div>');
+				}else{
+					var tbodyCont = getBody(tData, opt);
+					if (part === 'body') {
+						//body局部更新
+						var tbodyUpdate = inject(tbodyCont);
+						if (opt.fixedIndex !== void(0)) {
+							//移除交互控件name
+							var tbodyUpdateFixed = tbodyUpdate.clone(true);
+							tbodyUpdateFixed.each(function(row, tr) {
+								$(tr).find('td').each(function(i, td) {
+									if (i > opt.fixedIndex) {
+										controlParser($(td)).attr('class', 'tofixed');
+									}
+								});
+							});
+							tbodyUpdate.each(function(row, tr) {
+								$(tr).find('td').each(function(i, td) {
+									if (i <= opt.fixedIndex) {
+										controlParser($(td)).attr('class', 'tofixed');
+									}
+								});
+							});
+							$this.find('.table-fixed .table-body tbody').html(tbodyUpdateFixed);
+						}
+						$this.data('data', tData).find('.table-wrapper>.table-body tbody').html(tbodyUpdate);
+						return syncStatus();
+					}
+					tbody += '<table class="table' + (opt.hover ? ' table-hover' : '') + (opt.condensed ? ' table-condensed' : '') + (opt.bordered ? ' table-bordered' : '') + (opt.striped ? ' table-striped' : '') + '" style="width:' + tableWidth + 'px">';
+					tbody += colgroup;
+					tbody += ('<tbody>' + tbodyCont + '</tbody>');
+					tbody += '</table>';
+				}
+				tbody += '</div>';
 				html += thead;
 				html += tbody;
-				if (fixedWidth) {
+
+				if (tData.length && fixedWidth) {
 					var tfixed = '';
 					tfixed = '<div class="table-fixed" style="width:' + fixedWidth + 'px">';
 					tfixed += thead;
@@ -768,7 +787,7 @@ define('table', function(require, exports, module) {
 				});
 			};
 
-			if ($.isArray(opt.data) && opt.data.length) {
+			if ($.isArray(opt.data)) {
 				opt.rowData = opt.data;
 				generate(opt.rowData, opt);
 			} else if (opt.load && opt.load.url && opt.load.url.split) {
