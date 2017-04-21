@@ -1,7 +1,7 @@
 /*
  * name: tab.js
- * version: v4.1.0
- * update: add setCont() method
+ * version: v4.1.1
+ * update: remove autoplay
  * date: 2017-04-21
  */
 define('tab', function(require, exports, module) {
@@ -124,26 +124,6 @@ define('tab', function(require, exports, module) {
 				}, 0);
 			}).eq(opt.active).trigger(opt.act);
 
-			//自动播放
-			if (opt.auto) {
-				var autoIndex = opt.active,
-					auto = function() {
-						autoIndex = autoIndex >= $tab_t.length - 1 ? 0 : ++autoIndex;
-						$tab_t.eq(autoIndex).trigger(opt.act);
-					},
-					t = setInterval(auto, opt.interval);
-				$tab_c.hover(function() {
-					clearInterval(t);
-				}, function() {
-					t = setInterval(auto, opt.interval);
-				});
-				$this.parent().on('DOMNodeRemoved', function(e) {
-					if ($(e.target).is($this)) {
-						//DOM移除后释放全局变量
-						t && clearInterval(t);
-					}
-				});
-			}
 			typeof opt.onReady === 'function' && opt.onReady($this, opt);
 
 			return {
@@ -176,7 +156,6 @@ define('tab', function(require, exports, module) {
 		variableClose: '}'
 	});
 	render = etpl.compile(template);
-
 
 	$.fn.tab = function(config) {
 		return Tab($.extend({
