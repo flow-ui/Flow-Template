@@ -56,7 +56,6 @@
     right: 0;
 }
 .tab .tab-cont-wrap{
-    padding: @space-sm;
 
     border: 1px solid @gray-light;
     border-top: 0;
@@ -65,8 +64,11 @@
 }
 .tab .tab-cont{
     display: none;
+    padding: @space-sm;
 }
-
+.tab .tab-cont:empty{
+    padding: 0;
+}
 .tab .tab-cont.tab-actived{
     display: block;
 }
