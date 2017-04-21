@@ -52,6 +52,12 @@ define('table', function(require, exports, module) {
 			}
 			//索引列
 			if (opt.index) {
+				$.each(opt.column, function(i, e){
+					if(e.type && e.type === 'index'){
+						opt.column.splice(i, 1);
+						return false;
+					}
+				});
 				opt.column.unshift({
 					type: 'index',
 					width: 60,
@@ -61,6 +67,12 @@ define('table', function(require, exports, module) {
 			}
 			//勾选列
 			if (opt.multi) {
+				$.each(opt.column, function(i, e){
+					if(e.type && e.type === 'selection'){
+						opt.column.splice(i, 1);
+						return false;
+					}
+				});
 				opt.column.unshift({
 					type: 'selection',
 					width: 60,
