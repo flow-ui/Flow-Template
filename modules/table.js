@@ -775,7 +775,7 @@ define('table', function(require, exports, module) {
 							} else {
 								ajaxData = res;
 							}
-							if ($.isArray(ajaxData) && ajaxData.length) {
+							if ($.isArray(ajaxData)) {
 								opt.rowData = ajaxData;
 							} else {
 								return console.warn('Table(): ajax/dataParser必须返回Array格式！');
