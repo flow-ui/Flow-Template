@@ -1,8 +1,8 @@
 /*
  * name: select.js
- * version: v4.3.2
- * update: 引入全局层级管理
- * date: 2017-03-30
+ * version: v4.3.3
+ * update: 异常提示
+ * date: 2017-04-21
  */
 define('select', function(require, exports, module) {
     "use strict";
@@ -161,7 +161,9 @@ define('select', function(require, exports, module) {
                     initSelsectd = selectItem;
                 }
             });
-            
+            if(!$.isArray(selectData) || !selectData.length){
+                return console.warn('select: 无数据！');
+            }
             //未定义selected默认第一项
             if (!initSelsectd) {
                 if (opt.multi || hasChildren) {
