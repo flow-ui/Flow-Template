@@ -12,17 +12,17 @@
     display: block;
 
     border-radius: 100px;
-    background-color: @gray-lighter;
+    background-color: @gray-light;
 }
 
 .progress-bg{
     overflow: hidden;
     position: relative;
-    height: 1em;
+    height: 10px;
     transition: all 0.2s linear;
 
     border-radius: 100px;
-    background-color: @gray-light;
+    background-color: @light;
 }
 
 .progress-text{
@@ -51,6 +51,10 @@
     background: #fff;
 }
 
+.progress-primary .progress-inner, .progress-auxiliary .progress-inner, .progress-info .progress-inner, .progress-success .progress-inner, 
+.progress-warning .progress-inner, .progress-danger .progress-inner{
+    background-color: @gray-lighter;
+}
 .progress-primary .progress-bg{
     background-color: @primary;
 }
