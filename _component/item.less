@@ -15,41 +15,44 @@
     background-color: @primary;
 }
 .items .active .item-extra .badge-count{background: @light;color:inherit;}
+
+.items-inverse .item-extra{color:@light;}
+
 .items-primary .item > a{color: @primary;}
-.items-primary .item > a:hover{color: @primary-dark;}
+.items-primary .item > a:hover, .items-inverse .active .item-extra, .items-inverse .item > a:hover .item-extra{color: @primary-dark;}
 .items-primary .active > a, .items-primary .active > a:hover{
     color: @light;
 }
 .items-auxiliary .item > a{color: @auxiliary;}
-.items-auxiliary .item > a:hover{color: @auxiliary-dark;}
+.items-auxiliary .item > a:hover, .items-auxiliary.items-inverse .active .item-extra, .items-auxiliary .item > a:hover .item-extra{color: @auxiliary-dark;}
 .items-auxiliary .active > a, .items-auxiliary .active > a:hover{
     color: @light;
     background-color: @auxiliary;
 }
 .items-auxiliary .active .item-extra .badge-count{color:@auxiliary;}
 .items-info .item > a{color: @info;}
-.items-info .item > a:hover{color: @info-dark;}
+.items-info .item > a:hover, .items-info.items-inverse .active .item-extra, .items-info .item > a:hover .item-extra{color: @info-dark;}
 .items-info .active > a, .items-info .active > a:hover{
     color: @light;
     background-color: @info;
 }
 .items-info .active .item-extra .badge-count{color:@info;}
 .items-success .item > a{color: @success;}
-.items-success .item > a:hover{color: @success-dark;}
+.items-success .item > a:hover, .items-success.items-inverse .active .item-extra, .items-success .item > a:hover .item-extra{color: @success-dark;}
 .items-success .active > a, .items-success .active > a:hover{
     color: @light;
     background-color: @success;
 }
 .items-success .active .item-extra .badge-count{color:@success;}
 .items-warning .item > a{color: @warning;}
-.items-warning .item > a:hover{color: @warning-dark;}
+.items-warning .item > a:hover, .items-warning.items-inverse .active .item-extra, .items-warning .item > a:hover .item-extra{color: @warning-dark;}
 .items-warning .active > a, .items-warning .active > a:hover{
     color: @light;
     background-color: @warning;
 }
 .items-warning .active .item-extra .badge-count{color:@warning;}
 .items-danger .item > a{color: @danger;}
-.items-danger .item > a:hover{color: @danger-dark;}
+.items-danger .item > a:hover, .items-danger.items-inverse .active .item-extra, .items-danger .item > a:hover .item-extra{color: @danger-dark;}
 .items-danger .active > a, .items-danger .active > a:hover{
     color: @light;
     background-color: @danger;
