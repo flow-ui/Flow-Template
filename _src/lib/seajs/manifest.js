@@ -65,7 +65,7 @@
         'switch'                            : 'v0.3.0',
         'tab'                               : 'v4.1.1',
         'table'                             : 'v1.5.4',
-        'timepicker'                        : 'v0.1.1',
+        'timepicker'                        : 'v0.1.2',
         'tip'                               : 'v1.5.0',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.4'
