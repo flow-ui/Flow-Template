@@ -4,9 +4,9 @@
 define(function(require) {
     var $ = require('jquery');
     var com = require('./common');
-    
+    var api = require('./api');
 
-
+    console.log(api);
 
 
 

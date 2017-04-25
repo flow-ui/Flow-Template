@@ -11,5 +11,5 @@
 	"UUIDHolder":			"__uuid",
 	"checkUpdate":			true,
 	"compress":				true,
-	"extendsPath":			["modules/**"]
+	"extendsPath":			["modules/**", "public/js/**"]
 }
