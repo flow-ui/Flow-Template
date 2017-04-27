@@ -116,7 +116,7 @@ define('menu', function(require, exports, module) {
 					e.stopPropagation();
 				}
 				if(typeof opt.onClick === 'function'){
-					opt.onClick(isCur);
+					opt.onClick($(this).data('menu-key'), $(this), isCur);
 				}
 				if (isCur) {
 					return null;
