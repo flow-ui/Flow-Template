@@ -1,8 +1,8 @@
 /*
  * name: box.js
- * version: v3.11.4
- * update: 内容不滚动bug
- * date: 2017-04-10
+ * version: v3.11.5
+ * update: protect元素插入原父元素
+ * date: 2017-04-28
  */
 define('box', function(require, exports, module) {
 	"use strict";
@@ -105,7 +105,7 @@ define('box', function(require, exports, module) {
 				cont.show();
 				if (cont.context) {
 					//默认保护
-					s.protect = true;
+					s.protect = cont.parent();
 				}
 			} else if ($.parseHTML($.trim(cont + ''))[0].nodeType === 1) {
 				//dom字符串
@@ -306,7 +306,7 @@ define('box', function(require, exports, module) {
 					}
 					if (that.data('protect')) {
 						var $ele = that.find('.box-wrap-body').length ? that.find('.box-wrap-body').children() : that.children();
-						$ele.hide().appendTo($("body"));
+						$ele.hide().appendTo(that.data('protect'));
 					}
 					if(that.data('bg') && $blank.data('call')){
 						$blank.data('call', $blank.data('call') - 1);
@@ -326,7 +326,7 @@ define('box', function(require, exports, module) {
 				}
 				setTimeout(function() {
 					if ($o.s.protect) {
-						$o.ele.hide().appendTo($("body"));
+						$o.ele.hide().appendTo($o.s.protect);
 					}
 					$o.out.remove();
 					Box.bgCheck();
