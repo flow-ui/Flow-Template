@@ -48,7 +48,7 @@
         'offcanvas'                         : 'v2.0.4',
         'on-scroll'                         : 'v2.1.3',
         'page'                              : 'v1.0.4',
-        'paging-load'                       : 'v0.0.2',
+        'paging-load'                       : 'v0.0.3',
         'pjax'                              : 'v0.0.1',
         'placeholder'                       : 'v0.0.1',
         'progress'                          : 'v0.0.3',
