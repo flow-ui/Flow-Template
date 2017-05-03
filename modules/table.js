@@ -1,7 +1,7 @@
 /*
  * name: table.js
- * version: v1.5.5
- * update: reload()方法支持异步数据重载
+ * version: v1.5.6
+ * update: 多选模式下onSelect回调增加第四个参数isSelect
  * date: 2017-05-03
  */
 define('table', function(require, exports, module) {
@@ -659,7 +659,7 @@ define('table', function(require, exports, module) {
 						multiCollection.push(opt.oData[row]);
 					}
 					if (typeof opt.onSelect === 'function') {
-						opt.onSelect(row, opt.oData[row], multiCollection);
+						opt.onSelect(row, opt.oData[row], multiCollection, isSelect);
 					}
 				} else {
 					if (multiCollection.length && (row === multiCollection[0][indexKey])) {
