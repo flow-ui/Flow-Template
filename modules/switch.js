@@ -1,7 +1,7 @@
 /*
  * name: switch.js
- * version: v0.4.0
- * update: $('.flow-ui-switch')自动初始化，支持data-config
+ * version: v0.4.1
+ * update: 基于checkbox初始化checked状态bug
  * date: 2017-05-03
  */
 define('switch', function(require, exports, module) {
@@ -10,7 +10,7 @@ define('switch', function(require, exports, module) {
 		def = {
 			el: null,
 			name: null,
-			value: false,
+			value: null,
 			round: false,
 			color: "default",
 			disabled: false,
@@ -89,7 +89,12 @@ define('switch', function(require, exports, module) {
 					$syncInput = $('<input type="checkbox" >');
 				}
 			}
-			$syncInput.prop('checked', opt.value);
+			if(opt.value===null){
+				opt.value = $syncInput.prop('checked');
+			}else{
+				$syncInput.prop('checked', opt.value);
+			}
+			
 			if ($syncInput.prop('checked')) {
 				classTemp.push('switch-on');
 			}
