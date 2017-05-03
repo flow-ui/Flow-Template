@@ -78,7 +78,7 @@ define('validform',function(require, exports, module) {
 					var that = this;
 					setTimeout(function(){
 						Validform.util.check.call(that, $this, subpost);
-					},curform.settings.checkTime);
+					}, curform.settings.checkTime);
 				})
 				.on('submit',function(){
 					var subflag = Validform.util.submitForm.call($this, curform.settings);
@@ -272,6 +272,7 @@ define('validform',function(require, exports, module) {
 				reg = /\/.+\//g,
 				regex = /^(.+?)(\d+)-(\d+)$/,
 				type = 3;
+
 			if (reg.test(datatype)) {
 				var regstr = datatype.match(reg)[0].slice(1, -1);
 				var param = datatype.replace(reg, "");
@@ -341,6 +342,9 @@ define('validform',function(require, exports, module) {
 				info = null,
 				passed = false,
 				type = 3;
+			if(!curform.data("tipmsg")){
+				return null;
+			}
 			if (obj.attr("ignore") === "ignore" && Validform.util.isEmpty.call(obj, gets)) {
 				if (obj.data("cked")) {
 					info = "";
@@ -419,6 +423,9 @@ define('validform',function(require, exports, module) {
 			obj.removeClass("Validform_right Validform_loading").addClass("Validform_checktip Validform_wrong");
 		},
 		check: function(curform, subpost, bool, force) {
+			if(!curform.data("tipmsg")){
+				return null;
+			}
 			var settings = curform[0].settings;
 			subpost = subpost || "";
 			var inputval = Validform.util.getValue.call(curform, $(this));
