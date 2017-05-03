@@ -1,7 +1,7 @@
 /*
 * name: validform.js
-* version: v2.5.0
-* update: 增加浮点数验证规则:f
+* version: v2.5.1
+* update: 删除form情况下报错
 * data: 2017-05-03
 */
 define('validform',function(require, exports, module) {
@@ -246,6 +246,9 @@ define('validform',function(require, exports, module) {
 				regxp3 = /(.*?)\d+(.+?)\d+(.*)/,
 				mac = datatype.match(regxp),
 				temp, str;
+			if(!curform.data("tipmsg")){
+				return null;
+			}
 			if (recheck == "recheck") {
 				str = curform.data("tipmsg").reck || tipmsg.reck;
 				return str;
