@@ -1,8 +1,8 @@
 /*
  * name: switch.js
- * version: v0.3.0
- * update: 支持基于checkbox初始化
- * date: 2017-04-20
+ * version: v0.4.0
+ * update: $('.flow-ui-switch')自动初始化，支持data-config
+ * date: 2017-05-03
  */
 define('switch', function(require, exports, module) {
 	"use strict";
@@ -55,7 +55,9 @@ define('switch', function(require, exports, module) {
 			if (!$this.length || $this.data('switch-init')) {
 				return null;
 			}
-
+			if($.isObject($this.data('config'))){
+				$.extend(opt, $this.data('config'));
+			}
 			$switch = $(template);
 			if (opt.round) {
 				classTemp.push('switch-round');
@@ -127,5 +129,8 @@ define('switch', function(require, exports, module) {
 			el: this
 		}, config || {}));
 	};
+	$('.flow-ui-switch').each(function(){
+		$(this).switch();
+	});
 	module.exports = Switch;
 });
