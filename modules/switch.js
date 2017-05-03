@@ -55,7 +55,7 @@ define('switch', function(require, exports, module) {
 			if (!$this.length || $this.data('switch-init')) {
 				return null;
 			}
-			if($.isObject($this.data('config'))){
+			if($.isPlainObject($this.data('config'))){
 				$.extend(opt, $this.data('config'));
 			}
 			$switch = $(template);
