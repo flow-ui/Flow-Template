@@ -14,7 +14,7 @@
         'video/video'                       : 'v0.0.1',
         'webuploader/webuploader'           : 'v1.0.0',
         'zTree/zTree'                       : 'v0.1.0',
-        'album'                             : 'v2.2.13',
+        'album'                             : 'v2.2.14',
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.1.0',
         'badge'                             : 'v0.0.1',
