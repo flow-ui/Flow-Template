@@ -1,8 +1,8 @@
 /*
 * name: validform.js
-* version: v2.5.1
-* update: 删除form情况下报错
-* data: 2017-05-03
+* version: v2.5.2
+* update: tiptype=1个别情况不弹出错误提示
+* data: 2017-05-05
 */
 define('validform',function(require, exports, module) {
 	"use strict";
@@ -437,7 +437,7 @@ define('validform',function(require, exports, module) {
 				return false;
 			}
 			var flag = Validform.util.regcheck.call(curform, $(this).attr("datatype"), inputval, $(this));
-			if (inputval === this.validform_lastval && !$(this).attr("recheck") && subpost === "") {
+			if (inputval === this.validform_lastval && !$(this).attr("recheck") && subpost === "" && settings.tiptype!==1) {
 				return flag.passed ? true : false;
 			}
 			this.validform_lastval = inputval;
