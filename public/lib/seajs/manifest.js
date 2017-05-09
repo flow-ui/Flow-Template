@@ -13,7 +13,6 @@
         'validform/validform'               : 'v2.5.2',
         'video/video'                       : 'v0.0.1',
         'webuploader/webuploader'           : 'v1.0.0',
-        'zTree/zTree'                       : 'v0.1.0',
         'album'                             : 'v2.2.14',
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.1.0',
@@ -69,7 +68,8 @@
         'timepicker'                        : 'v0.1.2',
         'tip'                               : 'v1.5.0',
         'touch'                             : 'v0.1.1',
-        'zoom'                              : 'v2.0.4'
+        'zoom'                              : 'v2.0.4',
+        'zTree'                             : 'v0.2.0'
     };
     var manifest = {};
     for(var key in mod){
