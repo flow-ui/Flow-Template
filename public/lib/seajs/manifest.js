@@ -20,6 +20,7 @@
         'base'                              : 'v3.3.3',
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.11.6',
+        'checks'                            : 'v0.0.1',
         'city-select'                       : 'v1.0.2',
         'collapse'                          : 'v0.0.2',
         'countdown'                         : 'v1.1.1',
