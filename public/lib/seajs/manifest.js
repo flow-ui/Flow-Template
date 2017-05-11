@@ -50,7 +50,6 @@
         'page'                              : 'v1.0.5',
         'paging-load'                       : 'v0.1.0',
         'pjax'                              : 'v0.0.1',
-        'placeholder'                       : 'v0.0.1',
         'progress'                          : 'v0.0.3',
         'qr'                                : 'v0.1.0',
         'responsive'                        : 'v0.0.1',
