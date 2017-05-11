@@ -4,7 +4,7 @@ seajs.root = '__serverRoot' ? '/' + '__serverRoot' : '';
 
 // 插件设置
 seajs.set = {
-	util: {
+	base: {
 		timeout: 1.5e4
 	}
 };
