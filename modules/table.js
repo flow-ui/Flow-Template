@@ -794,10 +794,12 @@ define('table', function(require, exports, module) {
 			};
 			var loadData = function(set, part) {
 				require.async('spin', function() {
-					var loading = $this.spin({
-						icon: '&#xe66e;'
-					});
-					$.ajax({
+					if($.isPlainObject(loadData.loading)){
+						loadData.loading = loadData.loading.hide();
+						loadData.progress.abort();
+					}
+					loadData.loading = $this.spin();
+					loadData.progress = $.ajax({
 						type: set.method || 'get',
 						url: set.url,
 						dataType: 'json',
@@ -818,7 +820,7 @@ define('table', function(require, exports, module) {
 							generate(opt.rowData, opt, part);
 						},
 						always: function(){
-							loading.hide();
+							loadData.loading = loadData.loading.hide();
 						}
 					});
 				});
