@@ -1,8 +1,8 @@
 /*
  * name: table.js
- * version: v1.8.0
- * update: 增加 onLoad 配置
- * date: 2017-05-17
+ * version: v1.8.1
+ * update: data()方法不响应空数组bug
+ * date: 2017-05-18
  */
 define('table', function(require, exports, module) {
 	"use strict";
@@ -332,6 +332,7 @@ define('table', function(require, exports, module) {
 			};
 			var render = function(tData, opt, part) {
 				if (!$.isArray(tData) || !$.isArray(opt.column) || !opt.column.length) {
+					console.log(tData, opt.column)
 					return console.warn('table: data or column配置有误！');
 				}
 				var colgroup = '<colgroup>';
@@ -733,30 +734,31 @@ define('table', function(require, exports, module) {
 						tDataGroup.push(base.deepcopy(pageTemp));
 						pageTemp = null;
 					}
-
-					tData = tDataGroup[0];
-					require.async('page', function(Page) {
-						var pageEl;
-						if (opt.page.el && $(opt.page.el).length) {
-							pageEl = $(opt.page.el);
-						} else if (!$('#' + indexKey).length) {
-							pageEl = $('<div id="' + indexKey + '"></div>');
-							$this.after(pageEl);
-						} else {
-							pageEl = $('#' + indexKey);
-						}
-						tPager = Page({
-							el: pageEl,
-							total: tDataGroup.length,
-							onChange: function(pagenumber) {
-								tData = tDataGroup[pagenumber - 1];
-								render(tData, opt, 'body');
-								if (typeof opt.page.onChange === 'function') {
-									opt.page.onChange(pagenumber);
-								}
+					if(tDataGroup.length){
+						tData = tDataGroup[0];
+						require.async('page', function(Page) {
+							var pageEl;
+							if (opt.page.el && $(opt.page.el).length) {
+								pageEl = $(opt.page.el);
+							} else if (!$('#' + indexKey).length) {
+								pageEl = $('<div id="' + indexKey + '"></div>');
+								$this.after(pageEl);
+							} else {
+								pageEl = $('#' + indexKey);
 							}
+							tPager = Page({
+								el: pageEl,
+								total: tDataGroup.length,
+								onChange: function(pagenumber) {
+									tData = tDataGroup[pagenumber - 1];
+									render(tData, opt, 'body');
+									if (typeof opt.page.onChange === 'function') {
+										opt.page.onChange(pagenumber);
+									}
+								}
+							});
 						});
-					});
+					}
 				}
 
 				render(tData, opt, part);
@@ -836,7 +838,7 @@ define('table', function(require, exports, module) {
 
 			return {
 				data: function(data) {
-					if ($.isArray(data) && data.length) {
+					if ($.isArray(data)) {
 						generate(data, opt);
 					} else {
 						return opt.oData;
