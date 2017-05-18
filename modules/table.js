@@ -1,7 +1,7 @@
 /*
  * name: table.js
- * version: v1.8.2
- * update: onLoad 回调未正常执行bug
+ * version: v1.8.3
+ * update: bug fix
  * date: 2017-05-18
  */
 define('table', function(require, exports, module) {
@@ -495,7 +495,7 @@ define('table', function(require, exports, module) {
 					if (part === 'placehold') {
 						//首次ajax加载
 					} else {
-						tbody += ('<table class="table"><tbody><tr><td style="border-top:0" colspan="'+opt.column.length+'"><div class="p">' + opt.noDataText + '</div></td></tr></tbody></table>');
+						tbody += ('<table class="table">' + colgroup + '<tbody><tr><td style="border-top:0" colspan="'+opt.column.length+'"><div class="p">' + opt.noDataText + '</div></td></tr></tbody></table>');
 					}
 				} else {
 					var tbodyCont = getBody(tData, opt);
@@ -804,7 +804,6 @@ define('table', function(require, exports, module) {
 						data: set.data || {},
 						success: function(res) {
 							var ajaxData;
-							loading.hide();
 							if (typeof set.dataParser === 'function') {
 								ajaxData = set.dataParser(res);
 							} else {
@@ -817,6 +816,9 @@ define('table', function(require, exports, module) {
 							}
 							opt.ajaxRes = res;
 							generate(opt.rowData, opt, part);
+						},
+						always: function(){
+							loading.hide();
 						}
 					});
 				});
