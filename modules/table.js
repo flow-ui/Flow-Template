@@ -1,7 +1,7 @@
 /*
  * name: table.js
- * version: v1.8.1
- * update: data()方法不响应空数组bug
+ * version: v1.8.2
+ * update: onLoad 回调未正常执行bug
  * date: 2017-05-18
  */
 define('table', function(require, exports, module) {
@@ -763,35 +763,34 @@ define('table', function(require, exports, module) {
 
 				render(tData, opt, part);
 
-				if (part !== 'placehold' && !$this.data('table-events')) {
-					$this.data('table-events', true);
-					//绑定事件
-					$this.on('click', 'td.table-cell-editable', function(e) {
-						e.stopPropagation();
-						var entity = $(this).data('entity');
-						entity.edit($(this));
-					}).on('click', '.table-choose-input', function(e) {
-						e.stopPropagation();
-						selectRow($(this).parents('tr[data-index]').data('index'), $(this).prop('checked'));
-					});
-					if (opt.multi) {
-						$this.on('click', '.table-choose-all', selectAll);
-					} else {
-						$this.on('click', '.table-body tr', function() {
-							selectRow($(this).data('index'));
+				if (part !== 'placehold') {
+					if(!$this.data('table-events')){
+						$this.data('table-events', true);
+						//绑定事件
+						$this.on('click', 'td.table-cell-editable', function(e) {
+							e.stopPropagation();
+							var entity = $(this).data('entity');
+							entity.edit($(this));
+						}).on('click', '.table-choose-input', function(e) {
+							e.stopPropagation();
+							selectRow($(this).parents('tr[data-index]').data('index'), $(this).prop('checked'));
 						});
-					}
-					if (typeof opt.onReady === 'function') {
-						opt.onReady(opt.ajaxRes);
-						if (typeof opt.onLoad !== 'function'){
-							delete opt.ajaxRes;
+						if (opt.multi) {
+							$this.on('click', '.table-choose-all', selectAll);
+						} else {
+							$this.on('click', '.table-body tr', function() {
+								selectRow($(this).data('index'));
+							});
+						}
+						if (typeof opt.onReady === 'function') {
+							opt.onReady(opt.ajaxRes);
 						}
 					}
 					if (typeof opt.onLoad === 'function') {
 						opt.onLoad(opt.ajaxRes);
-						delete opt.ajaxRes;
 					}
 				}
+				delete opt.ajaxRes;
 			};
 			var loadData = function(set, part) {
 				require.async('spin', function() {
