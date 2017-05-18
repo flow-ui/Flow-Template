@@ -1,7 +1,7 @@
 /*
  * name: table.js
- * version: v1.8.3
- * update: bug fix
+ * version: v1.8.4
+ * update: 并行ajax进程管理
  * date: 2017-05-18
  */
 define('table', function(require, exports, module) {
@@ -806,6 +806,7 @@ define('table', function(require, exports, module) {
 						data: set.data || {},
 						success: function(res) {
 							var ajaxData;
+							loadData.loading = loadData.loading.hide();
 							if (typeof set.dataParser === 'function') {
 								ajaxData = set.dataParser(res);
 							} else {
@@ -819,8 +820,10 @@ define('table', function(require, exports, module) {
 							opt.ajaxRes = res;
 							generate(opt.rowData, opt, part);
 						},
-						always: function(){
-							loadData.loading = loadData.loading.hide();
+						error: function(){
+							if($.isPlainObject(loadData.loading)){
+								loadData.loading = loadData.loading.hide();
+							}
 						}
 					});
 				});
