@@ -62,6 +62,7 @@
         'slide'                             : 'v4.2.2',
         'slider'                            : 'v0.0.2',
         'spin'                              : 'v0.0.3',
+        'store'                             : 'v0.0.1',
         'switch'                            : 'v0.4.1',
         'tab'                               : 'v4.2.0',
         'table'                             : 'v1.8.4',
