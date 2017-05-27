@@ -17,7 +17,7 @@
         'appcan'                            : 'v0.1.0',
         'autocomplete'                      : 'v0.1.0',
         'badge'                             : 'v0.0.1',
-        'base'                              : 'v3.4.0',
+        'base'                              : 'v3.4.1',
         'bdshare'                           : 'v3.1.2',
         'box'                               : 'v3.11.6',
         'checks'                            : 'v0.0.2',
