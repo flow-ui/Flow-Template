@@ -22,13 +22,11 @@ seajs.config({
 		"hook"	 	     : "hook/hook",
 		"jquery" 	     : "jquery/1/jquery",
 		"validform"      : "validform/validform",
-		"My97DatePicker" : "My97DatePicker/WdatePicker",
 		"raty"		     : "raty/raty",
 		"upload"         : "upload/upload",
 		"makethumb"      : "upload/makethumb",
 		"localResizeIMG" : "upload/localResizeIMG",
-		"video"		     : "video/video",
-		"webuploader"    : "webuploader/webuploader"
+		"video"		     : "video/video"
 	},
     localcache:{
         timeout: 2e4
