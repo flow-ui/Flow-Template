@@ -19,7 +19,7 @@
         'badge'                             : 'v0.0.1',
         'base'                              : 'v3.4.1',
         'bdshare'                           : 'v3.1.2',
-        'box'                               : 'v3.11.6',
+        'box'                               : 'v3.11.7',
         'checks'                            : 'v0.0.2',
         'city-select'                       : 'v1.0.2',
         'collapse'                          : 'v0.0.2',
