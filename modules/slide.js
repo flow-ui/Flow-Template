@@ -266,8 +266,8 @@ define('slide', function(require, exports, module) {
             //添加导航
             (function() {
                 var appendNav = function() {
-                        var _links = '';
-                        for (i = 0; i < count; i++) {
+                        var _links = '', i = 0;
+                        for (; i < count; i++) {
                             _links += ("<a>" + (i + 1) + "</a>");
                         }
                         $navs.empty().append(_links);
