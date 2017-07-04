@@ -59,7 +59,7 @@
         'scroll-row'                        : 'v3.0.6',
         'select'                            : 'v4.3.5',
         'sendcode'                          : 'v0.2.0',
-        'slide'                             : 'v4.2.2',
+        'slide'                             : 'v4.2.3',
         'slider'                            : 'v0.0.2',
         'spin'                              : 'v0.0.3',
         'store'                             : 'v0.0.1',
