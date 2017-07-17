@@ -37,7 +37,7 @@
         'input'                             : 'v0.1.3',
         'instantclick'                      : 'v0.0.1',
         'label'                             : 'v0.0.1',
-        'lazyload'                          : 'v2.1.0',
+        'lazyload'                          : 'v2.1.1',
         'marquee'                           : 'v0.10.1',
         'masonry'                           : 'v0.0.1',
         'menu'                              : 'v0.2.3',
