@@ -46,7 +46,7 @@
         'mousewheel'                        : 'v0.0.1',
         'notice'                            : 'v0.0.3',
         'offcanvas'                         : 'v2.0.4',
-        'on-scroll'                         : 'v2.1.3',
+        'on-scroll'                         : 'v2.2.0',
         'page'                              : 'v1.0.6',
         'paging-load'                       : 'v0.1.0',
         'pjax'                              : 'v0.0.1',
