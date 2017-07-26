@@ -66,9 +66,9 @@
         'store'                             : 'v0.0.1',
         'switch'                            : 'v1.0.0',
         'tab'                               : 'v4.2.0',
-        'table'                             : 'v1.8.4',
+        'table'                             : 'v1.8.5',
         'timepicker'                        : 'v0.1.2',
-        'tip'                               : 'v1.5.0',
+        'tip'                               : 'v1.5.1',
         'touch'                             : 'v0.1.1',
         'zoom'                              : 'v2.0.4',
         'zTree'                             : 'v0.2.0'
