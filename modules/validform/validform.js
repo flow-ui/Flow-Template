@@ -4,7 +4,7 @@
 * update: strict mode bug fix
 * data: 2017-08-09
 */
-define(function(require, exports, module) {
+define('validform', function(require, exports, module) {
 	"use strict";
 	seajs.importStyle('.Validform_right{color:#71b83d}.Validform_wrong{color:red;white-space:nowrap}\
 		.Validform_loading{padding-left:20px}.Validform_error{background-color:#ffe7e7}\
