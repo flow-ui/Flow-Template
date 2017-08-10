@@ -47,7 +47,7 @@
         'notice'                            : 'v0.0.3',
         'offcanvas'                         : 'v2.0.4',
         'on-scroll'                         : 'v2.2.0',
-        'page'                              : 'v1.0.6',
+        'page'                              : 'v1.0.7',
         'paging-load'                       : 'v0.2.0',
         'pjax'                              : 'v0.0.1',
         'progress'                          : 'v0.0.3',
