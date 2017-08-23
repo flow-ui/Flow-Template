@@ -156,9 +156,10 @@ define('drag', function(require, exports, module) {
                     typeof(opt.dragStart) === 'function' && opt.dragStart($this);
                 });
                 //触屏
-                var clickHandle = (typeof opt.onClick === 'function');
+                var clickHandle;
                 $this.on("touchstart", function(e) {
                     opt.handletouch && e.preventDefault();
+                    clickHandle = (typeof opt.onClick === 'function');
                     var evt = e.originalEvent;
                     var wst = base.getStyle($this.get(0),'position')==='fixed' ? $(window).scrollTop() : 0;
                     ox = parseInt($this.offset().left) || 0;
@@ -171,10 +172,10 @@ define('drag', function(require, exports, module) {
                     }
                     mx = evt.touches[0].clientX;
                     my = evt.touches[0].clientY;
-                    typeof(opt.dragStart) === 'function' && opt.dragStart($this);
                     if(clickHandle){
-                        clickHandle = setTimeout(opt.onClick, 300);
+                        clickHandle = setTimeout(opt.onClick, 200);
                     }
+                    typeof(opt.dragStart) === 'function' && opt.dragStart($this);
                 }).on('touchmove', function(e){
                     if(clickHandle){
                         clickHandle = clearTimeout(clickHandle);
