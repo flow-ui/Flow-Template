@@ -25,7 +25,7 @@
         'collapse'                          : 'v0.0.2',
         'countdown'                         : 'v1.1.1',
         'datepicker'                        : 'v2.0.2',
-        'drag'                              : 'v0.10.1',
+        'drag'                              : 'v0.10.4',
         'drag-panel'                        : 'v0.0.2',
         'dropdown'                          : 'v0.2.3',
         'easing'                            : 'v0.0.1',
