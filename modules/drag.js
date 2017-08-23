@@ -1,8 +1,8 @@
 /*
  * name: drag
- * vertion: v0.9.3
- * update: 兼容触屏
- * date: 2017-08-16
+ * vertion: v0.10.0
+ * update: 增加handletouch配置
+ * date: 2017-08-23
  */
 define('drag', function(require, exports, module) {
     'use strict';
@@ -16,7 +16,8 @@ define('drag', function(require, exports, module) {
             dragStart: null,
             onDrag: null,
             dragEnd: null,
-            onMove: null
+            onMove: null,
+            handletouch: false
         },
         moveTimer,
         moveIt = function(ele, offset) {
@@ -155,7 +156,7 @@ define('drag', function(require, exports, module) {
                 });
                 //触屏
                 $this.on("touchstart", function(e) {
-                    e.preventDefault();
+                    opt.handletouch && e.preventDefault();
                     var evt = e.originalEvent;
                     var wst = base.getStyle($this.get(0),'position')==='fixed' ? $(window).scrollTop() : 0;
                     ox = parseInt($this.offset().left) || 0;
