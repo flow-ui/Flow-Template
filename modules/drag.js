@@ -1,7 +1,7 @@
 /*
  * name: drag
- * vertion: v0.10.0
- * update: 增加handletouch配置
+ * vertion: v0.10.1
+ * update: 增加handletouch/onClick配置
  * date: 2017-08-23
  */
 define('drag', function(require, exports, module) {
@@ -17,7 +17,8 @@ define('drag', function(require, exports, module) {
             onDrag: null,
             dragEnd: null,
             onMove: null,
-            handletouch: false
+            handletouch: false,
+            onClick: null
         },
         moveTimer,
         moveIt = function(ele, offset) {
@@ -155,6 +156,7 @@ define('drag', function(require, exports, module) {
                     typeof(opt.dragStart) === 'function' && opt.dragStart($this);
                 });
                 //触屏
+                var clickHandle = (typeof opt.onClick === 'function');
                 $this.on("touchstart", function(e) {
                     opt.handletouch && e.preventDefault();
                     var evt = e.originalEvent;
@@ -170,7 +172,13 @@ define('drag', function(require, exports, module) {
                     mx = evt.touches[0].clientX;
                     my = evt.touches[0].clientY;
                     typeof(opt.dragStart) === 'function' && opt.dragStart($this);
+                    if(clickHandle){
+                        clickHandle = setTimeout(opt.onClick, 300);
+                    }
                 }).on('touchmove', function(e){
+                    if(clickHandle){
+                        clickHandle = clearTimeout(clickHandle);
+                    }
                     mousemove(e.originalEvent.touches[0]);
                 }).on('touchend', function(e){
                     mouseup(e.originalEvent.touches[0]);
