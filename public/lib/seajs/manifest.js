@@ -61,7 +61,7 @@
         'select'                            : 'v4.3.5',
         'sendcode'                          : 'v0.2.1',
         'slide'                             : 'v4.5.1',
-        'slider'                            : 'v0.0.2',
+        'slider'                            : 'v0.0.3',
         'spin'                              : 'v0.0.3',
         'store'                             : 'v0.0.1',
         'switch'                            : 'v1.0.0',
