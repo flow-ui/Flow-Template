@@ -8,27 +8,27 @@
 .btn-default:active, .btn-default.active{ color: @light; border-color: @gray-lighter; background-color:  @gray-light;}
 .btn-default.disabled, .btn-default[disabled], fieldset[disabled] .btn-default, .btn-default.disabled:active, .btn-default[disabled]:active, fieldset[disabled] .btn-default:active, .btn-default.disabled.active, .btn-default[disabled].active, fieldset[disabled] .btn-default.active { border-color: @border; background-color:  @light;}
 
-.btn-primary { color:  @light; background-color: @primary;}
+.btn-primary, .btn-primary:hover { color:  @light; background-color: @primary;}
 .btn-primary:active, .btn-primary.active{ color:  @light; border-color: @primary-dark; background-color: @primary-dark;}
 .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active { border-color: @primary; background-color: @primary;}
 
-.btn-auxiliary { color:  @light; background-color: @auxiliary;}
+.btn-auxiliary, .btn-auxiliary:hover { color:  @light; background-color: @auxiliary;}
 .btn-auxiliary:active, .btn-auxiliary.active { color:  @light; border-color: @auxiliary-dark; background-color: @auxiliary-dark;}
 .btn-auxiliary.disabled, .btn-auxiliary[disabled], fieldset[disabled] .btn-auxiliary,  .btn-auxiliary.disabled:active, .btn-auxiliary[disabled]:active, fieldset[disabled] .btn-auxiliary:active, .btn-auxiliary.disabled.active, .btn-auxiliary[disabled].active, fieldset[disabled] .btn-auxiliary.active { border-color: @auxiliary; background-color: @auxiliary;}
 
-.btn-success { color:  @light; background-color: @success;}
+.btn-success, .btn-success:hover { color:  @light; background-color: @success;}
 .btn-success:active, .btn-success.active { color:  @light; border-color: @success-dark; background-color: @success-dark;}
 .btn-success.disabled, .btn-success[disabled], fieldset[disabled] .btn-success,  .btn-success.disabled:active, .btn-success[disabled]:active, fieldset[disabled] .btn-success:active, .btn-success.disabled.active, .btn-success[disabled].active, fieldset[disabled] .btn-success.active { border-color: @success; background-color: @success;}
 
-.btn-info { color:  @light; background-color: @info;}
+.btn-info, .btn-info:hover { color:  @light; background-color: @info;}
 .btn-info:active, .btn-info.active { color:  @light; border-color: @info-dark; background-color: @info-dark;}
 .btn-info.disabled, .btn-info[disabled], fieldset[disabled] .btn-info, .btn-info.disabled:active, .btn-info[disabled]:active, fieldset[disabled] .btn-info:active, .btn-info.disabled.active, .btn-info[disabled].active, fieldset[disabled] .btn-info.active { border-color: @info; background-color: @info;}
 
-.btn-warning { color:  @light; background-color: @warning;}
+.btn-warning, .btn-warning:hover { color:  @light; background-color: @warning;}
 .btn-warning:active, .btn-warning.active { color:  @light; border-color: @warning-dark; background-color: @warning-dark;}
 .btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning,  .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning.active { border-color: @border; background-color: @warning;}
 
-.btn-danger { color:  @light; background-color: @danger;}
+.btn-danger, .btn-danger:hover { color:  @light; background-color: @danger;}
 .btn-danger:active, .btn-danger.active { color:  @light; border-color: @danger-dark; background-color: @danger-dark;}
 .btn-danger.disabled, .btn-danger[disabled], fieldset[disabled] .btn-danger,  .btn-danger.disabled:active, .btn-danger[disabled]:active, fieldset[disabled] .btn-danger:active, .btn-danger.disabled.active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger.active { border-color: @danger; background-color: @danger;}
 
@@ -44,12 +44,24 @@
 .btn .jon, .form-mark .jon { line-height: 1.2; margin: 0; vertical-align: baseline;}
 input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='button'].btn-block { width: 100%;}
 
-.btn-ghost{background: none;border-color: inherit;border: 1px solid transparent;line-height: @btn-base-height - 2px;}
+.btn-ghost, .btn-ghost:hover{background: none;border-color: inherit;border: 1px solid transparent;line-height: @btn-base-height - 2px;}
 .btn-ghost.btn-primary{border-color:@primary;}
+.btn-ghost.btn-primary:hover{background-color:@primary;color:@light;}
+.btn-ghost.btn-primary:active{background-color:@primary-dark;border-color:@primary-dark;}
 .btn-ghost.btn-auxiliary{border-color:@auxiliary;}
+.btn-ghost.btn-auxiliary:hover{background-color:@auxiliary;color:@light;}
+.btn-ghost.btn-auxiliary:active{background-color:@auxiliary-dark;border-color:@auxiliary-dark;}
 .btn-ghost.btn-success{border-color:@success;}
+.btn-ghost.btn-success:hover{background-color:@success;color:@light;}
+.btn-ghost.btn-success:active{background-color:@success-dark;border-color:@success-dark;}
 .btn-ghost.btn-info{border-color:@info;}
+.btn-ghost.btn-info:hover{background-color:@info;color:@light;}
+.btn-ghost.btn-info:active{background-color:@info-dark;border-color:@info-dark;}
 .btn-ghost.btn-warning{border-color:@warning;}
+.btn-ghost.btn-warning:hover{background-color:@warning;color:@light;}
+.btn-ghost.btn-warning:active{background-color:@warning-dark;border-color:@warning-dark;}
 .btn-ghost.btn-danger{border-color:@danger;}
+.btn-ghost.btn-danger:hover{background-color:@danger;color:@light;}
+.btn-ghost.btn-danger:active{background-color:@danger-dark;border-color:@danger-dark;}
 .btn-link.btn-ghost{padding-left: 1em;padding-right: 1em;}
 .btn-link.btn-ghost:hover{color:@primary-dark;border-color:@primary-dark;}
