@@ -24,7 +24,7 @@
         'city-select'                       : 'v1.0.2',
         'collapse'                          : 'v0.0.2',
         'countdown'                         : 'v1.1.1',
-        'datepicker'                        : 'v2.0.2',
+        'datepicker'                        : 'v2.1.0',
         'drag'                              : 'v0.10.4',
         'drag-panel'                        : 'v0.0.2',
         'dropdown'                          : 'v0.2.3',
