@@ -52,7 +52,7 @@
         'pjax'                              : 'v0.0.1',
         'progress'                          : 'v0.0.3',
         'qr'                                : 'v0.1.0',
-        'render'                            : 'v0.1.0',
+        'render'                            : 'v0.2.0',
         'responsive'                        : 'v0.0.1',
         'scroll-bar'                        : 'v2.2.8',
         'scroll-col'                        : 'v4.2.5',
