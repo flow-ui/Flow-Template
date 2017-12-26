@@ -16,11 +16,8 @@
     z-index: 1;
 
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
 }
 .menu-item > .ion,.menu-item-title > .ion{
-    margin-right: 0.5em;
-
     vertical-align: middle;
 }
 .menu-horizontal{
@@ -34,7 +31,6 @@
     padding: 0 @space;
 
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
 }
 .menu-light{
     background: @light;
@@ -80,40 +76,42 @@
     background: @primary-dark;
 }
 .menu-vertical{
-    height: 100%;
     overflow-y: auto;
+    height: 100%;
 }
 
 
-.menu-vertical::-webkit-scrollbar {
+.menu-vertical::-webkit-scrollbar{
     position: absolute;
     width: 10px;
     margin-left: -10px;
+
     -webkit-appearance: none;
 }
 
-.menu-vertical::-webkit-scrollbar-track {
-    background-color: #eee;
+.menu-vertical::-webkit-scrollbar-track{
     border-right: 1px solid #ddd;
     border-left: 1px solid #ddd;
+    background-color: #eee;
 }
 
-.menu-vertical::-webkit-scrollbar-thumb {
+.menu-vertical::-webkit-scrollbar-thumb{
     height: 50px;
+
+    border-width: 1px 2px;
+    border-style: solid;
+    border-color: transparent;
     background-color: #ccc;
     background-clip: content-box;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 1px 2px;
 }
 
-.menu-vertical.menu-dark::-webkit-scrollbar-track {
-    background-color: #444d50;
+.menu-vertical.menu-dark::-webkit-scrollbar-track{
     border-right: 1px solid #2c3334;
     border-left: 1px solid #2c3334;
+    background-color: #444d50;
 }
 
-.menu-vertical.menu-dark::-webkit-scrollbar-thumb {
+.menu-vertical.menu-dark::-webkit-scrollbar-thumb{
     background-color: #212526;
 }
 .menu-vertical.menu-light:after{
@@ -129,14 +127,16 @@
     padding: @font-size * 0.8 @font-size * 1.7;
 
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
 }
-.menu-sub-group .menu-item{padding-top: @font-size * .8;padding-bottom: @font-size * .8;}
+.menu-sub-group .menu-item{
+    padding-top: @font-size * 0.4;
+    padding-bottom: @font-size * 0.4;
+}
 .menu-vertical .menu-item:hover,.menu-vertical .menu-item-title:hover{
     background: @gray-lighter;
 }
 .menu-vertical .menu-submenu .menu-item{
-    padding-left: @font-size * 2.7;
+    padding-left: @font-size * 2.8;
 }
 .menu-vertical .menu-sub-group{
     display: none;
