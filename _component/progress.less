@@ -47,8 +47,6 @@
     content: '';
     animation: progress-active 2s ease-in-out infinite;
 
-    opacity: 0;
-    background: #fff;
 }
 
 .progress-primary .progress-inner, .progress-auxiliary .progress-inner, .progress-info .progress-inner, .progress-success .progress-inner, 
@@ -95,12 +93,12 @@
 @keyframes progress-active{
     0%{
         width: 0;
-
+        background: #fff;
         opacity: 0.3;
     }
     to{
         width: 100%;
-
+        background: #fff;
         opacity: 0;
     }
 }
