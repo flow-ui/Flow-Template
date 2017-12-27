@@ -1,8 +1,8 @@
 /*
  * name: scroll-load
- * version: 1.0.2
- * updata: 不合法调用返回null
- * data: 2017-07-26
+ * version: 1.0.3
+ * updata: force选项实现重新绑定
+ * data: 2017-12-27
  */
 define('scroll-load', function(require, exports, module) {
     "use strict";
@@ -58,19 +58,21 @@ define('scroll-load', function(require, exports, module) {
             } else if (opt.loadingTemplate && opt.loadingTemplate.split) {
                 $loading = $(opt.loadingTemplate).attr('id', loadingId).css('display','none');
             }
-            if (!opt.force) {
+            destory = function() {
+                $wrap.data('scroll-load-id', null);
+                scrollDom.unbind('scroll', scrollCB);
+                return null;
+            };
+            if (opt.force) {
+                destory();
+            } else {
                 if (window.nomore) {
-                    destory();
-                    return null;
+                    return destory();
                 }
                 if ($wrap.data('scroll-load-id')) {
                     return null;
                 }
             }
-            destory = function() {
-                $wrap.data('scroll-load-id', null);
-                scrollDom.unbind('scroll', scrollCB);
-            };
             viewH = function() {
                 return scrollDom.height();
             };
