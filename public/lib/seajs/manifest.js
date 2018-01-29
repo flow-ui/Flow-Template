@@ -40,7 +40,7 @@
         'img-loaded': 'v0.0.1',
         'img-ready': 'v1.0.0',
         'input-number': 'v0.2.0',
-        'input': 'v0.1.6',
+        'input': 'v0.1.7',
         'instantclick': 'v0.0.1',
         'label': 'v0.0.1',
         'lazyload': 'v2.2.0',
