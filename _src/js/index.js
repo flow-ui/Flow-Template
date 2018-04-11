@@ -3,10 +3,9 @@
  */
 define(function(require) {
     var $ = require('jquery');
-    var com = require('./common');
-    var api = require('./api');
+    var util = require('./common');
 
-    console.log(api);
+    console.log(util.host);
 
 
 
