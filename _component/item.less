@@ -6,6 +6,7 @@
 
     border-radius: @radius;
 }
+.item.item-divider{color: @gray-light;}
 .items.bordered{border-bottom:1px solid @border;}
 .items.bordered .item{border-top:1px solid @border;border-radius: 0;}
 
@@ -13,6 +14,7 @@
 .items .item-extra{float: right;}
 .items .item-extra .badge-count{background: @gray-light;}
 .items .item:hover{background-color: @gray-lighter;}
+.items .item.item-divider:hover{background-color: inherit;}
 .items .active, .items .active:hover{
     color: @light;
     background-color: @primary;
