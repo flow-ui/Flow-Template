@@ -19,7 +19,7 @@
         'validform/validform': 'v2.5.11',
         'video/video': 'v0.0.1',
         'webuploader/webuploader': 'v1.0.0',
-        'ajax-cache':'v0.0.2',
+        'ajax-cache':'v0.0.3',
         'album': 'v3.0.0',
         'appcan': 'v0.1.0',
         'autocomplete': 'v0.1.0',
